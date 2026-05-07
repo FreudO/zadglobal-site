@@ -538,6 +538,23 @@ document.querySelectorAll('[data-mobile-solution-flow]').forEach((wrap) => {
   });
 });
 
+// v26: contact deep-link hash selects the matching intake lane.
+(function () {
+  const applyIntakeHash = () => {
+    const target = (window.location.hash || '').replace('#', '');
+    if (!target) return;
+    document.querySelectorAll('[data-guided-intake]').forEach((wrap) => {
+      const button = wrap.querySelector(`[data-intake-target="${target}"]`);
+      if (!button) return;
+      button.click();
+      const section = document.querySelector('.contact-intake-section');
+      if (section) setTimeout(() => section.scrollIntoView({ behavior: 'auto', block: 'start' }), 40);
+    });
+  };
+  applyIntakeHash();
+  window.addEventListener('hashchange', applyIntakeHash);
+})();
+
 // v24: mobile contact mode. Keep core fields visible and let users expand advanced scope only when needed.
 document.querySelectorAll('[data-guided-intake]').forEach((wrap) => {
   const toggle = wrap.querySelector('[data-mobile-advanced-toggle]');
