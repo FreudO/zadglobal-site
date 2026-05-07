@@ -2463,16 +2463,18 @@ section { padding: 90px 0; }
     padding: 16px;
   }
 
-  .mobile-accordion-toggle {
-    display: block;
-  }
-
-  [data-mobile-accordion] .mobile-accordion-panel {
+  /* Homepage mobile: keep it focused, remove non-essential sections. */
+  body.is-mobile-device .ai-entry-section,
+  body.is-mobile-device .home-case-teaser {
     display: none;
   }
 
-  [data-mobile-accordion].mobile-accordion-open .mobile-accordion-panel {
-    display: block;
+  body.is-mobile-device .mobile-accordion-toggle {
+    display: none !important;
+  }
+
+  body.is-mobile-device [data-mobile-accordion] .mobile-accordion-panel {
+    display: block !important;
   }
 
   .service-map-section .map-helper {
@@ -2578,23 +2580,23 @@ section { padding: 90px 0; }
     min-height: 54px;
   }
 
-  .mobile-advanced-toggle-btn {
+  body.is-mobile-device .mobile-advanced-toggle-btn {
     display: block;
   }
 
-  [data-guided-intake] .mobile-advanced-section {
+  body.is-mobile-device [data-guided-intake] .mobile-advanced-section {
     display: none !important;
   }
 
-  [data-guided-intake].mobile-advanced-open .intake-choice-grid.mobile-advanced-section {
+  body.is-mobile-device [data-guided-intake].mobile-advanced-open .intake-choice-grid.mobile-advanced-section {
     display: grid !important;
   }
 
-  [data-guided-intake].mobile-advanced-open .intake-helper-row.mobile-advanced-section {
+  body.is-mobile-device [data-guided-intake].mobile-advanced-open .intake-helper-row.mobile-advanced-section {
     display: flex !important;
   }
 
-  [data-guided-intake].mobile-advanced-open .intake-panels.mobile-advanced-section {
+  body.is-mobile-device [data-guided-intake].mobile-advanced-open .intake-panels.mobile-advanced-section {
     display: block !important;
   }
 }

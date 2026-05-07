@@ -7,6 +7,19 @@ if (menuButton && navLinks) {
   });
 }
 
+function isMobileDeviceMode() {
+  const smallViewport = window.matchMedia('(max-width: 760px)').matches;
+  const coarsePointer = window.matchMedia('(pointer: coarse)').matches;
+  return smallViewport && coarsePointer;
+}
+
+function syncMobileDeviceClass() {
+  document.body.classList.toggle('is-mobile-device', isMobileDeviceMode());
+}
+
+syncMobileDeviceClass();
+window.addEventListener('resize', syncMobileDeviceClass);
+
 const forms = document.querySelectorAll('form[data-static-form]');
 forms.forEach((form) => {
   form.addEventListener('submit', (event) => {
@@ -486,6 +499,7 @@ document.querySelectorAll('[data-file-upload]').forEach((wrap) => {
 document.querySelectorAll('[data-guided-intake]').forEach((wrap) => {
   const toggle = wrap.querySelector('[data-mobile-advanced-toggle]');
   if (!toggle) return;
+  if (!isMobileDeviceMode()) return;
   const setState = (open) => {
     wrap.classList.toggle('mobile-advanced-open', open);
     toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
@@ -494,19 +508,4 @@ document.querySelectorAll('[data-guided-intake]').forEach((wrap) => {
   };
   setState(false);
   toggle.addEventListener('click', () => setState(!wrap.classList.contains('mobile-advanced-open')));
-});
-
-// v25: mobile homepage accordions for dense sections
-document.querySelectorAll('[data-mobile-accordion]').forEach((wrap) => {
-  const toggle = wrap.querySelector('[data-mobile-accordion-toggle]');
-  if (!toggle) return;
-  const defaultOpen = wrap.hasAttribute('data-mobile-accordion-default-open');
-  const setState = (open) => {
-    wrap.classList.toggle('mobile-accordion-open', open);
-    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-    const label = open ? (toggle.dataset.labelClose || 'Hide details') : (toggle.dataset.labelOpen || 'See details');
-    toggle.textContent = label;
-  };
-  setState(defaultOpen);
-  toggle.addEventListener('click', () => setState(!wrap.classList.contains('mobile-accordion-open')));
 });
