@@ -2707,6 +2707,98 @@ section { padding: 90px 0; }
 }
 
 @media (max-width: 600px) {
+  .mobile-solutions-showcase {
+    display: block !important;
+    padding-top: 28px;
+    padding-bottom: 18px;
+  }
+
+  .mobile-solutions-showcase .section-kicker {
+    margin-bottom: 6px;
+  }
+
+  .mobile-solutions-showcase .section-title {
+    font-size: clamp(1.45rem, 6.7vw, 1.9rem);
+    margin-bottom: 12px;
+  }
+
+  .mobile-solution-cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .mobile-solution-cards article {
+    border: 1px solid rgba(11,91,211,.18);
+    background: linear-gradient(160deg, #f8fbff, #ffffff);
+    border-radius: 16px;
+    padding: 12px 13px;
+  }
+
+  .mobile-solution-cards article span {
+    display: inline-block;
+    font-size: .7rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    color: #0b5bd3;
+    margin-bottom: 5px;
+  }
+
+  .mobile-solution-cards article h3 {
+    font-size: 1.02rem;
+    margin: 0 0 4px;
+    line-height: 1.25;
+  }
+
+  .mobile-solution-cards article p {
+    margin: 0;
+    font-size: .9rem;
+    line-height: 1.45;
+    color: #52627a;
+  }
+
+  .mobile-path-quicklist {
+    margin-top: 12px;
+    display: grid;
+    gap: 8px;
+  }
+
+  .mobile-path-quicklist article {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: 10px;
+    align-items: start;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 10px 11px;
+    background: #fff;
+  }
+
+  .mobile-path-quicklist strong {
+    width: 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    background: #e9f2ff;
+    color: #0b5bd3;
+    font-weight: 900;
+  }
+
+  .mobile-path-quicklist h3 {
+    margin: 1px 0 3px;
+    font-size: .97rem;
+    line-height: 1.24;
+  }
+
+  .mobile-path-quicklist p {
+    margin: 0;
+    font-size: .86rem;
+    line-height: 1.4;
+    color: #5c6d85;
+  }
+
   .services-hero .container > p:not(.eyebrow),
   .services-hero .hero-cta .btn.btn-outline {
     display: none;
@@ -2714,6 +2806,13 @@ section { padding: 90px 0; }
 
   .services-hero .hero-cta .btn.btn-primary {
     width: 100%;
+  }
+
+  .service-map-section,
+  .impact-section,
+  .compact-services,
+  .compact-band {
+    display: none;
   }
 
   .service-map-section .section-head-row .section-lede,
@@ -2824,4 +2923,8 @@ section { padding: 90px 0; }
   .final-cta .btn {
     width: 100%;
   }
+}
+
+.mobile-solutions-showcase {
+  display: none;
 }
