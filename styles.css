@@ -2182,3 +2182,34 @@ section { padding: 90px 0; }
     min-height: 88px;
   }
 }
+
+/* v22: readability pass for mobile and dense text blocks */
+@media (max-width: 900px) {
+  h1, .h1 {
+    font-size: clamp(2rem, 8.8vw, 3.2rem);
+    line-height: 1.02;
+    letter-spacing: -0.04em;
+  }
+
+  .section-title {
+    font-size: clamp(1.7rem, 7.2vw, 2.4rem);
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+  }
+
+  .hero p.lede,
+  .page-hero p,
+  .section-lede,
+  .world-panel-hero p,
+  .workspace-copy p,
+  .case-library-card p,
+  .card p {
+    font-size: 1rem;
+    line-height: 1.68;
+  }
+
+  .case-world-tabs button small {
+    font-size: 0.8rem;
+    line-height: 1.45;
+  }
+}
