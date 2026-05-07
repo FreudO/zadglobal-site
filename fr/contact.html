@@ -37,7 +37,8 @@
 <div class="intake-studio mt-36" data-guided-intake="">
 <div class="intake-main-panel">
 <form class="guided-intake-form" enctype="multipart/form-data">
-<div aria-label="Type de demande" class="intake-choice-grid intake-choice-grid-large intake-tabs-v14">
+<button class="mobile-advanced-toggle-btn" data-mobile-advanced-toggle="" data-label-open="Ajouter des details (optionnel)" data-label-close="Masquer les details" type="button" aria-expanded="false">Ajouter des details (optionnel)</button>
+<div aria-label="Type de demande" class="intake-choice-grid intake-choice-grid-large intake-tabs-v14 mobile-advanced-section">
 <button class="active" data-intake-target="ai" type="button"><span>IA &amp; automatisation</span><small>Documents, routage, assistants</small><b data-lane-count="ai">0</b></button>
 <button data-intake-target="software" type="button"><span>Logiciel</span><small>Portails, applications, intégrations</small><b data-lane-count="software">0</b></button>
 <button data-intake-target="training" type="button"><span>Formation</span><small>Recrues, équipes, responsables</small><b data-lane-count="training">0</b></button>
@@ -45,7 +46,7 @@
 <button data-intake-target="finance" type="button"><span>Finance</span><small>Opérations, capital, patrimoine</small><b data-lane-count="finance">0</b></button>
 <button data-intake-target="general" type="button"><span>Général</span><small>Partenaires, approvisionnement, autre</small><b data-lane-count="general">0</b></button>
 </div>
-<div class="intake-helper-row">
+<div class="intake-helper-row mobile-advanced-section">
 <span>Les sélections sont cumulatives.</span><strong>Exemple : choisissez réception documentaire en IA, intégration des nouveaux employés en Formation, puis laboratoire éducatif en Robotique — et envoyez tout en une seule demande.</strong>
 </div>
 <div class="form-grid contact-basics contact-basics-v14">
@@ -56,7 +57,7 @@
 <div><label>Type d’activité</label><input name="business_type" placeholder="Assurance, commerce, mine, école, État, etc." type="text"/></div>
 <div><label>Sites / équipes concernés</label><input name="sites_teams" placeholder="ex. 3 agences, 40 employés, 2 services" type="text"/></div>
 </div>
-<div class="intake-panels deep-intake-panels">
+<div class="intake-panels deep-intake-panels mobile-advanced-section">
 <fieldset class="intake-panel contact-fieldset active" data-brief="IA &amp; automatisation" data-intake-panel="ai">
 <legend>IA &amp; automatisation</legend>
 <p class="field-note">Sélectionnez tous les flux de travail à examiner. Ils peuvent être combinés avec formation, logiciel, robotique ou finance.</p>

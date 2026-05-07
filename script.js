@@ -481,3 +481,17 @@ document.querySelectorAll('[data-file-upload]').forEach((wrap) => {
   input.addEventListener('change', updateStatus);
   updateStatus();
 });
+
+// v24: mobile contact mode. Keep core fields visible and let users expand advanced scope only when needed.
+document.querySelectorAll('[data-guided-intake]').forEach((wrap) => {
+  const toggle = wrap.querySelector('[data-mobile-advanced-toggle]');
+  if (!toggle) return;
+  const setState = (open) => {
+    wrap.classList.toggle('mobile-advanced-open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    const label = open ? (toggle.dataset.labelClose || 'Hide detailed scope') : (toggle.dataset.labelOpen || 'Add detailed scope (optional)');
+    toggle.textContent = label;
+  };
+  setState(false);
+  toggle.addEventListener('click', () => setState(!wrap.classList.contains('mobile-advanced-open')));
+});
