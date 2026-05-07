@@ -39,6 +39,41 @@ forms.forEach((form) => {
   });
 });
 
+(function setupGuidedContactReachValidation() {
+  document.querySelectorAll('form.guided-intake-form').forEach((form) => {
+    const note = form.querySelector('[data-form-note]');
+    const emailInput = form.querySelector('input[name="email"]');
+    const whatsInput = form.querySelector('input[name="whatsapp"]');
+    const clearReachError = () => {
+      if (note && note.dataset.contactReachError === '1') {
+        note.textContent = '';
+        delete note.dataset.contactReachError;
+      }
+    };
+    [emailInput, whatsInput].forEach((el) => {
+      if (!el) return;
+      el.addEventListener('input', clearReachError);
+    });
+    form.addEventListener('submit', (event) => {
+      const isFr = (document.documentElement.lang || '').toLowerCase().startsWith('fr');
+      const emailVal = (emailInput?.value || '').trim();
+      const waVal = (whatsInput?.value || '').trim();
+      if (!emailVal && !waVal) {
+        event.preventDefault();
+        if (note) {
+          note.textContent = isFr
+            ? 'Indiquez au moins une adresse e-mail ou un numéro WhatsApp pour que nous puissions vous répondre.'
+            : 'Please enter either an email address or a WhatsApp number so we can reach you.';
+          note.dataset.contactReachError = '1';
+        }
+        (emailInput || whatsInput)?.focus();
+        return;
+      }
+      clearReachError();
+    });
+  });
+})();
+
 const serviceMaps = document.querySelectorAll('[data-service-map]');
 const serviceAliases = {
   software: 'digital', 'software-ai': 'digital', digital: 'digital', systems: 'digital',

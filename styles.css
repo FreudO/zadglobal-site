@@ -1475,6 +1475,13 @@ section.contact-intake-section[data-reveal].visible {
 .intake-choice-grid-large { grid-template-columns: repeat(6, minmax(0,1fr)); gap:10px; margin:0 0 22px; }
 .intake-choice-grid-large button { min-height:58px; padding:12px 10px; border-radius:18px; font-size:.86rem; }
 .contact-basics { padding:18px; border-radius:24px; background:#fff; border:1px solid rgba(6,63,149,.10); margin-bottom:20px; }
+.contact-basics-v14 .contact-reach-hint {
+  grid-column: 1 / -1;
+  margin: 0 0 4px;
+}
+.contact-basics-full-row {
+  grid-column: 1 / -1;
+}
 .deep-intake-panels { margin-top:0; }
 .deep-intake-panels .contact-fieldset { border-radius:28px; padding:24px; background:#fff; border:1px solid rgba(6,63,149,.12); box-shadow:0 14px 38px rgba(6,16,31,.04); }
 .deep-intake-panels legend { padding:0 10px; font-weight:950; color:#06101f; letter-spacing:-.03em; font-size:1.2rem; }
