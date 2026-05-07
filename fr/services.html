@@ -33,21 +33,59 @@
 
   <section class="white mobile-solutions-showcase">
     <div class="container">
-      <p class="section-kicker">Vue rapide des solutions</p>
-      <h2 class="section-title">Ce que ZAD peut améliorer en premier.</h2>
-      <div class="mobile-solution-cards">
-        <article><span>Digital</span><h3>Systèmes logiciels</h3><p>Flux propres, intégrations et base de données solide.</p></article>
-        <article><span>IA</span><h3>Automatisation</h3><p>Moins de tâches répétitives, service plus rapide.</p></article>
-        <article><span>Terrain</span><h3>Opérations robotiques</h3><p>Inspection plus sûre et meilleure visibilité terrain.</p></article>
-        <article><span>Équipes</span><h3>Adoption</h3><p>Intégration et formation par rôle plus efficaces.</p></article>
-        <article><span>Stratégie</span><h3>Design opérationnel</h3><p>Corriger validations, passages de main et KPI.</p></article>
-        <article><span>Capital</span><h3>Voies financières</h3><p>Priorités opérationnelles avec coordination partenaires.</p></article>
-      </div>
-      <div class="mobile-path-quicklist">
-        <article><strong>A</strong><div><h3>Moderniser les flux</h3><p>Logiciel + IA pour les opérations de service.</p></div></article>
-        <article><strong>B</strong><div><h3>Étendre le terrain</h3><p>Robotique + reporting pour les sites physiques.</p></div></article>
-        <article><strong>C</strong><div><h3>Former et faire grandir</h3><p>Adoption structurée pour mieux exécuter.</p></div></article>
-        <article><strong>D</strong><div><h3>Aligner stratégie et capital</h3><p>Finance opérationnelle et accès partenaires.</p></div></article>
+      <p class="section-kicker">Choisissez votre objectif</p>
+      <h2 class="section-title">Commencez par un résultat concret.</h2>
+      <div class="mobile-goal-flow" data-mobile-solution-flow>
+        <div class="mobile-goal-buttons" role="tablist" aria-label="Objectifs solutions">
+          <button class="active" type="button" data-goal-target="admin" role="tab" aria-selected="true">Réduire la charge administrative</button>
+          <button type="button" data-goal-target="field" role="tab" aria-selected="false">Améliorer les opérations terrain</button>
+          <button type="button" data-goal-target="team" role="tab" aria-selected="false">Former et faire grandir les équipes</button>
+          <button type="button" data-goal-target="capital" role="tab" aria-selected="false">Améliorer stratégie et capital</button>
+        </div>
+
+        <article class="mobile-goal-panel active" data-goal-panel="admin" role="tabpanel">
+          <p class="mobile-goal-kicker">Parcours recommandé A</p>
+          <h3>Moderniser les flux avec logiciel + IA</h3>
+          <p class="mobile-goal-why">Pertinent lorsque les équipes dépendent d’emails, d’Excel et de tâches répétitives.</p>
+          <button class="mobile-goal-expand" type="button" data-goal-expand aria-expanded="false">Voir les détails</button>
+          <div class="mobile-goal-details">
+            <p>Premières actions typiques : automatisation de la réception, validations, tableaux de bord et réponses client.</p>
+          </div>
+          <a class="btn btn-primary" href="contact.html">Nous contacter pour ce parcours</a>
+        </article>
+
+        <article class="mobile-goal-panel" data-goal-panel="field" role="tabpanel">
+          <p class="mobile-goal-kicker">Parcours recommandé B</p>
+          <h3>Étendre le terrain avec robotique + reporting</h3>
+          <p class="mobile-goal-why">Pertinent lorsque sécurité, inspection et visibilité des sites distants sont critiques.</p>
+          <button class="mobile-goal-expand" type="button" data-goal-expand aria-expanded="false">Voir les détails</button>
+          <div class="mobile-goal-details">
+            <p>Premières actions typiques : routines d’inspection, capture capteurs, tableaux de bord terrain et plan partenaires.</p>
+          </div>
+          <a class="btn btn-primary" href="contact.html">Nous contacter pour ce parcours</a>
+        </article>
+
+        <article class="mobile-goal-panel" data-goal-panel="team" role="tabpanel">
+          <p class="mobile-goal-kicker">Parcours recommandé C</p>
+          <h3>Former et faire grandir avec l’adoption</h3>
+          <p class="mobile-goal-why">Pertinent lorsque l’onboarding est lent et l’exécution manque de cohérence.</p>
+          <button class="mobile-goal-expand" type="button" data-goal-expand aria-expanded="false">Voir les détails</button>
+          <div class="mobile-goal-details">
+            <p>Premières actions typiques : parcours par rôle, assistant interne IA et cadence de formation pour managers.</p>
+          </div>
+          <a class="btn btn-primary" href="contact.html">Nous contacter pour ce parcours</a>
+        </article>
+
+        <article class="mobile-goal-panel" data-goal-panel="capital" role="tabpanel">
+          <p class="mobile-goal-kicker">Parcours recommandé D</p>
+          <h3>Aligner stratégie opérationnelle et capital</h3>
+          <p class="mobile-goal-why">Pertinent lorsque validations, staffing et priorités financières manquent de clarté.</p>
+          <button class="mobile-goal-expand" type="button" data-goal-expand aria-expanded="false">Voir les détails</button>
+          <div class="mobile-goal-details">
+            <p>Premières actions typiques : refonte des flux, cadence KPI, clarté coût de service et coordination partenaires/finance.</p>
+          </div>
+          <a class="btn btn-primary" href="contact.html">Nous contacter pour ce parcours</a>
+        </article>
       </div>
     </div>
   </section>

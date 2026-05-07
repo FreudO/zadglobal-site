@@ -495,6 +495,49 @@ document.querySelectorAll('[data-file-upload]').forEach((wrap) => {
   updateStatus();
 });
 
+// v25: phone-first Solutions goal flow.
+document.querySelectorAll('[data-mobile-solution-flow]').forEach((wrap) => {
+  const buttons = Array.from(wrap.querySelectorAll('[data-goal-target]'));
+  const panels = Array.from(wrap.querySelectorAll('[data-goal-panel]'));
+  if (!buttons.length || !panels.length) return;
+
+  const setActive = (target) => {
+    buttons.forEach((button) => {
+      const active = button.getAttribute('data-goal-target') === target;
+      button.classList.toggle('active', active);
+      button.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    panels.forEach((panel) => {
+      const active = panel.getAttribute('data-goal-panel') === target;
+      panel.classList.toggle('active', active);
+      panel.classList.remove('expanded');
+      const expand = panel.querySelector('[data-goal-expand]');
+      if (expand) {
+        const isFr = (document.documentElement.lang || '').toLowerCase().startsWith('fr');
+        expand.textContent = isFr ? 'Voir les détails' : 'See details';
+        expand.setAttribute('aria-expanded', 'false');
+      }
+    });
+  };
+
+  buttons.forEach((button) => {
+    button.addEventListener('click', () => setActive(button.getAttribute('data-goal-target')));
+  });
+
+  panels.forEach((panel) => {
+    const expand = panel.querySelector('[data-goal-expand]');
+    if (!expand) return;
+    expand.addEventListener('click', () => {
+      const isFr = (document.documentElement.lang || '').toLowerCase().startsWith('fr');
+      const expanded = panel.classList.toggle('expanded');
+      expand.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      expand.textContent = expanded
+        ? (isFr ? 'Masquer les détails' : 'Hide details')
+        : (isFr ? 'Voir les détails' : 'See details');
+    });
+  });
+});
+
 // v24: mobile contact mode. Keep core fields visible and let users expand advanced scope only when needed.
 document.querySelectorAll('[data-guided-intake]').forEach((wrap) => {
   const toggle = wrap.querySelector('[data-mobile-advanced-toggle]');

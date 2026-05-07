@@ -33,21 +33,59 @@
 
   <section class="white mobile-solutions-showcase">
     <div class="container">
-      <p class="section-kicker">Solutions snapshot</p>
-      <h2 class="section-title">What ZAD can improve first.</h2>
-      <div class="mobile-solution-cards">
-        <article><span>Digital</span><h3>Software systems</h3><p>Clean workflows, integrations, and data foundations.</p></article>
-        <article><span>AI</span><h3>Automation</h3><p>Less repetitive work, faster service, clearer visibility.</p></article>
-        <article><span>Field</span><h3>Robotics ops</h3><p>Safer inspection and better remote operations signals.</p></article>
-        <article><span>People</span><h3>Enablement</h3><p>Onboarding and role-based training that sticks.</p></article>
-        <article><span>Strategy</span><h3>Operating design</h3><p>Fix approvals, handoffs, staffing, and KPI cadence.</p></article>
-        <article><span>Capital</span><h3>Finance lanes</h3><p>Operational priorities with clear partner coordination.</p></article>
-      </div>
-      <div class="mobile-path-quicklist">
-        <article><strong>A</strong><div><h3>Modernize workflow</h3><p>Software + AI for service teams.</p></div></article>
-        <article><strong>B</strong><div><h3>Extend field ops</h3><p>Robotics + reporting for physical sites.</p></div></article>
-        <article><strong>C</strong><div><h3>Train and scale teams</h3><p>Enablement for adoption and execution.</p></div></article>
-        <article><strong>D</strong><div><h3>Align strategy and capital</h3><p>Operational finance with partner access.</p></div></article>
+      <p class="section-kicker">Choose your goal</p>
+      <h2 class="section-title">Start with one practical outcome.</h2>
+      <div class="mobile-goal-flow" data-mobile-solution-flow>
+        <div class="mobile-goal-buttons" role="tablist" aria-label="Solution goals">
+          <button class="active" type="button" data-goal-target="admin" role="tab" aria-selected="true">Reduce admin workload</button>
+          <button type="button" data-goal-target="field" role="tab" aria-selected="false">Improve field operations</button>
+          <button type="button" data-goal-target="team" role="tab" aria-selected="false">Train and scale teams</button>
+          <button type="button" data-goal-target="capital" role="tab" aria-selected="false">Improve strategy and capital</button>
+        </div>
+
+        <article class="mobile-goal-panel active" data-goal-panel="admin" role="tabpanel">
+          <p class="mobile-goal-kicker">Recommended path A</p>
+          <h3>Modernize workflow with software + AI</h3>
+          <p class="mobile-goal-why">Best when teams rely on email, Excel, and repetitive manual follow-up.</p>
+          <button class="mobile-goal-expand" type="button" data-goal-expand aria-expanded="false">See details</button>
+          <div class="mobile-goal-details">
+            <p>Typical first moves: intake automation, approvals, dashboards, and customer response workflows.</p>
+          </div>
+          <a class="btn btn-primary" href="contact.html">Talk to us about this path</a>
+        </article>
+
+        <article class="mobile-goal-panel" data-goal-panel="field" role="tabpanel">
+          <p class="mobile-goal-kicker">Recommended path B</p>
+          <h3>Extend field ops with robotics + reporting</h3>
+          <p class="mobile-goal-why">Best when safety, inspection, and remote site visibility are core issues.</p>
+          <button class="mobile-goal-expand" type="button" data-goal-expand aria-expanded="false">See details</button>
+          <div class="mobile-goal-details">
+            <p>Typical first moves: inspection routines, sensor data capture, field dashboards, and partner deployment plan.</p>
+          </div>
+          <a class="btn btn-primary" href="contact.html">Talk to us about this path</a>
+        </article>
+
+        <article class="mobile-goal-panel" data-goal-panel="team" role="tabpanel">
+          <p class="mobile-goal-kicker">Recommended path C</p>
+          <h3>Train and scale teams with enablement</h3>
+          <p class="mobile-goal-why">Best when onboarding is slow and teams need consistent execution standards.</p>
+          <button class="mobile-goal-expand" type="button" data-goal-expand aria-expanded="false">See details</button>
+          <div class="mobile-goal-details">
+            <p>Typical first moves: role-based learning paths, internal AI knowledge support, and manager-ready training cadence.</p>
+          </div>
+          <a class="btn btn-primary" href="contact.html">Talk to us about this path</a>
+        </article>
+
+        <article class="mobile-goal-panel" data-goal-panel="capital" role="tabpanel">
+          <p class="mobile-goal-kicker">Recommended path D</p>
+          <h3>Align operating strategy and capital</h3>
+          <p class="mobile-goal-why">Best when approvals, staffing, and financial priorities need a clearer operating model.</p>
+          <button class="mobile-goal-expand" type="button" data-goal-expand aria-expanded="false">See details</button>
+          <div class="mobile-goal-details">
+            <p>Typical first moves: workflow redesign, KPI cadence, cost-to-serve clarity, and partner-finance coordination.</p>
+          </div>
+          <a class="btn btn-primary" href="contact.html">Talk to us about this path</a>
+        </article>
       </div>
     </div>
   </section>
