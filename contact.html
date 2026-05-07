@@ -63,12 +63,14 @@
 <span>Cumulative</span><strong class="contact-helper-long">Example: choose document intake under AI, new employee onboarding under Training, and training lab under Robotics — then submit all of it once.</strong><strong class="contact-helper-short">Need more than one area? Tap another lane — everything combines into one request.</strong>
 </div>
 <div class="form-grid contact-basics contact-basics-v14">
-<div><label>First name</label><input name="first_name" placeholder="Enter your first name" type="text"/></div>
-<div><label>Work email*</label><input name="email" placeholder="you@company.com" type="email"/></div>
-<div><label>Organization</label><input name="organization" placeholder="Company or institution name" type="text"/></div>
-<div><label>Country / region</label><input name="country" placeholder="Where will this work be used?" type="text"/></div>
-<div><label>Business type</label><input name="business_type" placeholder="Insurance, retail, mining, school, government, etc." type="text"/></div>
-<div><label>Sites / teams involved</label><input name="sites_teams" placeholder="e.g., 3 branches, 40 employees, 2 departments" type="text"/></div>
+<p id="contact-reach-hint-en" class="field-note contact-reach-hint">Provide at least one: email or WhatsApp number.</p>
+<div><label for="contact_first_en">First name</label><input id="contact_first_en" name="first_name" placeholder="Enter your first name" type="text"/></div>
+<div><label for="contact_org_en">Organization</label><input id="contact_org_en" name="organization" placeholder="Company or institution name" type="text"/></div>
+<div><label for="contact_email_en">Email</label><input id="contact_email_en" name="email" placeholder="you@company.com" type="email" autocomplete="email" aria-describedby="contact-reach-hint-en"/></div>
+<div><label for="contact_whatsapp_en">WhatsApp</label><input id="contact_whatsapp_en" name="whatsapp" placeholder="Include country code, e.g. +250 …" type="tel" inputmode="tel" autocomplete="tel" aria-describedby="contact-reach-hint-en"/></div>
+<div><label for="contact_country_en">Country / region</label><input id="contact_country_en" name="country" placeholder="Where will this work be used?" type="text"/></div>
+<div><label for="contact_business_en">Business type</label><input id="contact_business_en" name="business_type" placeholder="Insurance, retail, mining, school, government, etc." type="text"/></div>
+<div class="contact-basics-full-row"><label for="contact_sites_en">Sites / teams involved</label><input id="contact_sites_en" name="sites_teams" placeholder="e.g., 3 branches, 40 employees, 2 departments" type="text"/></div>
 </div>
 <div class="intake-panels deep-intake-panels mobile-advanced-section">
 <fieldset class="intake-panel contact-fieldset active" data-brief="AI &amp; automation" data-intake-panel="ai">

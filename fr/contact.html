@@ -62,12 +62,14 @@
 <span>Cumul</span><strong class="contact-helper-long">Exemple : choisissez réception documentaire en IA, intégration des nouveaux employés en Formation, puis laboratoire éducatif en Robotique — et envoyez tout en une seule demande.</strong><strong class="contact-helper-short">Plusieurs domaines ? Touchez un autre onglet — tout se combine en une demande.</strong>
 </div>
 <div class="form-grid contact-basics contact-basics-v14">
-<div><label>Prénom</label><input name="first_name" placeholder="Entrez votre prénom" type="text"/></div>
-<div><label>Email professionnel*</label><input name="email" placeholder="vous@entreprise.com" type="email"/></div>
-<div><label>Organisation</label><input name="organization" placeholder="Entreprise ou institution" type="text"/></div>
-<div><label>Pays / région</label><input name="country" placeholder="Où le projet sera-t-il utilisé ?" type="text"/></div>
-<div><label>Type d’activité</label><input name="business_type" placeholder="Assurance, commerce, mine, école, État, etc." type="text"/></div>
-<div><label>Sites / équipes concernés</label><input name="sites_teams" placeholder="ex. 3 agences, 40 employés, 2 services" type="text"/></div>
+<p id="contact-reach-hint-fr" class="field-note contact-reach-hint">Indiquez au moins une option : e-mail ou numéro WhatsApp.</p>
+<div><label for="contact_first_fr">Prénom</label><input id="contact_first_fr" name="first_name" placeholder="Entrez votre prénom" type="text"/></div>
+<div><label for="contact_org_fr">Organisation</label><input id="contact_org_fr" name="organization" placeholder="Entreprise ou institution" type="text"/></div>
+<div><label for="contact_email_fr">E-mail</label><input id="contact_email_fr" name="email" placeholder="vous@exemple.com" type="email" autocomplete="email" aria-describedby="contact-reach-hint-fr"/></div>
+<div><label for="contact_whatsapp_fr">WhatsApp</label><input id="contact_whatsapp_fr" name="whatsapp" placeholder="Indicatif pays, ex. +250 …" type="tel" inputmode="tel" autocomplete="tel" aria-describedby="contact-reach-hint-fr"/></div>
+<div><label for="contact_country_fr">Pays / région</label><input id="contact_country_fr" name="country" placeholder="Où le projet sera-t-il utilisé ?" type="text"/></div>
+<div><label for="contact_business_fr">Type d’activité</label><input id="contact_business_fr" name="business_type" placeholder="Assurance, commerce, mine, école, État, etc." type="text"/></div>
+<div class="contact-basics-full-row"><label for="contact_sites_fr">Sites / équipes concernés</label><input id="contact_sites_fr" name="sites_teams" placeholder="ex. 3 agences, 40 employés, 2 services" type="text"/></div>
 </div>
 <div class="intake-panels deep-intake-panels mobile-advanced-section">
 <fieldset class="intake-panel contact-fieldset active" data-brief="IA &amp; automatisation" data-intake-panel="ai">
