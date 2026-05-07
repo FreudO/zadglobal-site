@@ -495,3 +495,18 @@ document.querySelectorAll('[data-guided-intake]').forEach((wrap) => {
   setState(false);
   toggle.addEventListener('click', () => setState(!wrap.classList.contains('mobile-advanced-open')));
 });
+
+// v25: mobile homepage accordions for dense sections
+document.querySelectorAll('[data-mobile-accordion]').forEach((wrap) => {
+  const toggle = wrap.querySelector('[data-mobile-accordion-toggle]');
+  if (!toggle) return;
+  const defaultOpen = wrap.hasAttribute('data-mobile-accordion-default-open');
+  const setState = (open) => {
+    wrap.classList.toggle('mobile-accordion-open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    const label = open ? (toggle.dataset.labelClose || 'Hide details') : (toggle.dataset.labelOpen || 'See details');
+    toggle.textContent = label;
+  };
+  setState(defaultOpen);
+  toggle.addEventListener('click', () => setState(!wrap.classList.contains('mobile-accordion-open')));
+});
