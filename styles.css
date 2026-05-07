@@ -2751,9 +2751,8 @@ body.is-mobile-device .contact-workspace-v14 .contact-form-tail {
   min-width: 0;
   max-width: 100%;
 }
-body.is-mobile-device .contact-workspace-v14 .intake-main-panel {
-  overflow-x: clip;
-}
+/* Do not set overflow-x hidden/clip on this panel: paired with visible-y it becomes overflow-y:auto in CSS and
+   can trap touch scrolling and break scroll-to-section on iOS. Horizontal overflow is contained via min-width:0 + lane row. */
 body.is-mobile-device .contact-workspace-v14 fieldset.intake-panel {
   min-width: 0;
 }
@@ -2790,10 +2789,13 @@ body.is-mobile-device .contact-workspace-v14 .contact-stepper-hint {
   font-weight: 650;
 }
 body.is-mobile-device .contact-workspace-v14 .contact-step-jump {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
   width: 100%;
+  min-width: 0;
   margin: 0;
   padding: 6px 2px;
   border: 0;
@@ -2803,9 +2805,12 @@ body.is-mobile-device .contact-workspace-v14 .contact-step-jump {
   font-weight: inherit;
   color: inherit;
   letter-spacing: inherit;
+  line-height: 1.2;
+  text-align: center;
   cursor: pointer;
   border-radius: 12px;
   -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 body.is-mobile-device .contact-workspace-v14 .contact-step-jump:active {
   background: rgba(11, 91, 211, 0.08);
@@ -2835,6 +2840,8 @@ body.is-mobile-device .contact-workspace-v14 .contact-mobile-stepper ol {
 }
 body.is-mobile-device .contact-workspace-v14 .contact-mobile-stepper li {
   flex: 1;
+  min-width: 0;
+  display: flex;
   text-align: center;
   font-size: 0.72rem;
   font-weight: 800;

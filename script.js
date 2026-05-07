@@ -692,6 +692,20 @@ window.addEventListener('hashchange', applyContactIntakeHash);
     }
 
     const stepperOl = form.querySelector('.contact-mobile-stepper ol');
+    let stepJumpScrollTimer = 0;
+    function scrollContactStepTargetIntoView(el) {
+      if (!el) return;
+      const headerOffset = 88;
+      const rect = el.getBoundingClientRect();
+      const y = window.scrollY + rect.top - headerOffset;
+      const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: Math.max(0, y), behavior: smooth ? 'smooth' : 'auto' });
+      if (stepJumpScrollTimer) clearTimeout(stepJumpScrollTimer);
+      stepJumpScrollTimer = window.setTimeout(() => {
+        stepJumpScrollTimer = 0;
+        updateStepperFromScroll();
+      }, smooth ? 320 : 32);
+    }
     function onStepperJumpClick(e) {
       const btn = e.target.closest('.contact-step-jump');
       if (!btn) return;
@@ -699,14 +713,14 @@ window.addEventListener('hashchange', applyContactIntakeHash);
       if (!li) return;
       const idx = parseInt(li.getAttribute('data-contact-step-index'), 10);
       const row = stepTargets.find((s) => s.idx === idx);
-      if (row?.el) {
-        const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        row.el.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
-      }
+      scrollContactStepTargetIntoView(row?.el);
     }
     if (stepperOl) {
       stepperOl.addEventListener('click', onStepperJumpClick);
-      cleanups.push(() => stepperOl.removeEventListener('click', onStepperJumpClick));
+      cleanups.push(() => {
+        stepperOl.removeEventListener('click', onStepperJumpClick);
+        if (stepJumpScrollTimer) clearTimeout(stepJumpScrollTimer);
+      });
     }
 
     syncContactMobileActiveLane(wrap);
