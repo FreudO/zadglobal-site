@@ -64,13 +64,16 @@
 <span>Cumulative</span><strong class="contact-helper-long">Example: choose document intake under AI, new employee onboarding under Training, and training lab under Robotics — then submit all of it once.</strong><strong class="contact-helper-short">Need more than one area? Tap another lane — everything combines into one request.</strong>
 </div>
 <div class="form-grid contact-basics contact-basics-v14">
-<p id="contact-reach-hint-en" class="field-note contact-reach-hint">Provide at least one: email or WhatsApp number.</p>
-<div><label for="contact_first_en">First name</label><input id="contact_first_en" name="first_name" placeholder="Enter your first name" type="text"/></div>
-<div><label for="contact_org_en">Organization</label><input id="contact_org_en" name="organization" placeholder="Company or institution name" type="text"/></div>
-<div><label for="contact_email_en">Email</label><input id="contact_email_en" name="email" placeholder="you@company.com" type="email" autocomplete="email" aria-describedby="contact-reach-hint-en"/></div>
-<div><label for="contact_whatsapp_en">WhatsApp</label><input id="contact_whatsapp_en" name="whatsapp" placeholder="Include country code, e.g. +250 …" type="tel" inputmode="tel" autocomplete="tel" aria-describedby="contact-reach-hint-en"/></div>
-<div><label for="contact_country_en">Country / region</label><input id="contact_country_en" name="country" placeholder="Where will this work be used?" type="text"/></div>
-<div><label for="contact_business_en">Business type</label><input id="contact_business_en" name="business_type" placeholder="Insurance, retail, mining, school, government, etc." type="text"/></div>
+<p id="contact-reach-hint-en" class="field-note contact-reach-hint">Provide at least one: email or WhatsApp (country code + number).</p>
+<div><label for="contact_first_en">First name</label><input id="contact_first_en" name="first_name" placeholder="Enter your first name" type="text" maxlength="80" autocomplete="given-name"/></div>
+<div><label for="contact_org_en">Organization</label><input id="contact_org_en" name="organization" placeholder="Company or institution name" type="text" maxlength="120" autocomplete="organization"/></div>
+<div><label for="contact_email_en">Email</label><input id="contact_email_en" name="email" placeholder="you@company.com" type="email" maxlength="254" autocomplete="email" autocapitalize="none" autocorrect="off" spellcheck="false" aria-describedby="contact-reach-hint-en"/></div>
+<div class="contact-whatsapp-row">
+<div><label for="contact_whatsapp_cc_en">Country code</label><input id="contact_whatsapp_cc_en" name="whatsapp_country_code" type="text" inputmode="tel" autocomplete="tel-country-code" placeholder="+250" maxlength="8" spellcheck="false" autocapitalize="none" autocorrect="off" aria-describedby="contact-reach-hint-en"/></div>
+<div><label for="contact_whatsapp_local_en">WhatsApp number</label><input id="contact_whatsapp_local_en" name="whatsapp_local" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="Digits only, e.g. 788123456" maxlength="15" aria-describedby="contact-reach-hint-en"/></div>
+</div>
+<div><label for="contact_country_en">Country / region</label><input id="contact_country_en" name="country" placeholder="Where will this work be used?" type="text" maxlength="120"/></div>
+<div><label for="contact_business_en">Business type</label><input id="contact_business_en" name="business_type" placeholder="Insurance, retail, mining, school, government, etc." type="text" maxlength="120"/></div>
 <div class="contact-basics-full-row"><label for="contact_sites_en">Sites / teams involved</label><input id="contact_sites_en" name="sites_teams" placeholder="e.g., 3 branches, 40 employees, 2 departments" type="text"/></div>
 </div>
 <div class="intake-panels deep-intake-panels mobile-advanced-section">
@@ -178,7 +181,7 @@
     <label class="file-upload-button" for="supporting_files_en">Choose files</label>
     <span class="file-upload-status" data-file-status>No files selected</span>
   </div>
-  <p class="field-note">Attach sample documents, screenshots, exports, briefs, or process examples that clarify the request. File uploads are not sent on the free Web3Forms plan — use links in “Additional context” or upgrade Web3Forms Pro.</p>
+  <p class="field-note">Attach sample documents, screenshots, exports, briefs, or process examples that clarify the request.</p>
 </div>
 <input type="hidden" data-request-scope="" name="request_scope"/>
 <div class="contact-submit-zone">

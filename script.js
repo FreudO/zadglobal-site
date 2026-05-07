@@ -43,6 +43,52 @@ forms.forEach((form) => {
 });
 
 (function setupGuidedContactReachValidation() {
+  function normalizeWhatsAppCountryCode(raw) {
+    let s = (raw || '').trim().replace(/\s+/g, '');
+    if (!s) return '';
+    if (s.startsWith('00')) s = `+${s.slice(2)}`;
+    if (!s.startsWith('+')) {
+      const d = s.replace(/\D/g, '');
+      if (!d || d.length > 4) return '';
+      return `+${d}`;
+    }
+    const d = s.slice(1).replace(/\D/g, '');
+    if (!d || d.length > 4) return '';
+    return `+${d}`;
+  }
+
+  function contactDigitsOnly(value) {
+    return (value || '').replace(/\D/g, '');
+  }
+
+  function validateContactEmailStrict(email) {
+    const e = (email || '').trim();
+    if (!e || e.length > 254) return false;
+    const at = e.lastIndexOf('@');
+    if (at < 1 || at === e.length - 1) return false;
+    const local = e.slice(0, at);
+    const domain = e.slice(at + 1);
+    if (local.length > 64 || domain.length > 253) return false;
+    if (e.includes('..') || domain.startsWith('.') || domain.endsWith('.')) return false;
+    if (!domain.includes('.')) return false;
+    const labels = domain.split('.');
+    if (!labels.length) return false;
+    for (const label of labels) {
+      if (!label || label.length > 63) return false;
+      if (!/^[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?$/.test(label)) return false;
+    }
+    const tld = labels[labels.length - 1];
+    if (tld.length < 2 || !/^[a-zA-Z]+$/.test(tld)) return false;
+    if (!/^[a-zA-Z0-9](?:[a-zA-Z0-9._+-]{0,62}[a-zA-Z0-9])?$/.test(local)) return false;
+    const disposable = /^(mailinator\.com|tempmail\.com|guerrillamail\.com|10minutemail\.com|throwaway\.email)$/i;
+    if (disposable.test(domain)) return false;
+    return true;
+  }
+
+  function isAllSameDigit(digits) {
+    return digits.length >= 8 && /^(\d)\1+$/.test(digits);
+  }
+
   function guidedFormFieldsPayload(form) {
     const wrap = form.closest('[data-guided-intake]');
     if (wrap && typeof window.refreshIntakeBrief === 'function') {
@@ -65,47 +111,157 @@ forms.forEach((form) => {
   document.querySelectorAll('form.guided-intake-form').forEach((form) => {
     const note = form.querySelector('[data-form-note]');
     const emailInput = form.querySelector('input[name="email"]');
-    const whatsInput = form.querySelector('input[name="whatsapp"]');
+    const whatsCcInput = form.querySelector('input[name="whatsapp_country_code"]');
+    const whatsLocalInput = form.querySelector('input[name="whatsapp_local"]');
     const submitBtn = form.querySelector('.contact-submit-zone button[type="submit"]');
     const mainPanel = form.closest('.intake-main-panel');
     const successPanel = mainPanel && mainPanel.querySelector('[data-contact-success-panel]');
     const studio = form.closest('[data-guided-intake]');
 
     const clearReachError = () => {
-      if (note && note.dataset.contactReachError === '1') {
-        note.textContent = '';
-        delete note.dataset.contactReachError;
-        note.classList.remove('form-submit-note--error');
-      }
+      if (!note) return;
+      note.textContent = '';
+      delete note.dataset.contactReachError;
+      note.classList.remove('form-submit-note--error');
     };
 
-    [emailInput, whatsInput].forEach((el) => {
+    const showReachError = (message, focusEl) => {
+      if (note) {
+        note.textContent = message;
+        note.dataset.contactReachError = '1';
+        note.classList.add('form-submit-note--error');
+      }
+      focusEl?.focus();
+      note?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    };
+
+    [emailInput, whatsCcInput, whatsLocalInput].forEach((el) => {
       if (!el) return;
       el.addEventListener('input', clearReachError);
     });
+
+    if (whatsLocalInput) {
+      whatsLocalInput.addEventListener('input', () => {
+        const d = contactDigitsOnly(whatsLocalInput.value);
+        if (whatsLocalInput.value !== d) whatsLocalInput.value = d;
+      });
+    }
+
+    if (whatsCcInput) {
+      whatsCcInput.addEventListener('input', () => {
+        let v = whatsCcInput.value.replace(/[^\d+]/g, '');
+        const firstPlus = v.indexOf('+');
+        if (firstPlus > 0) v = v.slice(firstPlus);
+        if (firstPlus === -1 && v.length > 0) {
+          const digits = v.replace(/\D/g, '').slice(0, 4);
+          v = digits.length ? `+${digits}` : '';
+        } else if (v.startsWith('+')) {
+          v = `+${v.slice(1).replace(/\D/g, '').slice(0, 4)}`;
+        }
+        whatsCcInput.value = v;
+      });
+    }
 
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
       const isFr = (document.documentElement.lang || '').toLowerCase().startsWith('fr');
       const emailVal = (emailInput?.value || '').trim();
-      const waVal = (whatsInput?.value || '').trim();
+      const ccRaw = (whatsCcInput?.value || '').trim();
+      const localDigits = contactDigitsOnly(whatsLocalInput?.value || '');
+      const ccNorm = normalizeWhatsAppCountryCode(ccRaw);
 
-      if (!emailVal && !waVal) {
-        if (note) {
-          note.textContent = isFr
-            ? 'Indiquez au moins une adresse e-mail ou un numéro WhatsApp pour que nous puissions vous répondre.'
-            : 'Please enter either an email address or a WhatsApp number so we can reach you.';
-          note.dataset.contactReachError = '1';
-          note.classList.add('form-submit-note--error');
+      const hasEmail = emailVal.length > 0;
+      const waTouched = ccRaw.length > 0 || localDigits.length > 0;
+      const ccDigitsLen = ccNorm ? ccNorm.length - 1 : 0;
+      const waComplete =
+        Boolean(ccNorm && localDigits.length >= 5 && ccDigitsLen >= 1 && ccDigitsLen <= 4);
+      const totalDigits = ccDigitsLen + localDigits.length;
+
+      if (!hasEmail && !waComplete) {
+        if (waTouched) {
+          let focusEl = whatsCcInput;
+          if (ccNorm && localDigits.length < 5) focusEl = whatsLocalInput;
+          showReachError(
+            isFr
+              ? 'Pour WhatsApp : indiquez l’indicatif pays (ex. +250) et le numéro en chiffres uniquement.'
+              : 'For WhatsApp: enter both a country code (e.g. +250) and your number (digits only).',
+            focusEl
+          );
+        } else {
+          showReachError(
+            isFr
+              ? 'Indiquez au moins une adresse e-mail ou un numéro WhatsApp pour que nous puissions vous répondre.'
+              : 'Please enter either an email address or a WhatsApp number so we can reach you.',
+            emailInput || whatsCcInput
+          );
         }
-        (emailInput || whatsInput)?.focus();
-        note?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         return;
       }
 
-      if (emailVal && emailInput && !emailInput.checkValidity()) {
-        emailInput.reportValidity();
+      if (waTouched && !waComplete && hasEmail) {
+        showReachError(
+          isFr
+            ? 'Complétez correctement l’indicatif et le numéro WhatsApp, ou laissez ces champs vides.'
+            : 'Complete WhatsApp country code and number correctly, or leave both blank.',
+          ccRaw ? whatsLocalInput : whatsCcInput
+        );
         return;
+      }
+
+      if (waComplete) {
+        if (!ccNorm || ccDigitsLen < 1 || ccDigitsLen > 4) {
+          showReachError(
+            isFr
+              ? 'Indicatif invalide : utilisez + suivi de 1 à 4 chiffres (ex. +250).'
+              : 'Invalid country code: use + followed by 1–4 digits (e.g. +250).',
+            whatsCcInput
+          );
+          return;
+        }
+        if (localDigits.length < 5 || localDigits.length > 14) {
+          showReachError(
+            isFr
+              ? 'Le numéro WhatsApp doit contenir au moins 5 chiffres (sans l’indicatif).'
+              : 'WhatsApp number needs at least 5 digits (excluding country code).',
+            whatsLocalInput
+          );
+          return;
+        }
+        if (totalDigits < 8 || totalDigits > 15) {
+          showReachError(
+            isFr
+              ? 'Le numéro complet semble trop court ou trop long pour un format international.'
+              : 'The full number looks too short or too long for international format.',
+            whatsLocalInput
+          );
+          return;
+        }
+        const fullDigits = `${contactDigitsOnly(ccNorm)}${localDigits}`;
+        if (isAllSameDigit(fullDigits)) {
+          showReachError(
+            isFr
+              ? 'Ce numéro ne semble pas valide. Vérifiez l’indicatif et le numéro.'
+              : 'That number does not look valid. Please check country code and digits.',
+            whatsLocalInput
+          );
+          return;
+        }
+      }
+
+      if (hasEmail) {
+        if (emailInput && !emailInput.checkValidity()) {
+          emailInput.reportValidity();
+          return;
+        }
+        if (!validateContactEmailStrict(emailVal)) {
+          showReachError(
+            isFr
+              ? 'Adresse e-mail invalide. Vérifiez le format (ex. vous@entreprise.com).'
+              : 'Please enter a valid email address (e.g. you@company.com).',
+            emailInput
+          );
+          return;
+        }
       }
 
       clearReachError();
@@ -128,6 +284,12 @@ forms.forEach((form) => {
       }
 
       const fields = guidedFormFieldsPayload(form);
+      delete fields.whatsapp_country_code;
+      delete fields.whatsapp_local;
+      if (waComplete && ccNorm) {
+        fields.whatsapp = `${ccNorm}${localDigits}`;
+      }
+
       const firstName = (fields.first_name || '').trim();
       const payload = {
         access_key: accessKey,

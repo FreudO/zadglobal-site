@@ -1518,6 +1518,18 @@ section.contact-intake-section[data-reveal].visible {
 .contact-basics-full-row {
   grid-column: 1 / -1;
 }
+.contact-whatsapp-row {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(0, 140px) minmax(0, 1fr);
+  gap: 14px;
+  align-items: end;
+}
+@media (max-width: 520px) {
+  .contact-whatsapp-row {
+    grid-template-columns: 1fr;
+  }
+}
 .deep-intake-panels { margin-top:0; }
 .deep-intake-panels .contact-fieldset { border-radius:28px; padding:24px; background:#fff; border:1px solid rgba(6,63,149,.12); box-shadow:0 14px 38px rgba(6,16,31,.04); }
 .deep-intake-panels legend { padding:0 10px; font-weight:950; color:#06101f; letter-spacing:-.03em; font-size:1.2rem; }
