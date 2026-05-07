@@ -403,15 +403,22 @@ section { padding: 90px 0; }
 .footer {
   background:#03070d;
   color:#fff;
-  padding: 58px 0 34px;
+  padding: 34px 0 18px;
 }
-.footer-grid { display:grid; grid-template-columns: 1.3fr repeat(3, 1fr); gap: 28px; }
+.footer-grid { display:grid; grid-template-columns: 1.35fr 1fr; gap: 20px; }
 .footer a, .footer p { color: rgba(255,255,255,.72); }
 .footer h4 { margin:0 0 12px; letter-spacing:-.02em; }
 .footer-links { display:grid; gap:9px; }
 .newsletter { display:flex; gap:8px; margin-top:14px; }
 .newsletter input { min-width:0; background:rgba(255,255,255,.07); color:#fff; border-color:rgba(255,255,255,.14); }
-.footer-bottom { border-top:1px solid rgba(255,255,255,.12); margin-top:36px; padding-top:22px; display:flex; justify-content:space-between; gap:18px; color:rgba(255,255,255,.6); font-size:.92rem; }
+.footer-bottom { border-top:1px solid rgba(255,255,255,.12); margin-top:18px; padding-top:12px; display:flex; justify-content:space-between; gap:12px; color:rgba(255,255,255,.6); font-size:.84rem; }
+
+/* Global compact footer cleanup: remove repeated sections and signup form */
+.footer .newsletter { display: none !important; }
+.footer .footer-grid > div:nth-child(3),
+.footer .footer-grid > div:nth-child(4) { display: none; }
+.footer .footer-grid > div:first-child p { margin: 8px 0 0; font-size: .92rem; line-height: 1.45; max-width: 460px; }
+.footer .footer-links { gap: 6px; }
 
 /* Utility */
 .mt-24 { margin-top:24px; } .mt-36{margin-top:36px;} .mt-48{margin-top:48px;}
@@ -451,7 +458,8 @@ section { padding: 90px 0; }
   .stat { border-right:0; border-bottom:1px solid var(--line); }
   .stat:last-child { border-bottom:0; }
   .partner-row { grid-template-columns: 1fr; }
-  .footer-bottom { flex-direction: column; }
+  .footer-grid { grid-template-columns: 1fr; gap: 14px; }
+  .footer-bottom { flex-direction: column; gap: 6px; }
   section { padding: 68px 0; }
 }
 
