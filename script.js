@@ -36,7 +36,7 @@ forms.forEach((form) => {
     if (note) {
       const isFr = (document.documentElement.lang || '').toLowerCase().startsWith('fr');
       note.textContent = isFr
-        ? 'Merci — votre demande a bien ete recue. Notre equipe vous contactera rapidement.'
+        ? 'Merci — demande reçue. Nous recontactons vite.'
         : 'Thank you - your request has been received. Our team will contact you shortly.';
     }
   });
@@ -183,14 +183,14 @@ forms.forEach((form) => {
           if (ccNorm && localDigits.length < 5) focusEl = whatsLocalInput;
           showReachError(
             isFr
-              ? 'Pour WhatsApp : indiquez l’indicatif pays (ex. +250) et le numéro en chiffres uniquement.'
+              ? 'WhatsApp : indicatif (ex. +250) + numéro en chiffres.'
               : 'For WhatsApp: enter both a country code (e.g. +250) and your number (digits only).',
             focusEl
           );
         } else {
           showReachError(
             isFr
-              ? 'Indiquez au moins une adresse e-mail ou un numéro WhatsApp pour que nous puissions vous répondre.'
+              ? 'Ajoutez un e-mail ou un WhatsApp valide pour qu’on puisse répondre.'
               : 'Please enter either an email address or a WhatsApp number so we can reach you.',
             emailInput || whatsCcInput
           );
@@ -201,7 +201,7 @@ forms.forEach((form) => {
       if (waTouched && !waComplete && hasEmail) {
         showReachError(
           isFr
-            ? 'Complétez correctement l’indicatif et le numéro WhatsApp, ou laissez ces champs vides.'
+            ? 'Complétez WhatsApp ou videz les deux champs.'
             : 'Complete WhatsApp country code and number correctly, or leave both blank.',
           ccRaw ? whatsLocalInput : whatsCcInput
         );
@@ -212,7 +212,7 @@ forms.forEach((form) => {
         if (!ccNorm || ccDigitsLen < 1 || ccDigitsLen > 4) {
           showReachError(
             isFr
-              ? 'Indicatif invalide : utilisez + suivi de 1 à 4 chiffres (ex. +250).'
+              ? 'Indicatif invalide (+ et 1–4 chiffres, ex. +250).'
               : 'Invalid country code: use + followed by 1–4 digits (e.g. +250).',
             whatsCcInput
           );
@@ -221,7 +221,7 @@ forms.forEach((form) => {
         if (localDigits.length < 5 || localDigits.length > 14) {
           showReachError(
             isFr
-              ? 'Le numéro WhatsApp doit contenir au moins 5 chiffres (sans l’indicatif).'
+              ? 'Le numéro local doit avoir au moins 5 chiffres.'
               : 'WhatsApp number needs at least 5 digits (excluding country code).',
             whatsLocalInput
           );
@@ -230,7 +230,7 @@ forms.forEach((form) => {
         if (totalDigits < 8 || totalDigits > 15) {
           showReachError(
             isFr
-              ? 'Le numéro complet semble trop court ou trop long pour un format international.'
+              ? 'Numéro international trop court ou trop long.'
               : 'The full number looks too short or too long for international format.',
             whatsLocalInput
           );
@@ -240,7 +240,7 @@ forms.forEach((form) => {
         if (isAllSameDigit(fullDigits)) {
           showReachError(
             isFr
-              ? 'Ce numéro ne semble pas valide. Vérifiez l’indicatif et le numéro.'
+              ? 'Numéro peu crédible — vérifiez indicatif et chiffres.'
               : 'That number does not look valid. Please check country code and digits.',
             whatsLocalInput
           );
@@ -256,7 +256,7 @@ forms.forEach((form) => {
         if (!validateContactEmailStrict(emailVal)) {
           showReachError(
             isFr
-              ? 'Adresse e-mail invalide. Vérifiez le format (ex. vous@entreprise.com).'
+              ? 'E-mail invalide (ex. vous@entreprise.com).'
               : 'Please enter a valid email address (e.g. you@company.com).',
             emailInput
           );
@@ -270,7 +270,7 @@ forms.forEach((form) => {
       if (!accessKey) {
         if (note) {
           note.textContent = isFr
-            ? 'Formulaire non configuré : ajoutez votre clé Web3Forms dans script.js (WEB3FORMS_ACCESS_KEY).'
+            ? 'Clé Web3Forms manquante : WEB3FORMS_ACCESS_KEY dans script.js.'
             : 'Form not configured yet: add your Web3Forms access key in script.js (WEB3FORMS_ACCESS_KEY).';
           note.classList.add('form-submit-note--error');
         }
@@ -293,7 +293,7 @@ forms.forEach((form) => {
       const firstName = (fields.first_name || '').trim();
       const payload = {
         access_key: accessKey,
-        subject: isFr ? 'ZAD — Nouveau brief projet (formulaire)' : 'ZAD — New project brief (contact form)',
+        subject: isFr ? 'ZAD — Brief projet' : 'ZAD — New project brief (contact form)',
         from_name: firstName ? `${firstName} (ZAD contact)` : 'ZAD contact form',
         ...fields
       };
@@ -319,7 +319,7 @@ forms.forEach((form) => {
           const msg = typeof data.message === 'string' ? data.message : '';
           if (note) {
             note.textContent = msg || (isFr
-              ? 'L’envoi a échoué. Réessayez dans un instant ou écrivez à info@zadglobal.org.'
+              ? 'Échec d’envoi. Réessayez ou écrivez à info@zadglobal.org.'
               : 'Something went wrong sending your request. Try again shortly or email info@zadglobal.org.');
             note.classList.add('form-submit-note--error');
           }
@@ -338,13 +338,13 @@ forms.forEach((form) => {
           });
         } else if (note) {
           note.textContent = isFr
-            ? 'Merci — votre demande a bien été reçue. Notre équipe vous contactera rapidement.'
+            ? 'Merci — demande reçue. À très vite.'
             : 'Thank you — your request has been received. Our team will contact you shortly.';
         }
       } catch (_) {
         if (note) {
           note.textContent = isFr
-            ? 'Impossible d’atteindre le serveur. Vérifiez la connexion ou écrivez à info@zadglobal.org.'
+            ? 'Serveur injoignable. Réessayez ou écrivez à info@zadglobal.org.'
             : 'We could not reach the server. Check your connection or email info@zadglobal.org.';
           note.classList.add('form-submit-note--error');
         }
@@ -547,7 +547,7 @@ function refreshIntakeBrief(wrap) {
     if (checked.length) {
       focus.innerHTML = checked.map((item) => `<span class="brief-selected-chip">${item}</span>`).join('');
     } else {
-      focus.textContent = document.documentElement.lang === 'fr' ? 'Aucune priorité sélectionnée. Choisissez tous les besoins pertinents.' : 'No focus selected yet. Choose all priorities that apply.';
+      focus.textContent = document.documentElement.lang === 'fr' ? 'Rien de coché dans cet onglet.' : 'No focus selected yet. Choose all priorities that apply.';
     }
   }
   if (evidence) evidence.textContent = evidenceByLane[target] || evidenceByLane.general;
@@ -574,27 +574,27 @@ wireTabs('[data-case-workspace]', 'data-case-tab', 'data-workspace-panel');
   const evidence = {
     ai: {
       en: ['Sample documents, emails, WhatsApp messages, or forms.', 'Current tools and handoffs: CRM, Excel, ERP, inbox, approvals.', 'Monthly volume, repeated questions, and where the work gets delayed.'],
-      fr: ['Exemples de documents, emails, WhatsApp ou formulaires.', 'Outils et passages de main actuels : CRM, Excel, ERP, inbox, validations.', 'Volume mensuel, questions répétitives et points de blocage.']
+      fr: ['Documents, emails, WhatsApp ou formulaires.', 'Outils : CRM, Excel, ERP, validations…', 'Volume mensuel et points de blocage.']
     },
     software: {
       en: ['Current systems, links, exports, screenshots, or workflow examples.', 'User roles, permissions, integrations, reports, and must-have actions.', 'Timeline, launch constraints, and what the current tools cannot do.'],
-      fr: ['Systèmes actuels, liens, exports, captures ou exemples de workflow.', 'Rôles, permissions, intégrations, rapports et actions indispensables.', 'Délai, contraintes de lancement et limites des outils actuels.']
+      fr: ['Exports, captures, exemples de flux.', 'Rôles, permissions, intégrations, délais.', 'Ce que les outils actuels ne font pas.']
     },
     training: {
       en: ['Existing SOPs, manuals, videos, slides, or onboarding documents.', 'Roles to train, number of learners, common mistakes, and target behavior.', 'Whether training should be live, online, hybrid, or supported by an AI coach.'],
-      fr: ['SOP, manuels, vidéos, slides ou documents d’onboarding existants.', 'Rôles à former, nombre de personnes, erreurs fréquentes et comportements attendus.', 'Format souhaité : présentiel, en ligne, hybride ou coach IA interne.']
+      fr: ['Supports existants (modes opératoires, vidéos…)', 'Rôles, volume d’apprenants, erreurs fréquentes.', 'Format : présentiel, distanciel ou hybride.']
     },
     robotics: {
       en: ['Site type, photos, inspection routines, safety constraints, and connectivity limits.', 'Existing hardware: drones, sensors, cameras, robots, vehicles, or none yet.', 'The field decision management needs to make from the data.'],
-      fr: ['Type de site, photos, routines d’inspection, contraintes sécurité et connectivité.', 'Matériel existant : drones, capteurs, caméras, robots, véhicules ou rien encore.', 'La décision terrain que la direction veut mieux prendre avec les données.']
+      fr: ['Photos, routine d’inspection, contraintes terrain.', 'Matériel : drones, capteurs, caméras…', 'Décision terrain à mieux piloter.']
     },
     finance: {
       en: ['Clarify whether this is company operational finance or personal wealth coordination.', 'Budgets, account types, cost centers, staff allocation, or planning timeline.', 'Decision makers involved and any compliance or suitability constraints.'],
-      fr: ['Préciser s’il s’agit de finance opérationnelle entreprise ou de patrimoine personnel.', 'Budgets, types de comptes, centres de coûts, effectifs ou calendrier de décision.', 'Décideurs impliqués et contraintes de conformité ou d’adéquation.']
+      fr: ['Préciser entreprise ou patrimoine personnel.', 'Budgets, comptes concernés, calendrier.', 'Décideurs et contraintes réglementaires.']
     },
     general: {
       en: ['Countries involved, stakeholders, partner expectations, and desired outcome.', 'Any existing documents, supplier context, quality requirements, or deadlines.', 'What would make the first conversation useful.'],
-      fr: ['Pays concernés, parties prenantes, attentes partenaires et résultat recherché.', 'Documents existants, contexte fournisseur, exigences qualité ou délais.', 'Ce qui rendrait le premier échange utile.']
+      fr: ['Pays, parties prenantes, résultat attendu.', 'Documents existants, délais, exigences qualité.', 'Ce qui rendrait le premier contact utile.']
     }
   };
   function isFr() { return (document.documentElement.lang || '').toLowerCase().startsWith('fr'); }
@@ -645,14 +645,14 @@ wireTabs('[data-case-workspace]', 'data-case-tab', 'data-workspace-panel');
 
     if (laneHeading) {
       laneHeading.textContent = count
-        ? (lang === 'fr' ? `${count} priorité${count > 1 ? 's' : ''} sélectionnée${count > 1 ? 's' : ''}` : `${count} selected priorit${count === 1 ? 'y' : 'ies'}`)
+        ? (lang === 'fr' ? `${count} sélection${count > 1 ? 's' : ''}` : `${count} selected priorit${count === 1 ? 'y' : 'ies'}`)
         : (lang === 'fr' ? 'Portée combinée' : 'Combined scope');
     }
 
     if (focus) {
       if (!count) {
         focus.textContent = lang === 'fr'
-          ? 'Aucune sélection. Sélectionnez tous les services pertinents, même dans plusieurs onglets.'
+          ? 'Aucune sélection — cochez les besoins (plusieurs onglets possibles).'
           : 'No selections yet. Select all relevant services, even across multiple tabs.';
       } else {
         focus.innerHTML = Object.entries(selections).map(([lane, items]) => {
@@ -663,14 +663,14 @@ wireTabs('[data-case-workspace]', 'data-case-tab', 'data-workspace-panel');
     }
 
     if (engagement) {
-      if (!count) engagement.textContent = lang === 'fr' ? 'Diagnostic simple. Ajoutez les priorités qui s’appliquent.' : 'Single-lane diagnostic. Add the priorities that apply.';
-      else if (laneCount === 1) engagement.textContent = lang === 'fr' ? 'Mission ciblée dans un domaine, avec contexte déjà structuré.' : 'Focused single-lane engagement with structured context.';
-      else engagement.textContent = lang === 'fr' ? `Mission combinée sur ${laneCount} domaines. ZAD pourra préparer une feuille de route intégrée.` : `Combined engagement across ${laneCount} lanes. ZAD can prepare an integrated roadmap.`;
+      if (!count) engagement.textContent = lang === 'fr' ? 'Ajoutez les priorités qui comptent.' : 'Single-lane diagnostic. Add the priorities that apply.';
+      else if (laneCount === 1) engagement.textContent = lang === 'fr' ? 'Mission ciblée sur un domaine.' : 'Focused single-lane engagement with structured context.';
+      else engagement.textContent = lang === 'fr' ? `Mission multi-domaines (${laneCount}). Feuille de route intégrée possible.` : `Combined engagement across ${laneCount} lanes. ZAD can prepare an integrated roadmap.`;
     }
 
     if (outcome) {
       outcome.textContent = lang === 'fr'
-        ? 'Cette synthèse nous aide à orienter le premier échange, identifier les dépendances entre équipes, et éviter les questions de clarification répétitives.'
+        ? 'Aide à cadrer le premier échange et les dépendances entre équipes.'
         : 'This summary helps us route the first conversation, identify dependencies across teams, and avoid repeated clarification emails.';
     }
 
@@ -956,7 +956,7 @@ window.addEventListener('hashchange', applyContactIntakeHash);
       return;
     }
     const title = (btn.querySelector('span') && btn.querySelector('span').textContent.trim()) || btn.textContent.trim();
-    status.textContent = isFr ? `Vous éditez : ${title}` : `You're editing: ${title}`;
+      status.textContent = isFr ? `Onglet : ${title}` : `You're editing: ${title}`;
   }
 
   function initMobileContactPowerUX() {
@@ -1094,8 +1094,8 @@ window.addEventListener('hashchange', applyContactIntakeHash);
       const hint = sheetToggle.querySelector('.contact-brief-sheet-hint');
       if (hint) {
         hint.textContent = open
-          ? (isFr ? 'Toucher pour réduire' : 'Tap to collapse')
-          : (isFr ? 'Toucher pour agrandir' : 'Tap to expand');
+          ? (isFr ? 'Fermer' : 'Tap to collapse')
+          : (isFr ? 'Ouvrir' : 'Tap to expand');
       }
     };
     if (sheetToggle) sheetToggle.addEventListener('click', onBriefToggle);
@@ -1109,15 +1109,15 @@ window.addEventListener('hashchange', applyContactIntakeHash);
       btn.type = 'button';
       btn.className = 'contact-lane-more-btn';
       btn.setAttribute('data-contact-injected', 'lane-more');
-      btn.textContent = isFr ? 'Plus de champs (optionnel)' : 'More fields (optional)';
+      btn.textContent = isFr ? 'Autres champs' : 'More fields (optional)';
       btn.setAttribute('aria-expanded', 'false');
       grid.parentNode.insertBefore(btn, grid);
       btn.addEventListener('click', () => {
         const ex = grid.classList.toggle('is-expanded');
         btn.setAttribute('aria-expanded', ex ? 'true' : 'false');
         btn.textContent = ex
-          ? (isFr ? 'Masquer les champs optionnels' : 'Hide optional fields')
-          : (isFr ? 'Plus de champs (optionnel)' : 'More fields (optional)');
+          ? (isFr ? 'Masquer' : 'Hide optional fields')
+          : (isFr ? 'Autres champs' : 'More fields (optional)');
       });
     });
 
