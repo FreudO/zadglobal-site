@@ -538,34 +538,60 @@ document.querySelectorAll('[data-mobile-solution-flow]').forEach((wrap) => {
   });
 });
 
-// v26: contact deep-link hash selects the matching intake lane.
-(function () {
-  const applyIntakeHash = () => {
-    const target = (window.location.hash || '').replace('#', '');
-    if (!target) return;
-    document.querySelectorAll('[data-guided-intake]').forEach((wrap) => {
-      const button = wrap.querySelector(`[data-intake-target="${target}"]`);
-      if (!button) return;
-      button.click();
-      const section = document.querySelector('.contact-intake-section');
-      if (section) setTimeout(() => section.scrollIntoView({ behavior: 'auto', block: 'start' }), 40);
-    });
-  };
-  applyIntakeHash();
-  window.addEventListener('hashchange', applyIntakeHash);
-})();
+// v24 + v26: mobile contact mode + hash deep-links. On phone, lane tabs and panels live inside
+// .mobile-advanced-section, which is hidden until .mobile-advanced-open — open that first, then select the lane.
+function setGuidedIntakeMobileOpen(wrap, open) {
+  const toggle = wrap.querySelector('[data-mobile-advanced-toggle]');
+  if (!isMobileDeviceMode() || !toggle) return;
+  wrap.classList.toggle('mobile-advanced-open', open);
+  toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  const isFr = (document.documentElement.lang || '').toLowerCase().startsWith('fr');
+  const closeLbl = toggle.dataset.labelClose || (isFr ? 'Masquer les details' : 'Hide detailed scope');
+  const openLbl = toggle.dataset.labelOpen || (isFr ? 'Ajouter des details (optionnel)' : 'Add detailed scope (optional)');
+  toggle.textContent = open ? closeLbl : openLbl;
+}
 
-// v24: mobile contact mode. Keep core fields visible and let users expand advanced scope only when needed.
+function applyContactIntakeHash() {
+  const target = (window.location.hash || '').replace('#', '');
+  document.querySelectorAll('[data-guided-intake]').forEach((wrap) => {
+    const laneButton = target ? wrap.querySelector(`[data-intake-target="${target}"]`) : null;
+
+    if (!laneButton) {
+      setGuidedIntakeMobileOpen(wrap, false);
+      return;
+    }
+
+    const activate = () => {
+      laneButton.click();
+      if (typeof window.refreshIntakeBrief === 'function') {
+        window.refreshIntakeBrief(wrap);
+      }
+    };
+
+    if (isMobileDeviceMode()) {
+      setGuidedIntakeMobileOpen(wrap, true);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(activate);
+      });
+    } else {
+      activate();
+    }
+
+    const section = document.querySelector('.contact-intake-section');
+    if (section) {
+      setTimeout(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+    }
+  });
+}
+
 document.querySelectorAll('[data-guided-intake]').forEach((wrap) => {
   const toggle = wrap.querySelector('[data-mobile-advanced-toggle]');
-  if (!toggle) return;
-  if (!isMobileDeviceMode()) return;
-  const setState = (open) => {
-    wrap.classList.toggle('mobile-advanced-open', open);
-    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-    const label = open ? (toggle.dataset.labelClose || 'Hide detailed scope') : (toggle.dataset.labelOpen || 'Add detailed scope (optional)');
-    toggle.textContent = label;
-  };
-  setState(false);
-  toggle.addEventListener('click', () => setState(!wrap.classList.contains('mobile-advanced-open')));
+  if (!toggle || !isMobileDeviceMode()) return;
+  toggle.addEventListener('click', () => {
+    const open = !wrap.classList.contains('mobile-advanced-open');
+    setGuidedIntakeMobileOpen(wrap, open);
+  });
 });
+
+applyContactIntakeHash();
+window.addEventListener('hashchange', applyContactIntakeHash);
