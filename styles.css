@@ -1800,6 +1800,21 @@ section.contact-intake-section[data-reveal].visible {
   box-shadow: 0 15px 45px rgba(11,91,211,.25);
 }
 .case-world-tabs button.active span { background:#fff; color:var(--blue); }
+.case-world-tab-lede {
+  display: none;
+  margin: 0;
+  padding: 0 16px 14px;
+  background: linear-gradient(135deg,#03070e,#071a39);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.case-world-tab-lede p {
+  display: none;
+  margin: 0;
+  color: rgba(255,255,255,.62);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+.case-world-tab-lede p.active { display: block; }
 .case-world-panel { display:none; padding: 28px; }
 .case-world-panel.active { display:block; animation: panelIn .32s ease both; }
 .world-panel-hero {
@@ -2073,7 +2088,6 @@ section.contact-intake-section[data-reveal].visible {
   .software-screen { min-height:auto; }
 }
 @media (max-width: 720px) {
-  .case-world-tabs { grid-template-columns:1fr; }
   .case-world-panel { padding: 16px; }
   .world-panel-hero, .workspace-copy, .mini-panel { padding: 20px; }
   .screen-topline.clean { display:block; }
@@ -2429,10 +2443,6 @@ section.contact-intake-section[data-reveal].visible {
     grid-template-columns: 1fr;
   }
 
-  .case-world-tabs {
-    grid-template-columns: 1fr;
-  }
-
   .intake-tabs-v14,
   .contact-basics-v14,
   .multi-chip-grid-v14,
@@ -2504,18 +2514,8 @@ section.contact-intake-section[data-reveal].visible {
     padding: 12px;
   }
 
-  .teaser-table,
-  .case-flow-diagram {
+  .teaser-table {
     grid-template-columns: 1fr;
-  }
-
-  .case-flow-diagram i {
-    width: auto;
-    height: 16px;
-  }
-
-  .case-flow-diagram i:before {
-    content: "↓";
   }
 
   .manager-cockpit-table,
@@ -2528,6 +2528,180 @@ section.contact-intake-section[data-reveal].visible {
 
   .footer-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Cases page: compact tabs (A), horizontal demo chips (B), flow timeline (E), table cards (F) */
+@media (max-width: 720px) {
+  .case-world-tab-lede {
+    display: block;
+  }
+
+  .case-world-tabs {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    padding: 12px 12px 8px;
+  }
+
+  .case-world-tabs button {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    justify-items: center;
+    text-align: center;
+    padding: 10px 6px;
+    row-gap: 6px;
+    column-gap: 0;
+  }
+
+  .case-world-tabs button span {
+    grid-row: 1;
+    width: 34px;
+    height: 34px;
+    border-radius: 12px;
+  }
+
+  .case-world-tabs button span svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .case-world-tabs button strong {
+    font-size: 0.72rem;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .case-world-tabs button small {
+    display: none;
+  }
+
+  .workspace-showcase .mini-selector {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 8px;
+    margin-top: 16px;
+    padding: 4px 2px 12px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+    scrollbar-width: thin;
+    overscroll-behavior-x: contain;
+  }
+
+  .workspace-showcase .mini-selector button {
+    flex: 0 0 auto;
+    width: auto;
+    min-width: max-content;
+    padding: 10px 14px;
+    white-space: nowrap;
+    scroll-snap-align: start;
+    font-size: 0.86rem;
+  }
+
+  .case-flow-diagram {
+    display: block;
+    margin: 18px 0;
+    padding-left: 0;
+    counter-reset: flow-step;
+  }
+
+  .case-flow-diagram > i {
+    display: none;
+  }
+
+  .case-flow-diagram > div {
+    position: relative;
+    margin: 0 0 14px 36px;
+    padding-left: 4px;
+  }
+
+  .case-flow-diagram > div:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: -23px;
+    top: 2.65rem;
+    bottom: -10px;
+    width: 2px;
+    background: rgba(11, 91, 211, 0.2);
+  }
+
+  .case-flow-diagram > div:last-child {
+    margin-bottom: 0;
+  }
+
+  .case-flow-diagram > div::before {
+    counter-increment: flow-step;
+    content: counter(flow-step);
+    position: absolute;
+    left: -36px;
+    top: 1.15rem;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--blue);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 950;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 4px 14px rgba(11, 91, 211, 0.35);
+    z-index: 1;
+  }
+
+  [data-case-world] table.cockpit-table.refined-table {
+    display: block;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: visible;
+    box-shadow: none;
+  }
+
+  [data-case-world] table.cockpit-table.refined-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  [data-case-world] table.cockpit-table.refined-table tbody {
+    display: block;
+  }
+
+  [data-case-world] table.cockpit-table.refined-table tbody tr {
+    display: block;
+    margin-bottom: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 16px;
+    padding: 12px 14px;
+    background: rgba(255, 255, 255, 0.07);
+  }
+
+  [data-case-world] table.cockpit-table.refined-table tbody tr:last-child {
+    margin-bottom: 0;
+  }
+
+  [data-case-world] table.cockpit-table.refined-table td {
+    display: block;
+    padding: 8px 0;
+    border: none;
+    text-align: left;
+  }
+
+  [data-case-world] table.cockpit-table.refined-table td:not([data-label]):before {
+    display: none;
+  }
+}
+
+@media (max-width: 720px) and (prefers-reduced-motion: reduce) {
+  .workspace-showcase .mini-selector {
+    scroll-snap-type: none;
   }
 }
 

@@ -373,18 +373,40 @@ wireTabs('[data-case-workspace]', 'data-case-tab', 'data-workspace-panel');
 
 // v15 case worlds and nested case demos
 (function(){
+  function syncCaseWorldTabLede(worldRoot, targetTab) {
+    if (!worldRoot || !targetTab) return;
+    worldRoot.querySelectorAll('[data-world-tab-lede]').forEach((el) => {
+      el.classList.toggle('active', el.getAttribute('data-world-tab-lede') === targetTab);
+    });
+  }
+  function hydrateCaseWorldTables() {
+    document.querySelectorAll('[data-case-world] table.cockpit-table').forEach((table) => {
+      const ths = [...table.querySelectorAll('thead th')].map((th) => th.textContent.trim());
+      table.querySelectorAll('tbody tr').forEach((tr) => {
+        tr.querySelectorAll('td').forEach((td, i) => {
+          if (ths[i]) td.setAttribute('data-label', ths[i]);
+        });
+      });
+    });
+  }
+  hydrateCaseWorldTables();
+
   const world = document.querySelector('[data-case-world]');
   if (world) {
     const buttons = [...world.querySelectorAll('[data-world-tab]')];
     const panels = [...world.querySelectorAll('[data-world-panel]')];
+    const initial = buttons.find((b) => b.classList.contains('active'))?.getAttribute('data-world-tab');
+    if (initial) syncCaseWorldTabLede(world, initial);
     buttons.forEach((btn) => {
       btn.addEventListener('click', () => {
         const target = btn.getAttribute('data-world-tab');
         buttons.forEach((b) => b.classList.toggle('active', b === btn));
         panels.forEach((p) => p.classList.toggle('active', p.getAttribute('data-world-panel') === target));
+        syncCaseWorldTabLede(world, target);
       });
     });
   }
+  window.syncCaseWorldTabLede = syncCaseWorldTabLede;
   document.querySelectorAll('[data-mini-case]').forEach((wrap) => {
     const scope = wrap.closest('.workspace-showcase');
     if (!scope) return;
@@ -457,6 +479,7 @@ wireTabs('[data-case-workspace]', 'data-case-tab', 'data-workspace-panel');
       if (!btn || !panel) return false;
       world.querySelectorAll('[data-world-tab]').forEach((b) => b.classList.toggle('active', b === btn));
       world.querySelectorAll('[data-world-panel]').forEach((p) => p.classList.toggle('active', p === panel));
+      if (typeof window.syncCaseWorldTabLede === 'function') window.syncCaseWorldTabLede(world, target);
       return true;
     };
     const applyHash = () => {
