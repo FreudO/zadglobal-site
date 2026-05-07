@@ -1102,6 +1102,16 @@ section { padding: 90px 0; }
 /* v9 interactive upgrades */
 [data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity .75s ease, transform .75s ease; }
 [data-reveal].visible { opacity: 1; transform: translateY(0); }
+/* Contact intake: no transform on reveal — transform creates a containing block and breaks position:fixed (brief sheet) and sticky submit on mobile. */
+section.contact-intake-section[data-reveal] {
+  opacity: 0;
+  transform: none;
+  transition: opacity .75s ease;
+}
+section.contact-intake-section[data-reveal].visible {
+  opacity: 1;
+  transform: none;
+}
 .compact-head { align-items: end; }
 .need-selector-section { padding-top: 76px; padding-bottom: 76px; }
 .need-lab, .case-switcher, .roi-calculator, .enhanced-service-pane, .guided-contact-card {
@@ -2732,6 +2742,25 @@ section { padding: 90px 0; }
 }
 
 /* Contact mobile “power UX”: stepper, lane scroller, brief sheet, sticky submit (real phones only via body.is-mobile-device) */
+body.is-mobile-device .contact-workspace-v14 .intake-studio,
+body.is-mobile-device .contact-workspace-v14 .intake-main-panel,
+body.is-mobile-device .contact-workspace-v14 .guided-intake-form.contact-form-mobile-flow,
+body.is-mobile-device .contact-workspace-v14 .deep-intake-panels,
+body.is-mobile-device .contact-workspace-v14 .contact-basics,
+body.is-mobile-device .contact-workspace-v14 .contact-form-tail {
+  min-width: 0;
+  max-width: 100%;
+}
+body.is-mobile-device .contact-workspace-v14 .intake-main-panel {
+  overflow-x: clip;
+}
+body.is-mobile-device .contact-workspace-v14 fieldset.intake-panel {
+  min-width: 0;
+}
+body.is-mobile-device .contact-workspace-v14 .multi-chip-grid .choice-chip {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
 .contact-mobile-form-header {
   display: none;
 }
@@ -2815,6 +2844,11 @@ body.is-mobile-device .contact-workspace-v14 .intake-tabs-v14.intake-choice-grid
   -webkit-overflow-scrolling: touch;
   scroll-snap-type: x mandatory;
   scrollbar-width: thin;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overscroll-behavior-x: contain;
 }
 body.is-mobile-device .contact-workspace-v14 .intake-tabs-v14.intake-choice-grid::-webkit-scrollbar {
   height: 4px;
@@ -2828,8 +2862,10 @@ body.is-mobile-device .contact-workspace-v14 .contact-submit-zone {
   position: sticky;
   bottom: calc(58px + env(safe-area-inset-bottom, 0px));
   z-index: 30;
-  margin: 0 -6px;
+  margin: 0;
   padding: 14px 10px calc(14px + env(safe-area-inset-bottom, 0px));
+  max-width: 100%;
+  box-sizing: border-box;
   background: linear-gradient(180deg, rgba(248, 251, 255, 0), #f8fbff 28%);
   border-top: 1px solid rgba(6, 63, 149, 0.1);
   border-radius: 18px 18px 0 0;
@@ -2844,7 +2880,7 @@ body.is-mobile-device .contact-workspace-v14 .contact-submit-reassurance {
   line-height: 1.45;
   text-align: center;
 }
-body.is-mobile-device .contact-workspace-v14 .contact-intake-section .intake-studio {
+body.is-mobile-device section.contact-workspace-v14 .intake-studio {
   padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
 }
 body.is-mobile-device .contact-workspace-v14 .intake-brief-panel {
@@ -2852,6 +2888,9 @@ body.is-mobile-device .contact-workspace-v14 .intake-brief-panel {
   left: 0;
   right: 0;
   bottom: 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   z-index: 50;
   margin: 0;
   padding: 0;
