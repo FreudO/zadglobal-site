@@ -2144,40 +2144,48 @@ section.contact-intake-section[data-reveal].visible {
 }
 
 
-/* v19: contact attachments and map click refinements */
+/* v19: contact attachments and map click refinements (contact pages only — keep scale aligned with form fields) */
 .attachment-box {
-  margin-top: 16px;
-  padding: 16px;
-  border: 1px dashed rgba(6,63,149,.28);
-  border-radius: 18px;
-  background: linear-gradient(135deg, rgba(11,91,211,.05), rgba(122,174,252,.08));
-}
-.attachment-box label { display:block; margin-bottom:10px; }
-.attachment-box input[type="file"] {
-  width:100%;
-  padding: 12px;
-  border: 1px solid rgba(6,63,149,.16);
+  margin-top: 12px;
+  padding: 11px 12px;
+  border: 1px dashed rgba(6,63,149,.22);
   border-radius: 14px;
-  background:#fff;
-  color:#405371;
-  font-weight:800;
+  background: linear-gradient(135deg, rgba(11,91,211,.035), rgba(122,174,252,.06));
+}
+.attachment-box > label:first-of-type {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.88rem;
+  font-weight: 850;
+  color: #30415c;
+}
+.attachment-box input[type="file"] {
+  width: 100%;
+  padding: 10px 11px;
+  border: 1px solid rgba(6,63,149,.14);
+  border-radius: 12px;
+  background: #fff;
+  color: #405371;
+  font-weight: 800;
+  font-size: 0.9rem;
 }
 .attachment-box input[type="file"]::file-selector-button {
-  border:0;
+  border: 0;
   border-radius: 999px;
   background: var(--blue);
   color: #fff;
-  padding: 9px 13px;
-  margin-right: 12px;
-  font-weight: 950;
-  cursor:pointer;
+  padding: 7px 12px;
+  margin-right: 10px;
+  font-weight: 900;
+  font-size: 0.82rem;
+  cursor: pointer;
 }
 
 /* v20: localized custom file upload + more uniform service path cards */
 .file-upload-control {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 .native-file-input {
@@ -2199,24 +2207,33 @@ section.contact-intake-section[data-reveal].visible {
   border-radius: 999px;
   background: var(--blue);
   color: #fff;
-  padding: 11px 16px;
-  font-weight: 950;
+  padding: 8px 13px;
+  font-weight: 900;
+  font-size: 0.84rem;
   cursor: pointer;
-  box-shadow: 0 12px 28px rgba(6,63,149,.18);
+  box-shadow: 0 8px 18px rgba(6,63,149,.14);
 }
 .file-upload-button:hover { background: var(--blue-2); }
 .file-upload-status {
-  flex: 1 1 220px;
+  flex: 1 1 180px;
   min-width: 0;
   color: #405371;
-  font-weight: 850;
-  padding: 11px 14px;
-  border-radius: 14px;
+  font-weight: 800;
+  font-size: 0.86rem;
+  padding: 8px 11px;
+  border-radius: 12px;
   background: #fff;
-  border: 1px solid rgba(6,63,149,.16);
+  border: 1px solid rgba(6,63,149,.14);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.attachment-box .field-note {
+  margin-top: 8px !important;
+  padding: 8px 10px;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  border-radius: 12px;
 }
 .service-path-grid { align-items: stretch; }
 .path-card { min-height: 330px; }
