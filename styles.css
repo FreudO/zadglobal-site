@@ -2683,3 +2683,114 @@ section { padding: 90px 0; }
     display: block !important;
   }
 }
+
+@media (max-width: 390px) {
+  .footer .footer-grid > div:first-child {
+    display: none;
+  }
+
+  .footer .footer-grid > div:nth-child(2) .footer-links {
+    justify-content: center;
+    gap: 8px 12px;
+  }
+
+  .footer .footer-grid > div:nth-child(2) .footer-links a {
+    font-size: .88rem;
+    padding: 3px 0;
+  }
+
+  .footer-bottom {
+    margin-top: 8px;
+    gap: 3px;
+    font-size: .73rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .service-map-section .section-head-row .section-lede,
+  .service-map-section .panel-label,
+  .service-map-section .story-stack,
+  .service-map-section .impact-strip,
+  .impact-section,
+  .compact-band {
+    display: none;
+  }
+
+  .service-map-section .section-title {
+    font-size: clamp(1.7rem, 7.2vw, 2.15rem);
+    margin-bottom: 8px;
+  }
+
+  .service-map-section .map-detail-panel.service-story-pane {
+    gap: 10px;
+    padding: 0;
+  }
+
+  .service-map-section .service-panel,
+  .service-map-section .service-panel.active {
+    border-radius: 16px;
+    padding: 14px;
+  }
+
+  .service-map-section .service-panel h3 {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+  }
+
+  .service-map-section .service-panel .service-lead {
+    margin-bottom: 10px;
+    font-size: 0.93rem;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .service-map-section .deliverable-chips span:nth-child(n+4) {
+    display: none;
+  }
+
+  .service-map-section .deliverable-chips {
+    gap: 6px;
+  }
+
+  .service-map-section .deliverable-chips span {
+    padding: 6px 9px;
+    font-size: 0.73rem;
+  }
+
+  .compact-services .section-title {
+    font-size: clamp(1.65rem, 6.9vw, 2.1rem);
+  }
+
+  .service-path-grid {
+    gap: 10px;
+  }
+
+  .service-path-grid .path-card {
+    padding: 14px;
+    border-radius: 16px;
+  }
+
+  .service-path-grid .path-card p {
+    margin-bottom: 8px;
+    font-size: 0.92rem;
+    line-height: 1.45;
+  }
+
+  .service-path-grid .path-card ul {
+    margin-top: 0;
+    display: grid;
+    gap: 4px;
+  }
+
+  .final-cta .cta-panel {
+    padding: 18px;
+    border-radius: 18px;
+  }
+
+  .final-cta .fine-print {
+    display: none;
+  }
+}
