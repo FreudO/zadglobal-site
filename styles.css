@@ -2707,12 +2707,26 @@ section { padding: 90px 0; }
 }
 
 @media (max-width: 600px) {
+  .services-hero .container > p:not(.eyebrow),
+  .services-hero .hero-cta .btn.btn-outline {
+    display: none;
+  }
+
+  .services-hero .hero-cta .btn.btn-primary {
+    width: 100%;
+  }
+
   .service-map-section .section-head-row .section-lede,
   .service-map-section .panel-label,
   .service-map-section .story-stack,
   .service-map-section .impact-strip,
   .impact-section,
-  .compact-band {
+  .compact-band,
+  .compact-services .section-kicker,
+  .compact-services .path-card p,
+  .compact-services .path-card ul,
+  .final-cta p,
+  .final-cta .section-kicker {
     display: none;
   }
 
@@ -2738,16 +2752,16 @@ section { padding: 90px 0; }
   }
 
   .service-map-section .service-panel .service-lead {
-    margin-bottom: 10px;
+    margin-bottom: 0;
     font-size: 0.93rem;
     line-height: 1.5;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
 
-  .service-map-section .deliverable-chips span:nth-child(n+4) {
+  .service-map-section .deliverable-chips span:nth-child(n+3) {
     display: none;
   }
 
@@ -2762,6 +2776,7 @@ section { padding: 90px 0; }
 
   .compact-services .section-title {
     font-size: clamp(1.65rem, 6.9vw, 2.1rem);
+    margin-bottom: 2px;
   }
 
   .service-path-grid {
@@ -2769,8 +2784,18 @@ section { padding: 90px 0; }
   }
 
   .service-path-grid .path-card {
-    padding: 14px;
+    padding: 12px 14px;
     border-radius: 16px;
+  }
+
+  .service-path-grid .path-card .number-badge {
+    margin-bottom: 6px;
+  }
+
+  .service-path-grid .path-card h3 {
+    font-size: 1.02rem;
+    line-height: 1.28;
+    margin: 0;
   }
 
   .service-path-grid .path-card p {
@@ -2788,9 +2813,15 @@ section { padding: 90px 0; }
   .final-cta .cta-panel {
     padding: 18px;
     border-radius: 18px;
+    gap: 10px;
   }
 
-  .final-cta .fine-print {
-    display: none;
+  .final-cta h2 {
+    font-size: clamp(1.25rem, 6vw, 1.55rem);
+    margin-bottom: 0;
+  }
+
+  .final-cta .btn {
+    width: 100%;
   }
 }
