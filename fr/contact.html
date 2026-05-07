@@ -38,12 +38,13 @@
 <div class="intake-main-panel">
 <form class="guided-intake-form contact-form-mobile-flow" enctype="multipart/form-data">
 <div class="contact-mobile-form-header">
-<nav class="contact-mobile-stepper" aria-label="Progression du formulaire">
+<nav class="contact-mobile-stepper" aria-label="Sections du formulaire — toucher une étape pour y aller">
+<p class="contact-stepper-hint">Ce formulaire a quatre parties. L’étape en surbrillance indique où vous êtes ; touchez un numéro pour y accéder.</p>
 <ol>
-<li data-contact-step-index="0"><span class="contact-step-num">1</span><span class="contact-step-label">Périmètre</span></li>
-<li data-contact-step-index="1"><span class="contact-step-num">2</span><span class="contact-step-label">Détails</span></li>
-<li data-contact-step-index="2"><span class="contact-step-num">3</span><span class="contact-step-label">Vous</span></li>
-<li data-contact-step-index="3"><span class="contact-step-num">4</span><span class="contact-step-label">Envoi</span></li>
+<li data-contact-step-index="0"><button type="button" class="contact-step-jump" aria-label="Aller à l’étape 1 — domaines concernés"><span class="contact-step-num">1</span><span class="contact-step-label">Périmètre</span></button></li>
+<li data-contact-step-index="1"><button type="button" class="contact-step-jump" aria-label="Aller à l’étape 2 — détails par domaine"><span class="contact-step-num">2</span><span class="contact-step-label">Détails</span></button></li>
+<li data-contact-step-index="2"><button type="button" class="contact-step-jump" aria-label="Aller à l’étape 3 — vos coordonnées"><span class="contact-step-num">3</span><span class="contact-step-label">Vous</span></button></li>
+<li data-contact-step-index="3"><button type="button" class="contact-step-jump" aria-label="Aller à l’étape 4 — envoyer la demande"><span class="contact-step-num">4</span><span class="contact-step-label">Envoi</span></button></li>
 </ol>
 </nav>
 <p class="contact-mobile-active-lane" data-contact-active-lane="" role="status"></p>

@@ -39,12 +39,13 @@
 <div class="intake-main-panel">
 <form class="guided-intake-form contact-form-mobile-flow" enctype="multipart/form-data">
 <div class="contact-mobile-form-header">
-<nav class="contact-mobile-stepper" aria-label="Form progress">
+<nav class="contact-mobile-stepper" aria-label="Form sections — tap a step to jump">
+<p class="contact-stepper-hint">This long form is in four parts. The highlighted step is where you are; tap any number to scroll there.</p>
 <ol>
-<li data-contact-step-index="0"><span class="contact-step-num">1</span><span class="contact-step-label">Scope</span></li>
-<li data-contact-step-index="1"><span class="contact-step-num">2</span><span class="contact-step-label">Details</span></li>
-<li data-contact-step-index="2"><span class="contact-step-num">3</span><span class="contact-step-label">You</span></li>
-<li data-contact-step-index="3"><span class="contact-step-num">4</span><span class="contact-step-label">Send</span></li>
+<li data-contact-step-index="0"><button type="button" class="contact-step-jump" aria-label="Jump to step 1 — areas you need"><span class="contact-step-num">1</span><span class="contact-step-label">Scope</span></button></li>
+<li data-contact-step-index="1"><button type="button" class="contact-step-jump" aria-label="Jump to step 2 — details for each area"><span class="contact-step-num">2</span><span class="contact-step-label">Details</span></button></li>
+<li data-contact-step-index="2"><button type="button" class="contact-step-jump" aria-label="Jump to step 3 — your contact info"><span class="contact-step-num">3</span><span class="contact-step-label">You</span></button></li>
+<li data-contact-step-index="3"><button type="button" class="contact-step-jump" aria-label="Jump to step 4 — send request"><span class="contact-step-num">4</span><span class="contact-step-label">Send</span></button></li>
 </ol>
 </nav>
 <p class="contact-mobile-active-lane" data-contact-active-lane="" role="status"></p>

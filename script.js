@@ -634,7 +634,13 @@ window.addEventListener('hashchange', applyContactIntakeHash);
     function setStepperCurrent(idx) {
       stepperItems().forEach((li) => {
         const i = parseInt(li.getAttribute('data-contact-step-index'), 10);
-        li.classList.toggle('is-current', i === idx);
+        const on = i === idx;
+        li.classList.toggle('is-current', on);
+        const jump = li.querySelector('.contact-step-jump');
+        if (jump) {
+          if (on) jump.setAttribute('aria-current', 'step');
+          else jump.removeAttribute('aria-current');
+        }
       });
     }
 
@@ -683,6 +689,24 @@ window.addEventListener('hashchange', applyContactIntakeHash);
         window.removeEventListener('resize', updateStepperFromScroll);
         if (stepperRaf) cancelAnimationFrame(stepperRaf);
       });
+    }
+
+    const stepperOl = form.querySelector('.contact-mobile-stepper ol');
+    function onStepperJumpClick(e) {
+      const btn = e.target.closest('.contact-step-jump');
+      if (!btn) return;
+      const li = btn.closest('[data-contact-step-index]');
+      if (!li) return;
+      const idx = parseInt(li.getAttribute('data-contact-step-index'), 10);
+      const row = stepTargets.find((s) => s.idx === idx);
+      if (row?.el) {
+        const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        row.el.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
+      }
+    }
+    if (stepperOl) {
+      stepperOl.addEventListener('click', onStepperJumpClick);
+      cleanups.push(() => stepperOl.removeEventListener('click', onStepperJumpClick));
     }
 
     syncContactMobileActiveLane(wrap);

@@ -2778,6 +2778,47 @@ body.is-mobile-device .contact-workspace-v14 .contact-mobile-form-header {
   display: block;
   margin-bottom: 14px;
 }
+.contact-stepper-hint {
+  display: none;
+}
+body.is-mobile-device .contact-workspace-v14 .contact-stepper-hint {
+  display: block;
+  margin: 0 0 10px;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: #5d6b82;
+  font-weight: 650;
+}
+body.is-mobile-device .contact-workspace-v14 .contact-step-jump {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin: 0;
+  padding: 6px 2px;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+  border-radius: 12px;
+  -webkit-tap-highlight-color: transparent;
+}
+body.is-mobile-device .contact-workspace-v14 .contact-step-jump:active {
+  background: rgba(11, 91, 211, 0.08);
+}
+body.is-mobile-device .contact-workspace-v14 .contact-mobile-stepper li.is-current .contact-step-jump {
+  color: var(--blue);
+}
+body.is-mobile-device .contact-workspace-v14 .guided-intake-form .intake-choice-grid,
+body.is-mobile-device .contact-workspace-v14 .guided-intake-form .intake-panels,
+body.is-mobile-device .contact-workspace-v14 .guided-intake-form .contact-basics,
+body.is-mobile-device .contact-workspace-v14 .guided-intake-form .contact-form-tail {
+  scroll-margin-top: 84px;
+}
 body.is-mobile-device .contact-workspace-v14 .contact-helper-long {
   display: none;
 }
