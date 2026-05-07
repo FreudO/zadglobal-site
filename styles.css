@@ -2477,6 +2477,75 @@ section { padding: 90px 0; }
     padding: 16px;
   }
 
+  .roi-section {
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+
+  .roi-section .section-row {
+    gap: 10px;
+  }
+
+  .roi-section .section-title {
+    font-size: clamp(1.9rem, 8.2vw, 2.45rem);
+  }
+
+  .roi-section .section-lede {
+    font-size: .98rem;
+    line-height: 1.55;
+  }
+
+  .roi-calculator {
+    border-radius: 18px;
+    border: 1px solid rgba(11,91,211,.14);
+    background: #fff;
+    box-shadow: 0 14px 34px rgba(6,16,31,.07);
+  }
+
+  .roi-grid {
+    gap: 10px;
+  }
+
+  .roi-grid label {
+    gap: 6px;
+    font-size: .82rem;
+  }
+
+  .roi-grid input,
+  .roi-grid select {
+    min-height: 46px;
+    border-radius: 12px;
+    padding: 11px 12px;
+    font-size: .97rem;
+    background: #f6faff;
+  }
+
+  .roi-results {
+    margin-top: 14px;
+    gap: 9px;
+  }
+
+  .roi-results div {
+    min-height: 0;
+    border-radius: 14px;
+    padding: 14px;
+  }
+
+  .roi-results span {
+    font-size: .8rem;
+  }
+
+  .roi-results strong {
+    margin-top: 8px;
+    font-size: clamp(1.28rem, 6.4vw, 1.7rem);
+  }
+
+  .roi-calculator .mini-disclaimer {
+    margin-top: 12px;
+    font-size: .78rem;
+    line-height: 1.45;
+  }
+
   /* Homepage mobile: keep it focused, remove non-essential sections. */
   body.is-mobile-device .ai-entry-section,
   body.is-mobile-device .home-case-teaser {
