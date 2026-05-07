@@ -417,6 +417,13 @@ wireTabs('[data-case-workspace]', 'data-case-tab', 'data-workspace-panel');
         const target = btn.getAttribute('data-mini-tab');
         buttons.forEach((b) => b.classList.toggle('active', b === btn));
         panels.forEach((p) => p.classList.toggle('active', p.getAttribute('data-mini-panel') === target));
+        const screen = scope.querySelector('.software-screen');
+        if (screen && window.matchMedia('(max-width: 980px)').matches) {
+          const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          requestAnimationFrame(() => {
+            screen.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+          });
+        }
       });
     });
   });

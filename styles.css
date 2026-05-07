@@ -2466,6 +2466,38 @@ section.contact-intake-section[data-reveal].visible {
   .case-workspace-screen {
     min-height: auto;
   }
+
+  /* Cases demos: intro → live preview → chips (chips sit under the pane they control). */
+  .workspace-showcase {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .workspace-showcase .workspace-copy {
+    display: contents;
+  }
+
+  .workspace-showcase .workspace-copy > .section-kicker {
+    order: 1;
+  }
+
+  .workspace-showcase .workspace-copy > h3 {
+    order: 2;
+  }
+
+  .workspace-showcase .workspace-copy > p {
+    order: 3;
+  }
+
+  .workspace-showcase .software-screen {
+    order: 4;
+    scroll-margin-top: 92px;
+  }
+
+  .workspace-showcase .mini-selector {
+    order: 5;
+  }
 }
 
 @media (max-width: 640px) {
