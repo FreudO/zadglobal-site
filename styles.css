@@ -99,7 +99,46 @@ img { max-width: 100%; display: block; }
   color: #526078;
 }
 .lang-switch a.active { background: var(--ink); color: #fff; }
-.menu-btn { display:none; border:0; background:var(--ink); color:#fff; padding:10px 13px; border-radius:12px; font-weight:900; }
+.menu-btn {
+  display: none;
+  border: 0;
+  background: var(--ink);
+  color: transparent;
+  padding: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  position: relative;
+  font-size: 0;
+  cursor: pointer;
+}
+.menu-btn::before,
+.menu-btn::after {
+  content: "";
+  position: absolute;
+  left: 11px;
+  right: 11px;
+  height: 2px;
+  border-radius: 2px;
+  background: #fff;
+  transition: transform .2s ease, top .2s ease, box-shadow .2s ease;
+}
+.menu-btn::before {
+  top: 15px;
+  box-shadow: 0 6px 0 #fff;
+}
+.menu-btn::after {
+  top: 27px;
+}
+.menu-btn[aria-expanded="true"]::before {
+  top: 21px;
+  box-shadow: none;
+  transform: rotate(45deg);
+}
+.menu-btn[aria-expanded="true"]::after {
+  top: 21px;
+  transform: rotate(-45deg);
+}
 
 /* Buttons */
 .btn {
@@ -2329,5 +2368,88 @@ section { padding: 90px 0; }
 
   .footer-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* v23: dedicated mobile version for Solutions map sections */
+@media (max-width: 760px) {
+  .service-map-section .map-helper {
+    display: none;
+  }
+
+  .service-map-section .interactive-map {
+    display: block;
+    margin-top: 20px;
+  }
+
+  .service-map-section .map-board {
+    display: none;
+  }
+
+  .service-map-section .map-detail-panel.service-story-pane {
+    border-radius: 22px;
+    padding: 14px;
+    display: grid;
+    gap: 12px;
+    background: transparent;
+    box-shadow: none;
+    border: 0;
+  }
+
+  .service-map-section .map-detail-panel.service-story-pane .service-panel,
+  .service-map-section .service-panel,
+  .service-map-section .service-panel.active {
+    display: block !important;
+    min-height: auto;
+    padding: 16px;
+    border-radius: 20px;
+    border: 1px solid var(--line);
+    background: #fff;
+    box-shadow: 0 10px 24px rgba(6,16,31,.06);
+    margin: 0;
+  }
+
+  .service-map-section .service-panel h3 {
+    font-size: 1.45rem;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    margin-bottom: 10px;
+  }
+
+  .service-map-section .service-panel p {
+    font-size: 0.98rem;
+    line-height: 1.62;
+    margin-bottom: 14px;
+  }
+
+  .service-map-section .story-stack {
+    margin-bottom: 14px;
+  }
+
+  .service-map-section .deliverable-chips {
+    margin-top: 0;
+  }
+
+  .impact-map {
+    border-radius: 22px;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    padding: 0;
+    gap: 12px;
+  }
+
+  .impact-track,
+  .impact-hub {
+    display: none;
+  }
+
+  .impact-map .impact-card {
+    position: static !important;
+    width: auto !important;
+    min-height: auto;
+    border-radius: 20px;
+    box-shadow: 0 10px 24px rgba(6,16,31,.06);
+    margin: 0;
   }
 }
