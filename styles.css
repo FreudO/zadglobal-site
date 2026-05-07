@@ -461,9 +461,11 @@ section { padding: 90px 0; }
   .stat:last-child { border-bottom:0; }
   .partner-row { grid-template-columns: 1fr; }
   .footer-grid { display:block; }
-  .footer .footer-grid > div:first-child { justify-content:center; margin-bottom:8px; }
-  .footer .footer-grid > div:nth-child(2) .footer-links { justify-content:center; }
-  .footer-bottom { justify-content:center; text-align:center; margin-top:8px; }
+  .footer .container { padding-top: 4px; padding-bottom: 4px; }
+  .footer .footer-grid > div:first-child { justify-content:center; margin-bottom:10px; }
+  .footer .footer-grid > div:nth-child(2) .footer-links { justify-content:center; gap:10px 14px; }
+  .footer .footer-grid > div:nth-child(2) .footer-links a { display:inline-block; padding:4px 0; font-size:.92rem; }
+  .footer-bottom { justify-content:center; text-align:center; margin-top:10px; display:flex; flex-direction:column; gap:4px; }
   section { padding: 68px 0; }
 }
 
