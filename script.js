@@ -8,9 +8,13 @@ if (menuButton && navLinks) {
 }
 
 function isMobileDeviceMode() {
-  const smallViewport = window.matchMedia('(max-width: 760px)').matches;
-  const mobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent || '');
-  return smallViewport && mobileUA;
+  const ua = navigator.userAgent || '';
+  const mobileUa = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+  // iPhone/iPad "Request Desktop Website": UA looks like Mac + Safari but the device is touch-first.
+  const iosAsDesktopUa = !mobileUa && navigator.maxTouchPoints > 1 && /Macintosh|Mac OS X/i.test(ua);
+  if (!mobileUa && !iosAsDesktopUa) return false;
+  // Portrait phones fit 760px; landscape iPhones often exceed 760 CSS px. Laptop browsers never match mobileUa/iosAsDesktopUa.
+  return window.matchMedia('(max-width: 1024px)').matches;
 }
 
 function syncMobileDeviceClass() {
@@ -19,6 +23,7 @@ function syncMobileDeviceClass() {
 
 syncMobileDeviceClass();
 window.addEventListener('resize', syncMobileDeviceClass);
+window.addEventListener('orientationchange', syncMobileDeviceClass);
 
 const forms = document.querySelectorAll('form[data-static-form]');
 forms.forEach((form) => {
@@ -623,7 +628,7 @@ window.addEventListener('hashchange', applyContactIntakeHash);
       return;
     }
 
-    const observers = [];
+    const cleanups = [];
     const stepperItems = () => [...form.querySelectorAll('.contact-mobile-stepper [data-contact-step-index]')];
 
     function setStepperCurrent(idx) {
@@ -640,46 +645,44 @@ window.addEventListener('hashchange', applyContactIntakeHash);
       { idx: 3, el: form.querySelector('.contact-form-tail') }
     ].filter((s) => s.el);
 
-    if (stepTargets.length && 'IntersectionObserver' in window) {
-      const visible = new Map();
-      const io = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            const idx = stepTargets.find((s) => s.el === entry.target)?.idx;
-            if (idx === undefined) return;
-            visible.set(idx, entry.isIntersecting ? entry.intersectionRatio : 0);
-          });
-          let best = 0;
-          let bestIdx = 0;
-          stepTargets.forEach(({ idx, el }) => {
-            const r = visible.get(idx) ?? 0;
-            if (r > best) {
-              best = r;
-              bestIdx = idx;
-            }
-          });
-          if (best < 0.08) {
-            const mid = window.innerHeight * 0.38;
-            let pick = 0;
-            let bestDist = Infinity;
-            stepTargets.forEach(({ idx, el }) => {
-              const rect = el.getBoundingClientRect();
-              const c = rect.top + rect.height / 2;
-              const d = Math.abs(c - mid);
-              if (d < bestDist && rect.bottom > 80 && rect.top < window.innerHeight - 80) {
-                bestDist = d;
-                pick = idx;
-              }
-            });
-            setStepperCurrent(pick);
-          } else {
-            setStepperCurrent(bestIdx);
-          }
-        },
-        { root: null, rootMargin: '-36% 0px -36% 0px', threshold: [0, 0.08, 0.18, 0.35, 0.55] }
-      );
-      stepTargets.forEach(({ el }) => io.observe(el));
-      observers.push(io);
+    function computeStepperIndexFromScroll() {
+      if (!stepTargets.length) return 0;
+      const mid = window.innerHeight * 0.33;
+      let bestIdx = stepTargets[0].idx;
+      let bestScore = -Infinity;
+      stepTargets.forEach(({ idx, el }) => {
+        const rect = el.getBoundingClientRect();
+        const visibleH = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+        if (visibleH < 12) return;
+        const centerY = rect.top + rect.height / 2;
+        const dist = Math.abs(centerY - mid);
+        const score = visibleH - dist * 0.35;
+        if (score > bestScore) {
+          bestScore = score;
+          bestIdx = idx;
+        }
+      });
+      return bestIdx;
+    }
+
+    let stepperRaf = 0;
+    function updateStepperFromScroll() {
+      if (stepperRaf) cancelAnimationFrame(stepperRaf);
+      stepperRaf = requestAnimationFrame(() => {
+        stepperRaf = 0;
+        setStepperCurrent(computeStepperIndexFromScroll());
+      });
+    }
+
+    if (stepTargets.length) {
+      updateStepperFromScroll();
+      window.addEventListener('scroll', updateStepperFromScroll, { passive: true });
+      window.addEventListener('resize', updateStepperFromScroll);
+      cleanups.push(() => {
+        window.removeEventListener('scroll', updateStepperFromScroll);
+        window.removeEventListener('resize', updateStepperFromScroll);
+        if (stepperRaf) cancelAnimationFrame(stepperRaf);
+      });
     }
 
     syncContactMobileActiveLane(wrap);
@@ -731,7 +734,7 @@ window.addEventListener('hashchange', applyContactIntakeHash);
     });
 
     mobileContactTeardown = () => {
-      observers.forEach((o) => o.disconnect());
+      cleanups.forEach((fn) => fn());
       laneCtl.abort();
       if (sheetToggle) sheetToggle.removeEventListener('click', onBriefToggle);
       form.querySelectorAll('[data-contact-injected="lane-more"]').forEach((n) => n.remove());
@@ -751,5 +754,8 @@ window.addEventListener('hashchange', applyContactIntakeHash);
   window.addEventListener('resize', () => {
     syncMobileDeviceClass();
     initMobileContactPowerUX();
+  });
+  window.addEventListener('orientationchange', () => {
+    requestAnimationFrame(() => initMobileContactPowerUX());
   });
 })();
