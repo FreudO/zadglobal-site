@@ -538,60 +538,24 @@ document.querySelectorAll('[data-mobile-solution-flow]').forEach((wrap) => {
   });
 });
 
-// v24 + v26: mobile contact mode + hash deep-links. On phone, lane tabs and panels live inside
-// .mobile-advanced-section, which is hidden until .mobile-advanced-open — open that first, then select the lane.
-function setGuidedIntakeMobileOpen(wrap, open) {
-  const toggle = wrap.querySelector('[data-mobile-advanced-toggle]');
-  if (!isMobileDeviceMode() || !toggle) return;
-  wrap.classList.toggle('mobile-advanced-open', open);
-  toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-  const isFr = (document.documentElement.lang || '').toLowerCase().startsWith('fr');
-  const closeLbl = toggle.dataset.labelClose || (isFr ? 'Masquer les details' : 'Hide detailed scope');
-  const openLbl = toggle.dataset.labelOpen || (isFr ? 'Ajouter des details (optionnel)' : 'Add detailed scope (optional)');
-  toggle.textContent = open ? closeLbl : openLbl;
-}
-
+// v27: contact hash deep-links — select intake lane (mobile uses full visible form; no advanced toggle).
 function applyContactIntakeHash() {
   const target = (window.location.hash || '').replace('#', '');
   document.querySelectorAll('[data-guided-intake]').forEach((wrap) => {
-    const laneButton = target ? wrap.querySelector(`[data-intake-target="${target}"]`) : null;
-
-    if (!laneButton) {
-      setGuidedIntakeMobileOpen(wrap, false);
-      return;
+    if (!target) return;
+    const laneButton = wrap.querySelector(`[data-intake-target="${target}"]`);
+    if (!laneButton) return;
+    laneButton.click();
+    if (typeof window.refreshIntakeBrief === 'function') {
+      window.refreshIntakeBrief(wrap);
     }
-
-    const activate = () => {
-      laneButton.click();
-      if (typeof window.refreshIntakeBrief === 'function') {
-        window.refreshIntakeBrief(wrap);
-      }
-    };
-
-    if (isMobileDeviceMode()) {
-      setGuidedIntakeMobileOpen(wrap, true);
-      requestAnimationFrame(() => {
-        requestAnimationFrame(activate);
-      });
-    } else {
-      activate();
-    }
-
-    const section = document.querySelector('.contact-intake-section');
-    if (section) {
-      setTimeout(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+    const panels = wrap.querySelector('.intake-panels');
+    const scrollEl = panels || document.querySelector('.contact-intake-section');
+    if (scrollEl) {
+      setTimeout(() => scrollEl.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
     }
   });
 }
-
-document.querySelectorAll('[data-guided-intake]').forEach((wrap) => {
-  const toggle = wrap.querySelector('[data-mobile-advanced-toggle]');
-  if (!toggle || !isMobileDeviceMode()) return;
-  toggle.addEventListener('click', () => {
-    const open = !wrap.classList.contains('mobile-advanced-open');
-    setGuidedIntakeMobileOpen(wrap, open);
-  });
-});
 
 applyContactIntakeHash();
 window.addEventListener('hashchange', applyContactIntakeHash);
