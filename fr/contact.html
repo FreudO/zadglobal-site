@@ -37,6 +37,17 @@
 <div class="intake-studio mt-36" data-guided-intake="">
 <div class="intake-main-panel">
 <form class="guided-intake-form contact-form-mobile-flow" enctype="multipart/form-data">
+<div class="contact-mobile-form-header">
+<nav class="contact-mobile-stepper" aria-label="Progression du formulaire">
+<ol>
+<li data-contact-step-index="0"><span class="contact-step-num">1</span><span class="contact-step-label">Périmètre</span></li>
+<li data-contact-step-index="1"><span class="contact-step-num">2</span><span class="contact-step-label">Détails</span></li>
+<li data-contact-step-index="2"><span class="contact-step-num">3</span><span class="contact-step-label">Vous</span></li>
+<li data-contact-step-index="3"><span class="contact-step-num">4</span><span class="contact-step-label">Envoi</span></li>
+</ol>
+</nav>
+<p class="contact-mobile-active-lane" data-contact-active-lane="" role="status"></p>
+</div>
 <button class="mobile-advanced-toggle-btn" data-mobile-advanced-toggle="" data-label-open="Ajouter des details (optionnel)" data-label-close="Masquer les details" type="button" aria-expanded="false">Ajouter des details (optionnel)</button>
 <div aria-label="Type de demande" class="intake-choice-grid intake-choice-grid-large intake-tabs-v14 mobile-advanced-section">
 <button class="active" data-intake-target="ai" type="button"><span>IA &amp; automatisation</span><small>Documents, routage, assistants</small><b data-lane-count="ai">0</b></button>
@@ -47,7 +58,7 @@
 <button data-intake-target="general" type="button"><span>Général</span><small>Partenaires, approvisionnement, autre</small><b data-lane-count="general">0</b></button>
 </div>
 <div class="intake-helper-row mobile-advanced-section">
-<span>Les sélections sont cumulatives.</span><strong>Exemple : choisissez réception documentaire en IA, intégration des nouveaux employés en Formation, puis laboratoire éducatif en Robotique — et envoyez tout en une seule demande.</strong>
+<span>Cumul</span><strong class="contact-helper-long">Exemple : choisissez réception documentaire en IA, intégration des nouveaux employés en Formation, puis laboratoire éducatif en Robotique — et envoyez tout en une seule demande.</strong><strong class="contact-helper-short">Plusieurs domaines ? Touchez un autre onglet — tout se combine en une demande.</strong>
 </div>
 <div class="form-grid contact-basics contact-basics-v14">
 <div><label>Prénom</label><input name="first_name" placeholder="Entrez votre prénom" type="text"/></div>
@@ -165,11 +176,20 @@
   <p class="field-note">Joignez des exemples de documents, captures, exports, notes de cadrage ou processus qui clarifient la demande.</p>
 </div>
 <input type="hidden" data-request-scope="" name="request_scope"/>
-<button class="btn btn-primary mt-24" type="submit">Envoyer mon brief projet</button><p class="section-lede form-submit-note" data-form-note=""></p>
+<div class="contact-submit-zone">
+<button class="btn btn-primary mt-24" type="submit">Envoyer mon brief projet</button>
+<p class="contact-submit-reassurance">Nous répondons sous un jour ouvré après lecture.</p>
+<p class="section-lede form-submit-note" data-form-note=""></p>
+</div>
 </div>
 </form>
 </div>
-<aside class="intake-brief-panel intake-brief-panel-v14">
+<aside class="intake-brief-panel intake-brief-panel-v14" id="contact-brief-sheet-panel">
+<button type="button" class="contact-brief-sheet-handle" data-contact-brief-sheet-toggle="" aria-expanded="false" aria-controls="contact-brief-sheet-panel">
+<span class="contact-brief-sheet-title">Aperçu de la demande</span>
+<span class="contact-brief-sheet-hint">Toucher pour agrandir</span>
+</button>
+<div class="contact-brief-sheet-body">
 <div class="brief-card live-brief-card live-brief-card-v14">
 <p class="section-kicker">Résumé en direct</p>
 <h3 data-brief-lane="">Portée combinée</h3>
@@ -186,6 +206,7 @@
 </ul>
 </div>
 <div class="brief-card compact-contact-card"><strong>Contact direct</strong><p>info@zadglobal.org<br/>zadglobal.org</p><span>Réponse sous un jour ouvré après revue.</span></div>
+</div>
 </aside>
 </div>
 </div>

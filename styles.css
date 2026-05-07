@@ -2731,6 +2731,217 @@ section { padding: 90px 0; }
   }
 }
 
+/* Contact mobile “power UX”: stepper, lane scroller, brief sheet, sticky submit (real phones only via body.is-mobile-device) */
+.contact-mobile-form-header {
+  display: none;
+}
+.contact-helper-short {
+  display: none;
+}
+.contact-brief-sheet-handle {
+  display: none;
+}
+.contact-lane-more-btn {
+  display: none;
+}
+
+body.is-mobile-device .contact-workspace-v14 .contact-mobile-form-header {
+  display: block;
+  margin-bottom: 14px;
+}
+body.is-mobile-device .contact-workspace-v14 .contact-helper-long {
+  display: none;
+}
+body.is-mobile-device .contact-workspace-v14 .contact-helper-short {
+  display: block;
+}
+body.is-mobile-device .contact-workspace-v14 .contact-mobile-stepper ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 6px;
+  justify-content: space-between;
+}
+body.is-mobile-device .contact-workspace-v14 .contact-mobile-stepper li {
+  flex: 1;
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: rgba(6, 16, 31, 0.45);
+  letter-spacing: 0.02em;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+body.is-mobile-device .contact-workspace-v14 .contact-mobile-stepper li.is-current {
+  color: var(--blue);
+  opacity: 1;
+}
+body.is-mobile-device .contact-workspace-v14 .contact-mobile-stepper li.is-current .contact-step-num {
+  background: linear-gradient(135deg, var(--blue), #063f95);
+  color: #fff;
+  border-color: transparent;
+}
+body.is-mobile-device .contact-workspace-v14 .contact-mobile-stepper .contact-step-num {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  margin: 0 auto 6px;
+  border-radius: 999px;
+  border: 1px solid rgba(6, 63, 149, 0.2);
+  background: #fff;
+  font-size: 0.78rem;
+  font-weight: 950;
+  color: #06101f;
+}
+body.is-mobile-device .contact-workspace-v14 .contact-mobile-stepper .contact-step-label {
+  display: block;
+  line-height: 1.2;
+}
+body.is-mobile-device .contact-workspace-v14 .contact-mobile-active-lane {
+  margin: 10px 0 0;
+  font-size: 0.86rem;
+  font-weight: 850;
+  color: #30415c;
+  min-height: 1.35em;
+}
+body.is-mobile-device .contact-workspace-v14 .intake-tabs-v14.intake-choice-grid {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 10px;
+  padding: 4px 2px 10px;
+  margin-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+}
+body.is-mobile-device .contact-workspace-v14 .intake-tabs-v14.intake-choice-grid::-webkit-scrollbar {
+  height: 4px;
+}
+body.is-mobile-device .contact-workspace-v14 .intake-tabs-v14.intake-choice-grid button {
+  flex: 0 0 min(78vw, 230px);
+  scroll-snap-align: start;
+  min-height: 58px;
+}
+body.is-mobile-device .contact-workspace-v14 .contact-submit-zone {
+  position: sticky;
+  bottom: calc(58px + env(safe-area-inset-bottom, 0px));
+  z-index: 30;
+  margin: 0 -6px;
+  padding: 14px 10px calc(14px + env(safe-area-inset-bottom, 0px));
+  background: linear-gradient(180deg, rgba(248, 251, 255, 0), #f8fbff 28%);
+  border-top: 1px solid rgba(6, 63, 149, 0.1);
+  border-radius: 18px 18px 0 0;
+}
+body.is-mobile-device .contact-workspace-v14 .contact-submit-zone .btn {
+  margin-top: 0 !important;
+}
+body.is-mobile-device .contact-workspace-v14 .contact-submit-reassurance {
+  margin: 8px 0 0;
+  font-size: 0.8rem;
+  color: #5d6b82;
+  line-height: 1.45;
+  text-align: center;
+}
+body.is-mobile-device .contact-workspace-v14 .contact-intake-section .intake-studio {
+  padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+}
+body.is-mobile-device .contact-workspace-v14 .intake-brief-panel {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  margin: 0;
+  padding: 0;
+  max-height: min(52vh, 420px);
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 22px 22px 0 0;
+  border: 1px solid rgba(6, 63, 149, 0.14);
+  border-bottom: 0;
+  box-shadow: 0 -16px 48px rgba(6, 16, 31, 0.14);
+  transition: max-height 0.32s ease, box-shadow 0.25s ease;
+}
+body.is-mobile-device .contact-workspace-v14 .intake-brief-panel.contact-brief-sheet-open {
+  max-height: min(88vh, 720px);
+  box-shadow: 0 -22px 60px rgba(6, 16, 31, 0.2);
+}
+body.is-mobile-device .contact-workspace-v14 .contact-brief-sheet-handle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+  margin: 0;
+  border: 0;
+  border-radius: 22px 22px 0 0;
+  background: linear-gradient(180deg, #f8fbff, #fff);
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+  flex-shrink: 0;
+}
+body.is-mobile-device .contact-workspace-v14 .contact-brief-sheet-title {
+  font-weight: 950;
+  font-size: 0.95rem;
+  color: #06101f;
+}
+body.is-mobile-device .contact-workspace-v14 .contact-brief-sheet-hint {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--blue);
+}
+body.is-mobile-device .contact-workspace-v14 .contact-brief-sheet-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0 12px 16px;
+  display: none;
+}
+body.is-mobile-device .contact-workspace-v14 .intake-brief-panel.contact-brief-sheet-open .contact-brief-sheet-body {
+  display: block;
+}
+body.is-mobile-device .contact-workspace-v14 .intake-brief-panel.contact-brief-sheet-open .contact-brief-sheet-handle {
+  border-bottom: 1px solid rgba(6, 63, 149, 0.1);
+}
+body.is-mobile-device .contact-workspace-v14 .intake-brief-panel .brief-card {
+  color: #fff;
+  margin-top: 10px;
+}
+body.is-mobile-device .contact-workspace-v14 .intake-brief-panel .brief-card:first-child {
+  margin-top: 0;
+}
+body.is-mobile-device .contact-workspace-v14 .contact-lane-more-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 14px 0 0;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px dashed rgba(6, 63, 149, 0.28);
+  background: #f4f8ff;
+  color: var(--blue);
+  font-weight: 900;
+  font-size: 0.84rem;
+  cursor: pointer;
+}
+body.is-mobile-device .contact-workspace-v14 fieldset.intake-panel .form-grid.mt-20.contact-lane-extra-collapsible:not(.is-expanded) {
+  display: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  body.is-mobile-device .contact-workspace-v14 .intake-brief-panel,
+  body.is-mobile-device .contact-workspace-v14 .contact-mobile-stepper li,
+  body.is-mobile-device .contact-workspace-v14 .contact-submit-zone {
+    transition: none !important;
+  }
+}
+
 @media (max-width: 390px) {
   .footer .footer-grid > div:first-child {
     display: none;

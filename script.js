@@ -559,3 +559,197 @@ function applyContactIntakeHash() {
 
 applyContactIntakeHash();
 window.addEventListener('hashchange', applyContactIntakeHash);
+
+// v28: Solutions → Contact prefill + mobile contact power UX (stepper, lane label, brief sheet, optional lane fields).
+(function () {
+  const PREFILL_KEY = 'zad_contact_prefill';
+  document.addEventListener(
+    'click',
+    (e) => {
+      const link = e.target.closest('a[data-contact-prefill]');
+      if (!link) return;
+      try {
+        sessionStorage.setItem(PREFILL_KEY, link.getAttribute('data-contact-prefill') || '');
+      } catch (_) {}
+    },
+    true
+  );
+
+  function applyContactPrefill() {
+    const ta = document.querySelector('.contact-workspace-v14 textarea[name="additional_context"]');
+    if (!ta) return;
+    try {
+      const v = sessionStorage.getItem(PREFILL_KEY);
+      if (!v) return;
+      sessionStorage.removeItem(PREFILL_KEY);
+      const cur = ta.value.trim();
+      ta.value = cur ? `${cur}\n\n${v}` : v;
+    } catch (_) {}
+  }
+
+  applyContactPrefill();
+
+  let mobileContactTeardown = null;
+
+  function syncContactMobileActiveLane(wrap) {
+    const status = wrap.querySelector('[data-contact-active-lane]');
+    if (!status) return;
+    const isFr = (document.documentElement.lang || '').toLowerCase().startsWith('fr');
+    const btn = wrap.querySelector('[data-intake-target].active');
+    if (!btn) {
+      status.textContent = '';
+      return;
+    }
+    const title = (btn.querySelector('span') && btn.querySelector('span').textContent.trim()) || btn.textContent.trim();
+    status.textContent = isFr ? `Vous éditez : ${title}` : `You're editing: ${title}`;
+  }
+
+  function initMobileContactPowerUX() {
+    if (mobileContactTeardown) {
+      mobileContactTeardown();
+      mobileContactTeardown = null;
+    }
+
+    const workspace = document.querySelector('.contact-workspace-v14');
+    if (!workspace) return;
+
+    const wrap = workspace.querySelector('[data-guided-intake]');
+    const form = workspace.querySelector('form.guided-intake-form');
+    if (!wrap || !form) return;
+
+    if (!isMobileDeviceMode()) {
+      const sheet = workspace.querySelector('#contact-brief-sheet-panel');
+      if (sheet) sheet.classList.remove('contact-brief-sheet-open');
+      return;
+    }
+
+    const observers = [];
+    const stepperItems = () => [...form.querySelectorAll('.contact-mobile-stepper [data-contact-step-index]')];
+
+    function setStepperCurrent(idx) {
+      stepperItems().forEach((li) => {
+        const i = parseInt(li.getAttribute('data-contact-step-index'), 10);
+        li.classList.toggle('is-current', i === idx);
+      });
+    }
+
+    const stepTargets = [
+      { idx: 0, el: form.querySelector('.intake-choice-grid') },
+      { idx: 1, el: form.querySelector('.intake-panels') },
+      { idx: 2, el: form.querySelector('.contact-basics') },
+      { idx: 3, el: form.querySelector('.contact-form-tail') }
+    ].filter((s) => s.el);
+
+    if (stepTargets.length && 'IntersectionObserver' in window) {
+      const visible = new Map();
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            const idx = stepTargets.find((s) => s.el === entry.target)?.idx;
+            if (idx === undefined) return;
+            visible.set(idx, entry.isIntersecting ? entry.intersectionRatio : 0);
+          });
+          let best = 0;
+          let bestIdx = 0;
+          stepTargets.forEach(({ idx, el }) => {
+            const r = visible.get(idx) ?? 0;
+            if (r > best) {
+              best = r;
+              bestIdx = idx;
+            }
+          });
+          if (best < 0.08) {
+            const mid = window.innerHeight * 0.38;
+            let pick = 0;
+            let bestDist = Infinity;
+            stepTargets.forEach(({ idx, el }) => {
+              const rect = el.getBoundingClientRect();
+              const c = rect.top + rect.height / 2;
+              const d = Math.abs(c - mid);
+              if (d < bestDist && rect.bottom > 80 && rect.top < window.innerHeight - 80) {
+                bestDist = d;
+                pick = idx;
+              }
+            });
+            setStepperCurrent(pick);
+          } else {
+            setStepperCurrent(bestIdx);
+          }
+        },
+        { root: null, rootMargin: '-36% 0px -36% 0px', threshold: [0, 0.08, 0.18, 0.35, 0.55] }
+      );
+      stepTargets.forEach(({ el }) => io.observe(el));
+      observers.push(io);
+    }
+
+    syncContactMobileActiveLane(wrap);
+    const laneCtl = new AbortController();
+    wrap.querySelectorAll('[data-intake-target]').forEach((btn) => {
+      btn.addEventListener(
+        'click',
+        () => setTimeout(() => syncContactMobileActiveLane(wrap), 0),
+        { signal: laneCtl.signal }
+      );
+    });
+
+    const sheet = workspace.querySelector('#contact-brief-sheet-panel');
+    const sheetToggle = workspace.querySelector('[data-contact-brief-sheet-toggle]');
+    const onBriefToggle = () => {
+      if (!sheet || !sheetToggle) return;
+      const open = !sheet.classList.contains('contact-brief-sheet-open');
+      sheet.classList.toggle('contact-brief-sheet-open', open);
+      sheetToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      const isFr = (document.documentElement.lang || '').toLowerCase().startsWith('fr');
+      const hint = sheetToggle.querySelector('.contact-brief-sheet-hint');
+      if (hint) {
+        hint.textContent = open
+          ? (isFr ? 'Toucher pour réduire' : 'Tap to collapse')
+          : (isFr ? 'Toucher pour agrandir' : 'Tap to expand');
+      }
+    };
+    if (sheetToggle) sheetToggle.addEventListener('click', onBriefToggle);
+
+    form.querySelectorAll('fieldset.intake-panel .form-grid.mt-20').forEach((grid) => {
+      if (grid.dataset.contactLaneMoreBound) return;
+      grid.dataset.contactLaneMoreBound = '1';
+      grid.classList.add('contact-lane-extra-collapsible');
+      const isFr = (document.documentElement.lang || '').toLowerCase().startsWith('fr');
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'contact-lane-more-btn';
+      btn.setAttribute('data-contact-injected', 'lane-more');
+      btn.textContent = isFr ? 'Plus de champs (optionnel)' : 'More fields (optional)';
+      btn.setAttribute('aria-expanded', 'false');
+      grid.parentNode.insertBefore(btn, grid);
+      btn.addEventListener('click', () => {
+        const ex = grid.classList.toggle('is-expanded');
+        btn.setAttribute('aria-expanded', ex ? 'true' : 'false');
+        btn.textContent = ex
+          ? (isFr ? 'Masquer les champs optionnels' : 'Hide optional fields')
+          : (isFr ? 'Plus de champs (optionnel)' : 'More fields (optional)');
+      });
+    });
+
+    mobileContactTeardown = () => {
+      observers.forEach((o) => o.disconnect());
+      laneCtl.abort();
+      if (sheetToggle) sheetToggle.removeEventListener('click', onBriefToggle);
+      form.querySelectorAll('[data-contact-injected="lane-more"]').forEach((n) => n.remove());
+      form.querySelectorAll('.form-grid.mt-20.contact-lane-extra-collapsible').forEach((grid) => {
+        grid.classList.remove('contact-lane-extra-collapsible', 'is-expanded');
+        delete grid.dataset.contactLaneMoreBound;
+      });
+      stepperItems().forEach((li) => li.classList.remove('is-current'));
+      if (sheet) {
+        sheet.classList.remove('contact-brief-sheet-open');
+        if (sheetToggle) sheetToggle.setAttribute('aria-expanded', 'false');
+      }
+    };
+  }
+
+  initMobileContactPowerUX();
+  window.addEventListener('resize', () => {
+    syncMobileDeviceClass();
+    initMobileContactPowerUX();
+  });
+})();
