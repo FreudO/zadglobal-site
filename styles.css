@@ -2565,8 +2565,44 @@ section.contact-intake-section[data-reveal].visible {
     line-height: 1.3;
   }
 
-  .practical-starts .start-grid .start-card:nth-child(4) {
-    display: none;
+  /* Four pain points: show all cards (04 was wrongly hidden). Horizontal snap on narrow phones. */
+  .practical-starts .start-grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 12px;
+    margin-top: 22px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 0;
+    padding-bottom: 10px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+  .practical-starts .start-grid::-webkit-scrollbar {
+    height: 4px;
+  }
+  .practical-starts .start-grid .start-card {
+    flex: 0 0 min(86%, 300px);
+    scroll-snap-align: start;
+    min-height: 0;
+    padding: 18px 16px;
+  }
+  .practical-starts .start-grid .start-card span {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 14px;
+    font-size: 0.9rem;
+  }
+  .practical-starts .start-grid .start-card h3 {
+    font-size: 1.06rem;
+    line-height: 1.18;
+    margin-bottom: 8px;
+  }
+  .practical-starts .start-grid .start-card p {
+    font-size: 0.9rem;
+    line-height: 1.52;
   }
 
   .home-broader-platform {
