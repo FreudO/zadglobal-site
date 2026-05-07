@@ -2740,8 +2740,45 @@ section.contact-intake-section[data-reveal].visible {
   }
 }
 
-/* Cases page: compact tabs (A), horizontal demo chips (B), flow timeline (E), table cards (F) */
+/* Cases page: compact tabs (A), horizontal demo chips (B), flow timeline (E), table cards (F), sticky sector dock (phones) */
 @media (max-width: 720px) {
+  /* Scroll reveal uses transform, which breaks position:sticky — show section without motion on phones */
+  #case-worlds[data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .case-world-switch {
+    overflow: visible;
+  }
+
+  .case-world-tabs-dock {
+    position: sticky;
+    top: calc(78px + env(safe-area-inset-top, 0px));
+    z-index: 35;
+    isolation: isolate;
+    margin: 0 0 14px;
+    padding: 12px 12px 14px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #03070e 0%, #071a39 58%, #061833 100%);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 14px 38px rgba(0, 0, 0, 0.26);
+  }
+
+  .case-world-tabs-dock .case-world-tabs {
+    background: transparent;
+    padding: 0;
+    margin: 0;
+  }
+
+  .case-world-tabs-dock .case-world-tab-lede {
+    background: transparent;
+    border-bottom: none;
+    padding: 10px 4px 0;
+    margin: 0;
+  }
+
   .case-world-tab-lede {
     display: block;
   }
