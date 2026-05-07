@@ -1784,6 +1784,12 @@ section.contact-intake-section[data-reveal].visible {
   background:rgba(122,174,252,.13);
   color:#7aaefc;
   font-weight:950;
+  line-height: 0;
+}
+.case-world-tabs button span svg {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
 }
 .case-world-tabs button strong { color:#fff; font-size:1.03rem; }
 .case-world-tabs button small { color:rgba(255,255,255,.58); line-height:1.35; }
@@ -2202,6 +2208,12 @@ section.contact-intake-section[data-reveal].visible {
   background: linear-gradient(135deg, var(--blue), var(--blue-2));
   font-weight: 950;
   letter-spacing: -.04em;
+  line-height: 0;
+}
+.case-library-card .case-icon svg {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
 }
 .case-library-card h3 { margin: 0 0 6px; font-size: 1.35rem; letter-spacing: -.04em; }
 .case-library-card p { margin: 0; color: #5f6d83; line-height: 1.55; }
