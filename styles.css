@@ -603,6 +603,57 @@ section { padding: 90px 0; }
   .service-path-grid { grid-template-columns:repeat(2,1fr); }
   .impact-card { width:280px; }
 }
+
+/* ≤960px: center “Integrated delivery” hub overlapped corner cards on tablets — stack vertically */
+@media (max-width: 960px) {
+  .impact-map {
+    min-height: auto;
+    padding: 22px;
+    display: grid;
+    gap: 14px;
+    overflow: visible;
+  }
+
+  .impact-track {
+    display: none;
+  }
+
+  .impact-hub {
+    position: relative;
+    inset: auto;
+    left: auto;
+    top: auto;
+    transform: none;
+    width: auto;
+    max-width: min(420px, 100%);
+    height: auto;
+    min-height: 96px;
+    margin-inline: auto;
+    padding: 18px 16px;
+  }
+
+  .impact-hub strong {
+    font-size: clamp(1.15rem, 3.5vw, 1.4rem);
+  }
+
+  .impact-hub small {
+    font-size: clamp(0.68rem, 2vw, 0.78rem);
+    line-height: 1.35;
+  }
+
+  .impact-map .impact-card {
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    width: 100%;
+    max-width: min(560px, 100%);
+    margin-inline: auto;
+    min-height: 0;
+  }
+}
+
 @media (max-width: 760px) {
   .compact-hero h1 { font-size: clamp(2.65rem, 13vw, 4rem); }
   .map-board { min-height:auto; padding:24px; display:grid; gap:12px; }
@@ -613,9 +664,6 @@ section { padding: 90px 0; }
   .map-detail-panel { padding:22px; }
   .service-panel { min-height:auto; }
   .service-panel h3 { font-size:2rem; }
-  .impact-map { min-height:auto; padding:22px; display:grid; gap:14px; }
-  .impact-track, .impact-hub { position:relative; inset:auto; left:auto; top:auto; transform:none; width:auto; height:auto; min-height:100px; }
-  .impact-card { position:relative; left:auto!important; right:auto!important; top:auto!important; bottom:auto!important; width:100%; }
   .service-path-grid { grid-template-columns:1fr; }
   .cta-panel { flex-direction:column; align-items:flex-start; padding:28px!important; }
 }
@@ -3884,6 +3932,40 @@ body.is-mobile-device .contact-workspace-v14 fieldset.intake-panel .form-grid.mt
     margin-top: 8px;
     gap: 3px;
     font-size: .73rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .footer .footer-grid > div:nth-child(2) .footer-links {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, max-content));
+    justify-content: center;
+    justify-items: center;
+    column-gap: clamp(8px, 3vw, 16px);
+    row-gap: 10px;
+    padding-inline: 8px;
+    box-sizing: border-box;
+  }
+
+  .footer .footer-grid > div:nth-child(2) .footer-links a {
+    font-size: 0.78rem;
+    line-height: 1.28;
+    padding: 4px 2px;
+    text-align: center;
+    max-width: min(172px, 46vw);
+    overflow-wrap: anywhere;
+  }
+
+  /* Odd fifth link (e.g. Contact): centered full-width row */
+  .footer .footer-grid > div:nth-child(2) .footer-links a:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    max-width: min(300px, 94vw);
+  }
+
+  html[lang="fr"] .footer .footer-grid > div:nth-child(2) .footer-links a {
+    font-size: 0.72rem;
+    letter-spacing: -0.02em;
   }
 }
 
