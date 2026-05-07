@@ -2452,4 +2452,27 @@ section { padding: 90px 0; }
     box-shadow: 0 10px 24px rgba(6,16,31,.06);
     margin: 0;
   }
+
+  .contact-workspace-v14 .intake-helper-row,
+  .contact-workspace-v14 .intake-brief-panel {
+    display: none;
+  }
+
+  .contact-workspace-v14 .intake-main-panel {
+    padding: 14px;
+    border-radius: 20px;
+  }
+
+  .contact-workspace-v14 .deep-intake-panels .contact-fieldset {
+    padding: 14px;
+    border-radius: 16px;
+  }
+
+  .contact-workspace-v14 .intake-tabs-v14 button small {
+    display: none;
+  }
+
+  .contact-workspace-v14 .intake-tabs-v14 button {
+    min-height: 54px;
+  }
 }
