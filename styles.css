@@ -155,6 +155,10 @@ img { max-width: 100%; display: block; }
   cursor: pointer;
 }
 
+.mobile-proof-row {
+  display: none;
+}
+
 /* Buttons */
 .btn {
   display: inline-flex;
@@ -2388,6 +2392,62 @@ section { padding: 90px 0; }
 
 /* v23: dedicated mobile version for Solutions map sections */
 @media (max-width: 760px) {
+  .hero-v5 .hero-copy {
+    max-width: 100%;
+  }
+
+  .hero-v5 .hero-cta {
+    margin-top: 18px;
+  }
+
+  .hero-v5 .hero-cta .btn {
+    width: 100%;
+  }
+
+  .hero-v5 .home-command-card {
+    display: none;
+  }
+
+  .mobile-proof-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .mobile-proof-row div {
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 14px;
+    padding: 10px 12px;
+  }
+
+  .mobile-proof-row strong {
+    display: block;
+    color: #fff;
+    font-size: 1.2rem;
+    letter-spacing: -0.03em;
+  }
+
+  .mobile-proof-row span {
+    display: block;
+    color: rgba(255,255,255,.82);
+    font-size: .78rem;
+    line-height: 1.3;
+  }
+
+  .practical-starts .start-grid .start-card:nth-child(4) {
+    display: none;
+  }
+
+  .home-broader-platform {
+    display: none;
+  }
+
+  .roi-calculator {
+    padding: 16px;
+  }
+
   .service-map-section .map-helper {
     display: none;
   }
