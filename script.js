@@ -9,8 +9,8 @@ if (menuButton && navLinks) {
 
 function isMobileDeviceMode() {
   const smallViewport = window.matchMedia('(max-width: 760px)').matches;
-  const coarsePointer = window.matchMedia('(pointer: coarse)').matches;
-  return smallViewport && coarsePointer;
+  const mobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent || '');
+  return smallViewport && mobileUA;
 }
 
 function syncMobileDeviceClass() {
