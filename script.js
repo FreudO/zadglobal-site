@@ -751,7 +751,7 @@ wireTabs('[data-case-workspace]', 'data-case-tab', 'data-workspace-panel');
 
 
 // v18: language switching preserves active section/panel, service-map deep links open the correct domain,
-// and Cases deep links open the right case world.
+// and Case studies deep links open the right case world.
 (function () {
   const storageKeyFor = (path) => `zad-lang-scroll:${path}`;
   const maxScroll = () => Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
@@ -850,7 +850,7 @@ document.querySelectorAll('[data-file-upload]').forEach((wrap) => {
   updateStatus();
 });
 
-// v25: phone-first Solutions goal flow.
+// v25: phone-first Services goal flow.
 document.querySelectorAll('[data-mobile-solution-flow]').forEach((wrap) => {
   const buttons = Array.from(wrap.querySelectorAll('[data-goal-target]'));
   const panels = Array.from(wrap.querySelectorAll('[data-goal-panel]'));
@@ -915,7 +915,7 @@ function applyContactIntakeHash() {
 applyContactIntakeHash();
 window.addEventListener('hashchange', applyContactIntakeHash);
 
-// v28: Solutions → Contact prefill + mobile contact power UX (stepper, lane label, brief sheet, optional lane fields).
+// v28: Services → Contact prefill + mobile contact power UX (stepper, lane label, brief sheet, optional lane fields).
 (function () {
   const PREFILL_KEY = 'zad_contact_prefill';
   document.addEventListener(
