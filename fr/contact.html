@@ -37,6 +37,7 @@
 <div class="intake-studio mt-36" data-guided-intake="">
 <div class="intake-main-panel">
 <form class="guided-intake-form contact-form-mobile-flow" enctype="multipart/form-data">
+<input type="checkbox" name="botcheck" class="contact-botcheck" tabindex="-1" autocomplete="off" aria-hidden="true"/>
 <div class="contact-mobile-form-header">
 <p class="contact-stepper-hint">Ce formulaire a quatre parties. L’étape en surbrillance indique où vous êtes ; touchez un numéro pour y accéder.</p>
 <nav class="contact-mobile-stepper" aria-label="Sections du formulaire — toucher une étape pour y aller">
@@ -176,7 +177,7 @@
     <label class="file-upload-button" for="supporting_files_fr">Choisir des fichiers</label>
     <span class="file-upload-status" data-file-status>Aucun fichier sélectionné</span>
   </div>
-  <p class="field-note">Joignez des exemples de documents, captures, exports, notes de cadrage ou processus qui clarifient la demande.</p>
+  <p class="field-note">Joignez des exemples de documents, captures, exports, notes de cadrage ou processus qui clarifient la demande. Les fichiers ne sont pas transmis avec le forfait Web3Forms gratuit — ajoutez des liens dans « Autre contexte utile » ou passez à Web3Forms Pro.</p>
 </div>
 <input type="hidden" data-request-scope="" name="request_scope"/>
 <div class="contact-submit-zone">
@@ -186,6 +187,12 @@
 </div>
 </div>
 </form>
+<div class="contact-intake-success" hidden="" data-contact-success-panel="" tabindex="-1" role="status" aria-live="polite">
+<p class="section-kicker contact-success-kicker">Demande reçue</p>
+<h2 class="section-title contact-success-title">Merci — nous vous recontactons sous peu.</h2>
+<p class="section-lede contact-success-lede">Nous avons bien reçu votre brief et nous vous répondrons rapidement — en général sous un jour ouvrable.</p>
+<a class="btn btn-secondary mt-24" href="contact.html">Envoyer une autre demande</a>
+</div>
 </div>
 <aside class="intake-brief-panel intake-brief-panel-v14" id="contact-brief-sheet-panel">
 <button type="button" class="contact-brief-sheet-handle" data-contact-brief-sheet-toggle="" aria-expanded="false" aria-controls="contact-brief-sheet-panel">

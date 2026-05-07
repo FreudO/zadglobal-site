@@ -38,6 +38,7 @@
 <div class="intake-studio mt-36" data-guided-intake="">
 <div class="intake-main-panel">
 <form class="guided-intake-form contact-form-mobile-flow" enctype="multipart/form-data">
+<input type="checkbox" name="botcheck" class="contact-botcheck" tabindex="-1" autocomplete="off" aria-hidden="true"/>
 <div class="contact-mobile-form-header">
 <p class="contact-stepper-hint">This long form is in four parts. The highlighted step is where you are; tap any number to scroll there.</p>
 <nav class="contact-mobile-stepper" aria-label="Form sections — tap a step to jump">
@@ -177,7 +178,7 @@
     <label class="file-upload-button" for="supporting_files_en">Choose files</label>
     <span class="file-upload-status" data-file-status>No files selected</span>
   </div>
-  <p class="field-note">Attach sample documents, screenshots, exports, briefs, or process examples that clarify the request.</p>
+  <p class="field-note">Attach sample documents, screenshots, exports, briefs, or process examples that clarify the request. File uploads are not sent on the free Web3Forms plan — use links in “Additional context” or upgrade Web3Forms Pro.</p>
 </div>
 <input type="hidden" data-request-scope="" name="request_scope"/>
 <div class="contact-submit-zone">
@@ -187,6 +188,12 @@
 </div>
 </div>
 </form>
+<div class="contact-intake-success" hidden="" data-contact-success-panel="" tabindex="-1" role="status" aria-live="polite">
+<p class="section-kicker contact-success-kicker">Request received</p>
+<h2 class="section-title contact-success-title">Thank you — we'll be in touch shortly.</h2>
+<p class="section-lede contact-success-lede">We've received your project brief and will follow up soon — usually within one business day.</p>
+<a class="btn btn-secondary mt-24" href="contact.html">Send another request</a>
+</div>
 </div>
 <aside class="intake-brief-panel intake-brief-panel-v14" id="contact-brief-sheet-panel">
 <button type="button" class="contact-brief-sheet-handle" data-contact-brief-sheet-toggle="" aria-expanded="false" aria-controls="contact-brief-sheet-panel">

@@ -1471,7 +1471,43 @@ section.contact-intake-section[data-reveal].visible {
 .intake-studio-section { padding-top:82px; }
 .intake-studio { display:grid; grid-template-columns:minmax(0, 1.52fr) minmax(330px, .62fr); gap:26px; align-items:start; }
 .intake-main-panel { border-radius:34px; border:1px solid rgba(6,63,149,.12); background:linear-gradient(180deg,#fff,#f8fbff); padding:28px; box-shadow:0 24px 80px rgba(6,16,31,.08); }
+.guided-intake-form .contact-botcheck {
+  display: none !important;
+}
 .guided-intake-form { display:block; }
+.guided-intake-form.is-contact-success-hidden {
+  display: none !important;
+}
+.contact-intake-success {
+  display: none;
+  border-radius: 34px;
+  padding: clamp(28px, 5vw, 44px);
+  background: linear-gradient(180deg, #fff, #f8fbff);
+  border: 1px solid rgba(6, 63, 149, 0.12);
+  box-shadow: 0 24px 80px rgba(6, 16, 31, 0.08);
+  text-align: center;
+}
+.contact-intake-success.is-visible {
+  display: block;
+}
+.contact-intake-success .contact-success-title {
+  margin: 10px 0 14px;
+  letter-spacing: -0.04em;
+}
+.contact-intake-success .contact-success-lede {
+  margin: 0 auto;
+  max-width: 34rem;
+}
+.intake-studio.contact-success-state {
+  grid-template-columns: 1fr;
+}
+.intake-studio.contact-success-state .intake-brief-panel {
+  display: none;
+}
+.form-submit-note.form-submit-note--error {
+  color: #b42318;
+  font-weight: 700;
+}
 .intake-choice-grid-large { grid-template-columns: repeat(6, minmax(0,1fr)); gap:10px; margin:0 0 22px; }
 .intake-choice-grid-large button { min-height:58px; padding:12px 10px; border-radius:18px; font-size:.86rem; }
 .contact-basics { padding:18px; border-radius:24px; background:#fff; border:1px solid rgba(6,63,149,.10); margin-bottom:20px; }
@@ -1599,6 +1635,9 @@ section.contact-intake-section[data-reveal].visible {
 .contact-workspace-v14 .intake-studio {
   grid-template-columns: minmax(0, 1.7fr) minmax(340px, .72fr);
   gap: 28px;
+}
+.contact-workspace-v14 .intake-studio.contact-success-state {
+  grid-template-columns: 1fr;
 }
 .contact-workspace-v14 .intake-main-panel {
   padding: 30px;

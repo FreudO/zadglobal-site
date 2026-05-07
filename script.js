@@ -25,6 +25,9 @@ syncMobileDeviceClass();
 window.addEventListener('resize', syncMobileDeviceClass);
 window.addEventListener('orientationchange', syncMobileDeviceClass);
 
+/** Web3Forms: create a free access key at https://web3forms.com — safe to use in frontend JS. */
+const WEB3FORMS_ACCESS_KEY = '97e1d4b2-a4c8-4553-9583-3f6a01b3168b';
+
 const forms = document.querySelectorAll('form[data-static-form]');
 forms.forEach((form) => {
   form.addEventListener('submit', (event) => {
@@ -40,36 +43,156 @@ forms.forEach((form) => {
 });
 
 (function setupGuidedContactReachValidation() {
+  function guidedFormFieldsPayload(form) {
+    const wrap = form.closest('[data-guided-intake]');
+    if (wrap && typeof window.refreshIntakeBrief === 'function') {
+      window.refreshIntakeBrief(wrap);
+    }
+    const fd = new FormData(form);
+    const data = {};
+    for (const [key, val] of fd.entries()) {
+      if (key === 'access_key' || key === 'botcheck') continue;
+      if (val instanceof File) continue;
+      if (data[key] !== undefined) {
+        data[key] = `${data[key]}\n${val}`;
+      } else {
+        data[key] = val;
+      }
+    }
+    return data;
+  }
+
   document.querySelectorAll('form.guided-intake-form').forEach((form) => {
     const note = form.querySelector('[data-form-note]');
     const emailInput = form.querySelector('input[name="email"]');
     const whatsInput = form.querySelector('input[name="whatsapp"]');
+    const submitBtn = form.querySelector('.contact-submit-zone button[type="submit"]');
+    const mainPanel = form.closest('.intake-main-panel');
+    const successPanel = mainPanel && mainPanel.querySelector('[data-contact-success-panel]');
+    const studio = form.closest('[data-guided-intake]');
+
     const clearReachError = () => {
       if (note && note.dataset.contactReachError === '1') {
         note.textContent = '';
         delete note.dataset.contactReachError;
+        note.classList.remove('form-submit-note--error');
       }
     };
+
     [emailInput, whatsInput].forEach((el) => {
       if (!el) return;
       el.addEventListener('input', clearReachError);
     });
-    form.addEventListener('submit', (event) => {
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
       const isFr = (document.documentElement.lang || '').toLowerCase().startsWith('fr');
       const emailVal = (emailInput?.value || '').trim();
       const waVal = (whatsInput?.value || '').trim();
+
       if (!emailVal && !waVal) {
-        event.preventDefault();
         if (note) {
           note.textContent = isFr
             ? 'Indiquez au moins une adresse e-mail ou un numéro WhatsApp pour que nous puissions vous répondre.'
             : 'Please enter either an email address or a WhatsApp number so we can reach you.';
           note.dataset.contactReachError = '1';
+          note.classList.add('form-submit-note--error');
         }
         (emailInput || whatsInput)?.focus();
+        note?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         return;
       }
+
+      if (emailVal && emailInput && !emailInput.checkValidity()) {
+        emailInput.reportValidity();
+        return;
+      }
+
       clearReachError();
+
+      const accessKey = WEB3FORMS_ACCESS_KEY.trim();
+      if (!accessKey) {
+        if (note) {
+          note.textContent = isFr
+            ? 'Formulaire non configuré : ajoutez votre clé Web3Forms dans script.js (WEB3FORMS_ACCESS_KEY).'
+            : 'Form not configured yet: add your Web3Forms access key in script.js (WEB3FORMS_ACCESS_KEY).';
+          note.classList.add('form-submit-note--error');
+        }
+        note?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        return;
+      }
+
+      const botcheck = form.querySelector('input[name="botcheck"]');
+      if (botcheck && botcheck.checked) {
+        return;
+      }
+
+      const fields = guidedFormFieldsPayload(form);
+      const firstName = (fields.first_name || '').trim();
+      const payload = {
+        access_key: accessKey,
+        subject: isFr ? 'ZAD — Nouveau brief projet (formulaire)' : 'ZAD — New project brief (contact form)',
+        from_name: firstName ? `${firstName} (ZAD contact)` : 'ZAD contact form',
+        ...fields
+      };
+      if (emailVal) payload.replyto = emailVal;
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.setAttribute('aria-busy', 'true');
+      }
+
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        let data = {};
+        try {
+          data = await res.json();
+        } catch (_) {}
+
+        if (!res.ok || data.success === false) {
+          const msg = typeof data.message === 'string' ? data.message : '';
+          if (note) {
+            note.textContent = msg || (isFr
+              ? 'L’envoi a échoué. Réessayez dans un instant ou écrivez à info@zadglobal.org.'
+              : 'Something went wrong sending your request. Try again shortly or email info@zadglobal.org.');
+            note.classList.add('form-submit-note--error');
+          }
+          note?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          return;
+        }
+
+        form.classList.add('is-contact-success-hidden');
+        if (studio) studio.classList.add('contact-success-state');
+        if (successPanel) {
+          successPanel.hidden = false;
+          successPanel.classList.add('is-visible');
+          requestAnimationFrame(() => {
+            successPanel.focus();
+            successPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          });
+        } else if (note) {
+          note.textContent = isFr
+            ? 'Merci — votre demande a bien été reçue. Notre équipe vous contactera rapidement.'
+            : 'Thank you — your request has been received. Our team will contact you shortly.';
+        }
+      } catch (_) {
+        if (note) {
+          note.textContent = isFr
+            ? 'Impossible d’atteindre le serveur. Vérifiez la connexion ou écrivez à info@zadglobal.org.'
+            : 'We could not reach the server. Check your connection or email info@zadglobal.org.';
+          note.classList.add('form-submit-note--error');
+        }
+        note?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.removeAttribute('aria-busy');
+        }
+      }
     });
   });
 })();
