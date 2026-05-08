@@ -1575,6 +1575,10 @@ section.contact-intake-section[data-reveal].visible {
   grid-column: 1 / -1;
   margin: 0 0 4px;
 }
+.contact-workspace-v14 .form-grid > div,
+.contact-workspace-v14 .contact-whatsapp-row > div {
+  min-width: 0;
+}
 .contact-basics-full-row {
   grid-column: 1 / -1;
 }
@@ -1589,6 +1593,20 @@ section.contact-intake-section[data-reveal].visible {
   .contact-whatsapp-row {
     grid-template-columns: 1fr;
   }
+}
+.contact-workspace-v14 input[type="text"],
+.contact-workspace-v14 input[type="email"],
+.contact-workspace-v14 input[type="tel"],
+.contact-workspace-v14 input[type="number"],
+.contact-workspace-v14 textarea,
+.contact-workspace-v14 select {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+.contact-workspace-v14 textarea,
+.contact-workspace-v14 select {
+  overflow-x: hidden;
 }
 .deep-intake-panels { margin-top:0; }
 .deep-intake-panels .contact-fieldset { border-radius:28px; padding:24px; background:#fff; border:1px solid rgba(6,63,149,.12); box-shadow:0 14px 38px rgba(6,16,31,.04); }
@@ -3646,6 +3664,10 @@ body.is-mobile-device .contact-workspace-v14 .contact-basics,
 body.is-mobile-device .contact-workspace-v14 .contact-form-tail {
   min-width: 0;
   max-width: 100%;
+}
+body.is-mobile-device .contact-workspace-v14,
+body.is-mobile-device .contact-workspace-v14 .intake-studio {
+  overflow-x: clip;
 }
 /* Do not set overflow-x hidden/clip on this panel: paired with visible-y it becomes overflow-y:auto in CSS and
    can trap touch scrolling and break scroll-to-section on iOS. Horizontal overflow is contained via min-width:0 + lane row. */
