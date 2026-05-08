@@ -1589,7 +1589,7 @@ section.contact-intake-section[data-reveal].visible {
 }
 .intake-choice-grid-large { grid-template-columns: repeat(6, minmax(0,1fr)); gap:10px; margin:0 0 22px; }
 .intake-choice-grid-large button { min-height:58px; padding:12px 10px; border-radius:18px; font-size:.86rem; }
-.contact-basics { padding:18px; border-radius:24px; background:#fff; border:1px solid rgba(6,63,149,.10); margin-bottom:20px; }
+.contact-basics { padding:22px; border-radius:var(--radius-lg); background:#fff; border:1px solid var(--line); box-shadow:0 14px 40px rgba(6,16,31,.06); margin-bottom:20px; }
 .contact-basics-v14 .contact-reach-hint {
   grid-column: 1 / -1;
   margin: 0 0 4px;
@@ -1613,19 +1613,136 @@ section.contact-intake-section[data-reveal].visible {
     grid-template-columns: 1fr;
   }
 }
+.contact-workspace-v14 .form-grid label,
+.contact-workspace-v14 fieldset.intake-panel > label:not(.choice-chip) {
+  display: block;
+  font-weight: 800;
+  font-size: 0.88rem;
+  color: var(--blue);
+  margin: 14px 0 7px;
+  letter-spacing: -0.01em;
+}
+.contact-workspace-v14 .form-grid > div > label:first-child,
+.contact-workspace-v14 .contact-whatsapp-row label {
+  margin-top: 0;
+}
 .contact-workspace-v14 input[type="text"],
 .contact-workspace-v14 input[type="email"],
 .contact-workspace-v14 input[type="tel"],
 .contact-workspace-v14 input[type="number"],
-.contact-workspace-v14 textarea,
+.contact-workspace-v14 textarea {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  border: 1px solid rgba(11, 91, 211, 0.22);
+  border-radius: 14px;
+  padding: 13px 14px;
+  font: inherit;
+  font-size: 0.97rem;
+  color: var(--ink);
+  background: linear-gradient(180deg, #eef5ff 0%, #f8fbff 100%);
+  outline: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
 .contact-workspace-v14 select {
   width: 100%;
   max-width: 100%;
   min-width: 0;
+  border: 1px solid rgba(11, 91, 211, 0.22);
+  border-radius: 14px;
+  padding: 13px 14px;
+  padding-right: 36px;
+  font: inherit;
+  font-size: 0.97rem;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+.contact-workspace-v14 input::placeholder,
+.contact-workspace-v14 textarea::placeholder {
+  color: #8b97ab;
+  opacity: 1;
 }
 .contact-workspace-v14 textarea,
 .contact-workspace-v14 select {
   overflow-x: hidden;
+}
+.contact-workspace-v14 input:focus-visible,
+.contact-workspace-v14 textarea:focus-visible {
+  border-color: rgba(11, 91, 211, 0.45);
+  box-shadow: 0 0 0 3px rgba(11, 91, 211, 0.12);
+  background: #fff;
+}
+.contact-workspace-v14 select:focus-visible {
+  border-color: rgba(11, 91, 211, 0.45);
+  box-shadow: 0 0 0 3px rgba(11, 91, 211, 0.12);
+  background-color: #fff;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--blue) 50%),
+    linear-gradient(135deg, var(--blue) 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) calc(50% - 3px),
+    calc(100% - 13px) calc(50% - 3px);
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+.contact-workspace-v14 select {
+  cursor: pointer;
+  appearance: none;
+  background-color: #f8fbff;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--blue) 50%),
+    linear-gradient(135deg, var(--blue) 50%, transparent 50%),
+    linear-gradient(180deg, #eef5ff 0%, #f8fbff 100%);
+  background-position:
+    calc(100% - 18px) calc(50% - 3px),
+    calc(100% - 13px) calc(50% - 3px),
+    0 0;
+  background-size: 5px 5px, 5px 5px, 100% 100%;
+  background-repeat: no-repeat;
+}
+.contact-workspace-v14 .contact-reach-hint.field-note {
+  margin-top: 0 !important;
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, rgba(11, 91, 211, 0.06), rgba(122, 174, 252, 0.1));
+  border: 1px solid rgba(6, 63, 149, 0.1);
+  color: #34435d !important;
+  font-size: 0.88rem;
+  font-weight: 650;
+}
+.contact-workspace-v14 .deep-intake-panels .contact-fieldset {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid rgba(11, 91, 211, 0.16);
+  border-radius: var(--radius-lg);
+  box-shadow:
+    0 14px 40px rgba(6, 16, 31, 0.06),
+    0 6px 22px rgba(6, 63, 149, 0.05);
+  background: linear-gradient(180deg, rgba(248, 251, 255, 0.95) 0%, #fff 36%) #fff;
+}
+.contact-workspace-v14 .deep-intake-panels .contact-fieldset .field-note {
+  background: rgba(6, 63, 149, 0.06);
+  border: 1px solid rgba(6, 63, 149, 0.08);
+  color: #405371 !important;
+  font-weight: 650;
+  font-size: 0.88rem;
+}
+.contact-workspace-v14 .deep-intake-panels legend {
+  font-size: 1.15rem;
+  color: var(--blue);
+  position: relative;
+  z-index: 1;
+  width: max-content;
+  max-width: 100%;
+  padding: 2px 10px 2px 0;
+  margin: 0 0 12px;
+  background: #fff;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.contact-workspace-v14 fieldset.intake-panel .choice-chip {
+  border-color: rgba(11, 91, 211, 0.22);
+  background: linear-gradient(180deg, #f2f7ff 0%, #e8f2ff 100%);
 }
 .deep-intake-panels { margin-top:0; }
 .deep-intake-panels .contact-fieldset { border-radius:28px; padding:24px; background:#fff; border:1px solid rgba(6,63,149,.12); box-shadow:0 14px 38px rgba(6,16,31,.04); }
@@ -1753,6 +1870,25 @@ section.contact-intake-section[data-reveal].visible {
 }
 .contact-workspace-v14 .intake-main-panel {
   padding: 30px;
+  border: 1px solid rgba(11, 91, 211, 0.16);
+  background:
+    linear-gradient(135deg, var(--blue), var(--blue-2)) top / 100% 4px no-repeat,
+    linear-gradient(180deg, rgba(238, 245, 255, 0.9) 0%, #fff min(64px, 18%)) #fff;
+  box-shadow:
+    0 14px 40px rgba(6, 16, 31, 0.06),
+    0 12px 32px rgba(6, 63, 149, 0.06);
+}
+.contact-workspace-v14 .contact-basics {
+  border: 1px solid rgba(11, 91, 211, 0.14);
+  box-shadow:
+    0 14px 40px rgba(6, 16, 31, 0.06),
+    0 6px 20px rgba(6, 63, 149, 0.05);
+  background: linear-gradient(180deg, rgba(245, 249, 255, 0.65) 0%, #fff 40%) #fff;
+}
+/* One flat tone behind the white fieldset — the default .intake-panels gradient + <legend> paints “between” ice and white in many browsers. */
+.contact-workspace-v14 .intake-panels.deep-intake-panels {
+  background: linear-gradient(180deg, rgba(220, 234, 255, 0.55) 0%, var(--ice) 100%);
+  border: 1px solid rgba(11, 91, 211, 0.14);
 }
 .intake-tabs-v14 {
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1769,6 +1905,39 @@ section.contact-intake-section[data-reveal].visible {
   padding: 14px 14px;
   position: relative;
   overflow: hidden;
+  border: 1px solid rgba(6, 63, 149, 0.14);
+  border-radius: 18px;
+  background: #fff;
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  box-shadow: 0 8px 22px rgba(6, 16, 31, 0.05);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+.intake-tabs-v14 button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(11, 91, 211, 0.3);
+}
+.intake-tabs-v14 button:focus-visible {
+  outline: none;
+  border-color: rgba(11, 91, 211, 0.45);
+  box-shadow: 0 0 0 3px rgba(11, 91, 211, 0.12);
+}
+.intake-tabs-v14 button.active {
+  background: linear-gradient(135deg, var(--blue), var(--blue-2));
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 18px 38px rgba(6, 63, 149, 0.22);
+  isolation: isolate;
+}
+.intake-tabs-v14 button.active span,
+.intake-tabs-v14 button.active small,
+.intake-tabs-v14 button.active b {
+  position: relative;
+  z-index: 1;
+}
+.intake-tabs-v14 button.active span {
+  color: #fff;
 }
 .intake-tabs-v14 button span {
   grid-area: title;
