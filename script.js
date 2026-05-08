@@ -1,3 +1,46 @@
+/** Remember explicit language choice so auto-redirect does not override it. */
+const ZAD_LANG_PREF_KEY = 'zad_lang_pref';
+
+(function autoRedirectFrenchLocale() {
+  const pagesWithFr = new Set(['index.html', 'services.html', 'cases.html', 'about.html', 'contact.html']);
+  try {
+    const docLang = (document.documentElement.lang || '').toLowerCase();
+    if (docLang.startsWith('fr')) return;
+
+    if (localStorage.getItem(ZAD_LANG_PREF_KEY) === 'en') return;
+
+    const candidates = [].concat(navigator.languages || [], navigator.language || []);
+    const prefersFr = candidates.some((l) => String(l).toLowerCase().startsWith('fr'));
+    if (!prefersFr) return;
+
+    const segments = window.location.pathname.split('/').filter(Boolean);
+    let file = segments.length ? segments[segments.length - 1] : 'index.html';
+    if (!file.includes('.')) file = 'index.html';
+    if (!pagesWithFr.has(file)) return;
+
+    const target = new URL(`fr/${file}`, window.location.href);
+    target.search = window.location.search;
+    target.hash = window.location.hash;
+    if (target.href === window.location.href) return;
+
+    window.location.replace(target.href);
+  } catch (_) {}
+})();
+
+document.addEventListener(
+  'click',
+  (e) => {
+    const a = e.target.closest('.lang-switch a');
+    if (!a) return;
+    try {
+      const url = new URL(a.getAttribute('href') || '', window.location.href);
+      if (url.pathname.includes('/fr/')) localStorage.setItem(ZAD_LANG_PREF_KEY, 'fr');
+      else localStorage.setItem(ZAD_LANG_PREF_KEY, 'en');
+    } catch (_) {}
+  },
+  true
+);
+
 const menuButton = document.querySelector('[data-menu-button]');
 const navLinks = document.querySelector('[data-nav-links]');
 if (menuButton && navLinks) {
