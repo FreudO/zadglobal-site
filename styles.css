@@ -2033,6 +2033,9 @@ body.is-mobile-device .contact-workspace-v14 .intake-studio.contact-success-stat
   border: 1px solid rgba(6,63,149,.10);
   color: #3d4f68;
   line-height: 1.45;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
 }
 .intake-helper-row span {
   flex: 0 0 auto;
@@ -2047,7 +2050,13 @@ body.is-mobile-device .contact-workspace-v14 .intake-studio.contact-success-stat
   letter-spacing: .08em;
   font-weight: 950;
 }
-.intake-helper-row strong { font-size: .94rem; }
+.intake-helper-row strong {
+  flex: 1 1 0%;
+  font-size: .94rem;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
 /* Lane tabs beside detail panel on wide screens; contact basics follow after. */
 .contact-workspace-v14 .intake-lanes-workspace {
   display: grid;
@@ -2072,6 +2081,10 @@ body.is-mobile-device .contact-workspace-v14 .intake-studio.contact-success-stat
   .contact-workspace-v14 .intake-lanes-rail .intake-helper-row {
     margin-bottom: 0;
   }
+}
+.contact-workspace-v14 .intake-lanes-rail {
+  min-width: 0;
+  max-width: 100%;
 }
 .contact-workspace-v14 .intake-lanes-detail {
   min-width: 0;
@@ -2164,6 +2177,10 @@ body.is-mobile-device .contact-workspace-v14 .intake-studio.contact-success-stat
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+  }
+  .intake-helper-row strong {
+    width: 100%;
+    max-width: 100%;
   }
 }
 
@@ -3859,6 +3876,8 @@ body.is-mobile-device .contact-workspace-v14 .intake-studio.contact-success-stat
   }
 
   .contact-workspace-v14 .intake-helper-row strong {
+    width: 100%;
+    max-width: 100%;
     font-size: 0.86rem;
     line-height: 1.42;
   }
@@ -3947,15 +3966,22 @@ body.is-mobile-device .contact-workspace-v14 .intake-studio.contact-success-stat
 body.is-mobile-device .contact-workspace-v14 .intake-studio,
 body.is-mobile-device .contact-workspace-v14 .intake-main-panel,
 body.is-mobile-device .contact-workspace-v14 .guided-intake-form.contact-form-mobile-flow,
+body.is-mobile-device .contact-workspace-v14 .guided-intake-form .intake-lanes-workspace,
+body.is-mobile-device .contact-workspace-v14 .intake-lanes-rail,
+body.is-mobile-device .contact-workspace-v14 .intake-helper-row,
 body.is-mobile-device .contact-workspace-v14 .deep-intake-panels,
 body.is-mobile-device .contact-workspace-v14 .contact-basics,
 body.is-mobile-device .contact-workspace-v14 .contact-form-tail {
   min-width: 0;
   max-width: 100%;
 }
-body.is-mobile-device .contact-workspace-v14,
-body.is-mobile-device .contact-workspace-v14 .intake-studio {
+/* Clip horizontal bleed on the section only. Avoid clipping .intake-studio: iOS can interfere with nested
+   overflow-x scrollers inside clipped ancestors, hiding the last lane tabs (Finance / General). */
+body.is-mobile-device .contact-workspace-v14 {
   overflow-x: clip;
+}
+body.is-mobile-device .contact-workspace-v14 .intake-studio {
+  overflow-x: visible;
 }
 /* Do not set overflow-x hidden/clip on this panel: paired with visible-y it becomes overflow-y:auto in CSS and
    can trap touch scrolling and break scroll-to-section on iOS. Horizontal overflow is contained via min-width:0 + lane row. */
@@ -4089,28 +4115,23 @@ body.is-mobile-device .contact-workspace-v14 .contact-mobile-active-lane {
   color: #30415c;
   min-height: 1.35em;
 }
+/* Two-column wrap: all six lanes stay reachable without a horizontal swipe (Finance / General were off-screen). */
 body.is-mobile-device .contact-workspace-v14 .intake-tabs-v14.intake-choice-grid {
   display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
+  flex-wrap: wrap;
   gap: 10px;
   padding: 4px 2px 10px;
+  padding-inline-end: max(2px, env(safe-area-inset-right, 0px));
   margin-bottom: 8px;
-  -webkit-overflow-scrolling: touch;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: thin;
   min-width: 0;
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
-  overscroll-behavior-x: contain;
-}
-body.is-mobile-device .contact-workspace-v14 .intake-tabs-v14.intake-choice-grid::-webkit-scrollbar {
-  height: 4px;
 }
 body.is-mobile-device .contact-workspace-v14 .intake-tabs-v14.intake-choice-grid button {
-  flex: 0 0 min(78vw, 230px);
-  scroll-snap-align: start;
+  flex: 1 1 calc(50% - 5px);
+  min-width: 0;
+  max-width: calc(50% - 5px);
   min-height: 58px;
 }
 body.is-mobile-device .contact-workspace-v14 .contact-submit-zone {
