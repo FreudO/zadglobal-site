@@ -1091,40 +1091,6 @@ document.querySelectorAll('[data-count-range]').forEach((el) => {
   trigger.observe(el);
 });
 
-// v12: make guided contact intake genuinely useful by summarizing selected needs.
-const evidenceByLane = {
-  ai: 'Examples of requests, documents, current tools, handoffs, approval rules, repeated questions, and volume estimates.',
-  software: 'Existing systems, user roles, must-have workflows, sample reports, integrations, permissions, and timeline constraints.',
-  training: 'Current onboarding materials, SOPs, roles to train, number of learners, common mistakes, and target behaviors after training.',
-  robotics: 'Field environment, safety constraints, connectivity limits, sample inspection routines, current hardware, and decisions management needs to make.',
-  finance: 'Clarify whether the need is company operational finance or personal wealth / retirement coordination; prepare account/process context and decision timeline.',
-  general: 'Countries involved, partners or stakeholders, desired outcome, timeline, available documents, and what would make the first conversation useful.'
-};
-function refreshIntakeBrief(wrap) {
-  const activeButton = wrap.querySelector('[data-intake-target].active');
-  if (!activeButton) return;
-  const target = activeButton.getAttribute('data-intake-target');
-  const activePanel = wrap.querySelector(`[data-intake-panel="${target}"]`);
-  const lane = wrap.querySelector('[data-brief-lane]');
-  const focus = wrap.querySelector('[data-brief-focus]');
-  const evidence = wrap.querySelector('[data-brief-evidence]');
-  if (lane) lane.textContent = activePanel?.getAttribute('data-brief') || activeButton.textContent.trim();
-  if (focus && activePanel) {
-    const checked = Array.from(activePanel.querySelectorAll('.choice-chip input:checked')).map((input) => input.value || input.parentElement.textContent.trim());
-    if (checked.length) {
-      focus.innerHTML = checked.map((item) => `<span class="brief-selected-chip">${item}</span>`).join('');
-    } else {
-      focus.textContent = document.documentElement.lang === 'fr' ? 'Rien de coché dans cet onglet.' : 'No focus selected yet. Choose all priorities that apply.';
-    }
-  }
-  if (evidence) evidence.textContent = evidenceByLane[target] || evidenceByLane.general;
-}
-document.querySelectorAll('[data-guided-intake]').forEach((wrap) => {
-  wrap.querySelectorAll('[data-intake-target]').forEach((button) => button.addEventListener('click', () => setTimeout(() => refreshIntakeBrief(wrap), 0)));
-  wrap.querySelectorAll('.choice-chip input').forEach((input) => input.addEventListener('change', () => refreshIntakeBrief(wrap)));
-  refreshIntakeBrief(wrap);
-});
-
 // v13 dedicated case-study workspace tabs
 wireTabs('[data-case-workspace]', 'data-case-tab', 'data-workspace-panel');
 
@@ -1214,6 +1180,13 @@ wireTabs('[data-case-workspace]', 'data-case-tab', 'data-workspace-panel');
   };
   function isFr() { return (document.documentElement.lang || '').toLowerCase().startsWith('fr'); }
   function language() { return isFr() ? 'fr' : 'en'; }
+  function chipVisibleLabel(input) {
+    const chip = input.closest('.choice-chip');
+    if (!chip) return '';
+    const clone = chip.cloneNode(true);
+    clone.querySelectorAll('input, select, textarea').forEach((el) => el.remove());
+    return clone.textContent.replace(/\s+/g, ' ').trim();
+  }
   function getSelections(wrap) {
     const lang = language();
     const selections = {};
@@ -1222,9 +1195,10 @@ wireTabs('[data-case-workspace]', 'data-case-tab', 'data-workspace-panel');
       const panel = input.closest('[data-intake-panel]');
       const lane = input.dataset.lane || panel?.getAttribute('data-intake-panel') || 'general';
       if (!selections[lane]) selections[lane] = [];
+      const visible = chipVisibleLabel(input);
       const slug = (input.value || '').trim();
       const mapped = slug ? CONTACT_VALUE_LABELS[lang]?.[slug] : '';
-      selections[lane].push(mapped || input.parentElement.textContent.trim());
+      selections[lane].push(visible || mapped || slug);
     });
     return selections;
   }
