@@ -51,7 +51,9 @@
 <p class="contact-mobile-active-lane" data-contact-active-lane="" role="status"></p>
 </div>
 <button class="mobile-advanced-toggle-btn" data-mobile-advanced-toggle="" data-label-open="Détails optionnels" data-label-close="Masquer les détails" type="button" aria-expanded="false">Détails optionnels</button>
-<div aria-label="Type de demande" class="intake-choice-grid intake-choice-grid-large intake-tabs-v14 mobile-advanced-section">
+<div class="intake-lanes-workspace mobile-advanced-section">
+<div class="intake-lanes-rail">
+<div aria-label="Type de demande" class="intake-choice-grid intake-choice-grid-large intake-tabs-v14">
 <button class="active" data-intake-target="ai" type="button"><span>IA &amp; automatisation</span><small>Documents, routage, assistants</small><b data-lane-count="ai">0</b></button>
 <button data-intake-target="software" type="button"><span>Logiciel</span><small>Portails, applications, intégrations</small><b data-lane-count="software">0</b></button>
 <button data-intake-target="training" type="button"><span>Formation</span><small>Recrues, équipes, responsables</small><b data-lane-count="training">0</b></button>
@@ -59,23 +61,12 @@
 <button data-intake-target="finance" type="button"><span>Finance</span><small>Opérations, capital, patrimoine</small><b data-lane-count="finance">0</b></button>
 <button data-intake-target="general" type="button"><span>Général</span><small>Partenaires, approvisionnement, autre</small><b data-lane-count="general">0</b></button>
 </div>
-<div class="intake-helper-row mobile-advanced-section">
+<div class="intake-helper-row">
 <span>Cumul</span><strong class="contact-helper-long">Ex. : réception documentaire (IA), intégration des nouveaux (Formation), laboratoire terrain (Robotique) — un seul envoi.</strong><strong class="contact-helper-short">Plusieurs domaines ? Changez d’onglet — tout s’ajoute à la même demande.</strong>
 </div>
-<div class="form-grid contact-basics contact-basics-v14">
-<p id="contact-reach-hint-fr" class="field-note contact-reach-hint">E-mail ou WhatsApp (indicatif + numéro) — au moins l’un des deux.</p>
-<div><label for="contact_first_fr">Prénom</label><input id="contact_first_fr" name="first_name" type="text" maxlength="80" autocomplete="given-name"/></div>
-<div><label for="contact_org_fr">Organisation</label><input id="contact_org_fr" name="organization" type="text" maxlength="120" autocomplete="organization"/></div>
-<div><label for="contact_email_fr">E-mail</label><input id="contact_email_fr" name="email" placeholder="prenom@entreprise.com" type="email" maxlength="254" autocomplete="email" autocapitalize="none" autocorrect="off" spellcheck="false" aria-describedby="contact-reach-hint-fr"/></div>
-<div class="contact-whatsapp-row">
-<div><label for="contact_whatsapp_cc_fr">Indicatif pays</label><input id="contact_whatsapp_cc_fr" name="whatsapp_country_code" type="text" inputmode="tel" autocomplete="tel-country-code" placeholder="+250" maxlength="8" spellcheck="false" autocapitalize="none" autocorrect="off" aria-describedby="contact-reach-hint-fr"/></div>
-<div><label for="contact_whatsapp_local_fr">Numéro WhatsApp</label><input id="contact_whatsapp_local_fr" name="whatsapp_local" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="788123456" maxlength="15" aria-describedby="contact-reach-hint-fr"/></div>
 </div>
-<div><label for="contact_country_fr">Pays / région</label><input id="contact_country_fr" name="country" placeholder="ex. Rwanda" type="text" maxlength="120"/></div>
-<div><label for="contact_business_fr">Type d’activité</label><input id="contact_business_fr" name="business_type" placeholder="ex. Assurance" type="text" maxlength="120"/></div>
-<div class="contact-basics-full-row"><label for="contact_sites_fr">Sites / équipes concernés</label><input id="contact_sites_fr" name="sites_teams" placeholder="ex. 3 sites · 40 pers." type="text"/></div>
-</div>
-<div class="intake-panels deep-intake-panels mobile-advanced-section">
+<div class="intake-lanes-detail">
+<div class="intake-panels deep-intake-panels">
 <fieldset class="intake-panel contact-fieldset active" data-brief="IA &amp; automatisation" data-intake-panel="ai">
 <legend>IA &amp; automatisation</legend>
 <p class="field-note">Cochez les flux utiles — cumulables avec les autres onglets.</p>
@@ -170,6 +161,21 @@
 <div class="form-grid mt-20"><div><label>Pays concernés</label><input name="general_countries_involved" placeholder="Marchés / lieux" type="text"/></div><div><label>Prochaine étape souhaitée</label><select name="general_preferred_next_step"><option value="next_discovery">Appel de découverte</option><option value="next_email">Réponse par email</option><option value="next_proposal">Discussion proposition</option><option value="next_partnership">Discussion partenariat</option></select></div></div>
 <label>Objectif de l’échange</label><textarea name="general_conversation_goal" placeholder="Sujet, objectif, participants"></textarea>
 </fieldset>
+</div>
+</div>
+</div>
+<div class="form-grid contact-basics contact-basics-v14">
+<p id="contact-reach-hint-fr" class="field-note contact-reach-hint">E-mail ou WhatsApp (indicatif + numéro) — au moins l’un des deux.</p>
+<div><label for="contact_first_fr">Prénom</label><input id="contact_first_fr" name="first_name" type="text" maxlength="80" autocomplete="given-name"/></div>
+<div><label for="contact_org_fr">Organisation</label><input id="contact_org_fr" name="organization" type="text" maxlength="120" autocomplete="organization"/></div>
+<div><label for="contact_email_fr">E-mail</label><input id="contact_email_fr" name="email" placeholder="prenom@entreprise.com" type="email" maxlength="254" autocomplete="email" autocapitalize="none" autocorrect="off" spellcheck="false" aria-describedby="contact-reach-hint-fr"/></div>
+<div class="contact-whatsapp-row">
+<div><label for="contact_whatsapp_cc_fr">Indicatif pays</label><input id="contact_whatsapp_cc_fr" name="whatsapp_country_code" type="text" inputmode="tel" autocomplete="tel-country-code" placeholder="+250" maxlength="8" spellcheck="false" autocapitalize="none" autocorrect="off" aria-describedby="contact-reach-hint-fr"/></div>
+<div><label for="contact_whatsapp_local_fr">Numéro WhatsApp</label><input id="contact_whatsapp_local_fr" name="whatsapp_local" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="788123456" maxlength="15" aria-describedby="contact-reach-hint-fr"/></div>
+</div>
+<div><label for="contact_country_fr">Pays / région</label><input id="contact_country_fr" name="country" placeholder="ex. Rwanda" type="text" maxlength="120"/></div>
+<div><label for="contact_business_fr">Type d’activité</label><input id="contact_business_fr" name="business_type" placeholder="ex. Assurance" type="text" maxlength="120"/></div>
+<div class="contact-basics-full-row"><label for="contact_sites_fr">Sites / équipes concernés</label><input id="contact_sites_fr" name="sites_teams" placeholder="ex. 3 sites · 40 pers." type="text"/></div>
 </div>
 <div class="contact-form-tail">
 <label>Contexte complémentaire</label><textarea name="additional_context" placeholder="Liens, délais, budget…"></textarea>

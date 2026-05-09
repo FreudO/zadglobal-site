@@ -1598,6 +1598,10 @@ section.contact-intake-section[data-reveal].visible {
 .intake-studio.contact-success-state .intake-brief-panel {
   display: none;
 }
+/* Fixed mobile brief sheet uses higher-specificity display:flex; hide it on success too. */
+body.is-mobile-device .contact-workspace-v14 .intake-studio.contact-success-state .intake-brief-panel {
+  display: none !important;
+}
 .form-submit-note.form-submit-note--error {
   color: #b42318;
   font-weight: 700;
@@ -1724,6 +1728,12 @@ section.contact-intake-section[data-reveal].visible {
   color: #34435d !important;
   font-size: 0.88rem;
   font-weight: 650;
+}
+.contact-workspace-v14 .contact-reach-hint.field-note.contact-reach-hint--alert {
+  color: #9f1d16 !important;
+  background: rgba(180, 35, 24, 0.09);
+  border-color: rgba(180, 35, 24, 0.45);
+  font-weight: 800;
 }
 .contact-workspace-v14 .deep-intake-panels .contact-fieldset {
   position: relative;
@@ -1884,8 +1894,13 @@ section.contact-intake-section[data-reveal].visible {
 
 /* v14: cross-lane guided request workspace */
 .contact-workspace-v14 .intake-studio {
-  grid-template-columns: minmax(0, 1.7fr) minmax(340px, .72fr);
-  gap: 28px;
+  /* Wider form, narrower preview column; brief aligned to outer edge for a bit of extra form room. */
+  grid-template-columns: minmax(0, 2.1fr) minmax(260px, 0.5fr);
+  gap: 26px;
+}
+.contact-workspace-v14 .intake-brief-panel {
+  max-width: 380px;
+  justify-self: end;
 }
 .contact-workspace-v14 .intake-studio.contact-success-state {
   grid-template-columns: 1fr;
@@ -2019,9 +2034,41 @@ section.contact-intake-section[data-reveal].visible {
   font-weight: 950;
 }
 .intake-helper-row strong { font-size: .94rem; }
+/* Lane tabs beside detail panel on wide screens; contact basics follow after. */
+.contact-workspace-v14 .intake-lanes-workspace {
+  display: grid;
+  gap: 18px;
+  margin-bottom: 20px;
+  align-items: start;
+}
+@media (min-width: 1100px) {
+  .contact-workspace-v14 .intake-lanes-workspace {
+    grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
+    gap: 24px;
+  }
+  .contact-workspace-v14 .intake-lanes-rail {
+    position: sticky;
+    top: 88px;
+    align-self: start;
+  }
+  .contact-workspace-v14 .intake-lanes-rail .intake-tabs-v14.intake-choice-grid {
+    grid-template-columns: 1fr;
+    margin-bottom: 12px;
+  }
+  .contact-workspace-v14 .intake-lanes-rail .intake-helper-row {
+    margin-bottom: 0;
+  }
+}
+.contact-workspace-v14 .intake-lanes-detail {
+  min-width: 0;
+}
 .contact-basics-v14 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.multi-chip-grid-v14 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-.multi-chip-grid-v14 .choice-chip {
+/* Avoid 4 skinny columns when the detail pane is narrow (split rail + panel). */
+.contact-workspace-v14 .multi-chip-grid-v14 {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+}
+.contact-workspace-v14 .multi-chip-grid-v14 .choice-chip {
+  min-width: 0;
   min-height: 58px;
   align-items: flex-start;
   line-height: 1.22;
@@ -2083,14 +2130,21 @@ section.contact-intake-section[data-reveal].visible {
 .evidence-card-v14 li + li { margin-top: 8px; }
 @media (max-width: 1180px) {
   .contact-workspace-v14 .intake-studio { grid-template-columns: 1fr; }
+  .contact-workspace-v14 .intake-brief-panel {
+    max-width: none;
+    justify-self: stretch;
+  }
   .intake-brief-panel-v14 { position: relative; top: auto; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .live-brief-card-v14 { grid-column: 1 / -1; }
 }
 @media (max-width: 900px) {
-  .intake-tabs-v14, .contact-basics-v14, .multi-chip-grid-v14 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .intake-tabs-v14, .contact-basics-v14 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 620px) {
-  .intake-tabs-v14, .contact-basics-v14, .multi-chip-grid-v14, .intake-brief-panel-v14 { grid-template-columns: 1fr; }
+  .intake-tabs-v14, .contact-basics-v14, .intake-brief-panel-v14 { grid-template-columns: 1fr; }
+  .contact-workspace-v14 .multi-chip-grid-v14 {
+    grid-template-columns: 1fr;
+  }
   .intake-helper-row { display: grid; }
 }
 
@@ -2913,7 +2967,6 @@ section.contact-intake-section[data-reveal].visible {
 
   .intake-tabs-v14,
   .contact-basics-v14,
-  .multi-chip-grid-v14,
   .multi-chip-grid {
     grid-template-columns: 1fr 1fr;
   }
@@ -3078,7 +3131,6 @@ section.contact-intake-section[data-reveal].visible {
 
   .intake-tabs-v14,
   .contact-basics-v14,
-  .multi-chip-grid-v14,
   .multi-chip-grid,
   .manager-metrics-row,
   .case-hero-metrics,
@@ -3836,19 +3888,20 @@ section.contact-intake-section[data-reveal].visible {
     gap: 0;
   }
 
+  body.is-mobile-device .contact-workspace-v14 .guided-intake-form .intake-lanes-workspace {
+    order: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 16px;
+  }
+
   body.is-mobile-device .contact-workspace-v14 .guided-intake-form .intake-choice-grid {
-    order: 1;
     margin-bottom: 4px;
   }
 
-  body.is-mobile-device .contact-workspace-v14 .guided-intake-form .intake-helper-row {
-    order: 2;
-  }
-
   body.is-mobile-device .contact-workspace-v14 .guided-intake-form .intake-panels {
-    order: 3;
     margin-top: 4px;
-    margin-bottom: 16px;
     scroll-margin-top: 72px;
   }
 
@@ -3951,6 +4004,7 @@ body.is-mobile-device .contact-workspace-v14 .contact-step-jump:active {
 body.is-mobile-device .contact-workspace-v14 .contact-mobile-stepper li.is-current .contact-step-jump {
   color: var(--blue);
 }
+body.is-mobile-device .contact-workspace-v14 .guided-intake-form .intake-lanes-workspace,
 body.is-mobile-device .contact-workspace-v14 .guided-intake-form .intake-choice-grid,
 body.is-mobile-device .contact-workspace-v14 .guided-intake-form .intake-panels,
 body.is-mobile-device .contact-workspace-v14 .guided-intake-form .contact-basics,

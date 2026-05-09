@@ -586,8 +586,10 @@ forms.forEach((form) => {
     const mainPanel = form.closest('.intake-main-panel');
     const successPanel = mainPanel && mainPanel.querySelector('[data-contact-success-panel]');
     const studio = form.closest('[data-guided-intake]');
+    const reachHint = form.querySelector('.contact-reach-hint');
 
     const clearReachError = () => {
+      if (reachHint) reachHint.classList.remove('contact-reach-hint--alert');
       if (!note) return;
       note.textContent = '';
       delete note.dataset.contactReachError;
@@ -600,8 +602,13 @@ forms.forEach((form) => {
         note.dataset.contactReachError = '1';
         note.classList.add('form-submit-note--error');
       }
-      focusEl?.focus();
-      note?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      if (reachHint) {
+        reachHint.classList.add('contact-reach-hint--alert');
+        reachHint.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } else {
+        note?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+      if (focusEl) focusEl.focus();
     };
 
     [emailInput, whatsCcInput, whatsLocalInput].forEach((el) => {
@@ -876,7 +883,19 @@ forms.forEach((form) => {
         }
 
         form.classList.add('is-contact-success-hidden');
-        if (studio) studio.classList.add('contact-success-state');
+        if (studio) {
+          studio.classList.add('contact-success-state');
+          const briefSheet = studio.querySelector('#contact-brief-sheet-panel');
+          const briefToggle = studio.querySelector('[data-contact-brief-sheet-toggle]');
+          if (briefSheet) briefSheet.classList.remove('contact-brief-sheet-open');
+          if (briefToggle) {
+            briefToggle.setAttribute('aria-expanded', 'false');
+            const hintEl = briefToggle.querySelector('.contact-brief-sheet-hint');
+            if (hintEl) {
+              hintEl.textContent = isFr ? 'Ouvrir' : 'Tap to expand';
+            }
+          }
+        }
         if (successPanel) {
           successPanel.hidden = false;
           successPanel.classList.add('is-visible');
@@ -1603,7 +1622,7 @@ window.addEventListener('hashchange', applyContactIntakeHash);
     }
 
     const stepTargets = [
-      { idx: 0, el: form.querySelector('.intake-choice-grid') },
+      { idx: 0, el: form.querySelector('.intake-lanes-workspace') || form.querySelector('.intake-choice-grid') },
       { idx: 1, el: form.querySelector('.intake-panels') },
       { idx: 2, el: form.querySelector('.contact-basics') },
       { idx: 3, el: form.querySelector('.contact-form-tail') }
