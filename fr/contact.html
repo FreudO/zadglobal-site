@@ -22,7 +22,7 @@
 </div>
 </div>
 </header>
-<main><section class="page-hero"><div class="container"><p class="eyebrow">Contact ZAD</p><h1>Dites-nous ce que vous voulez améliorer.</h1><p>Décrivez votre besoin et vos objectifs — nous répondons avec des prochaines étapes concrètes.</p></div></section>
+<main><section class="page-hero"><div class="container"><h1>Dites-nous ce que vous voulez améliorer.</h1><p>Décrivez votre besoin et vos objectifs — nous répondons avec des prochaines étapes concrètes.</p></div></section>
 
 
 <section class="white contact-intake-section intake-studio-section contact-workspace-v14">
@@ -64,16 +64,16 @@
 </div>
 <div class="form-grid contact-basics contact-basics-v14">
 <p id="contact-reach-hint-fr" class="field-note contact-reach-hint">E-mail ou WhatsApp (indicatif + numéro) — au moins l’un des deux.</p>
-<div><label for="contact_first_fr">Prénom</label><input id="contact_first_fr" name="first_name" placeholder="Votre prénom" type="text" maxlength="80" autocomplete="given-name"/></div>
-<div><label for="contact_org_fr">Organisation</label><input id="contact_org_fr" name="organization" placeholder="Entreprise ou institution" type="text" maxlength="120" autocomplete="organization"/></div>
-<div><label for="contact_email_fr">E-mail</label><input id="contact_email_fr" name="email" placeholder="vous@exemple.com" type="email" maxlength="254" autocomplete="email" autocapitalize="none" autocorrect="off" spellcheck="false" aria-describedby="contact-reach-hint-fr"/></div>
+<div><label for="contact_first_fr">Prénom</label><input id="contact_first_fr" name="first_name" type="text" maxlength="80" autocomplete="given-name"/></div>
+<div><label for="contact_org_fr">Organisation</label><input id="contact_org_fr" name="organization" type="text" maxlength="120" autocomplete="organization"/></div>
+<div><label for="contact_email_fr">E-mail</label><input id="contact_email_fr" name="email" placeholder="prenom@entreprise.com" type="email" maxlength="254" autocomplete="email" autocapitalize="none" autocorrect="off" spellcheck="false" aria-describedby="contact-reach-hint-fr"/></div>
 <div class="contact-whatsapp-row">
 <div><label for="contact_whatsapp_cc_fr">Indicatif pays</label><input id="contact_whatsapp_cc_fr" name="whatsapp_country_code" type="text" inputmode="tel" autocomplete="tel-country-code" placeholder="+250" maxlength="8" spellcheck="false" autocapitalize="none" autocorrect="off" aria-describedby="contact-reach-hint-fr"/></div>
-<div><label for="contact_whatsapp_local_fr">Numéro WhatsApp</label><input id="contact_whatsapp_local_fr" name="whatsapp_local" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="Ex. 788123456 (chiffres)" maxlength="15" aria-describedby="contact-reach-hint-fr"/></div>
+<div><label for="contact_whatsapp_local_fr">Numéro WhatsApp</label><input id="contact_whatsapp_local_fr" name="whatsapp_local" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="788123456" maxlength="15" aria-describedby="contact-reach-hint-fr"/></div>
 </div>
-<div><label for="contact_country_fr">Pays / région</label><input id="contact_country_fr" name="country" placeholder="Pays ou région du projet" type="text" maxlength="120"/></div>
-<div><label for="contact_business_fr">Type d’activité</label><input id="contact_business_fr" name="business_type" placeholder="Assurance, commerce, mine, école, État, etc." type="text" maxlength="120"/></div>
-<div class="contact-basics-full-row"><label for="contact_sites_fr">Sites / équipes concernés</label><input id="contact_sites_fr" name="sites_teams" placeholder="ex. 3 agences, 40 employés, 2 services" type="text"/></div>
+<div><label for="contact_country_fr">Pays / région</label><input id="contact_country_fr" name="country" placeholder="ex. Rwanda" type="text" maxlength="120"/></div>
+<div><label for="contact_business_fr">Type d’activité</label><input id="contact_business_fr" name="business_type" placeholder="ex. Assurance" type="text" maxlength="120"/></div>
+<div class="contact-basics-full-row"><label for="contact_sites_fr">Sites / équipes concernés</label><input id="contact_sites_fr" name="sites_teams" placeholder="ex. 3 sites · 40 pers." type="text"/></div>
 </div>
 <div class="intake-panels deep-intake-panels mobile-advanced-section">
 <fieldset class="intake-panel contact-fieldset active" data-brief="IA &amp; automatisation" data-intake-panel="ai">
@@ -89,8 +89,8 @@
 <label class="choice-chip"><input data-lane="ai" type="checkbox" value="Traitement factures, commandes ou dossiers"/>Factures / commandes / dossiers</label>
 <label class="choice-chip"><input data-lane="ai" type="checkbox" value="Nettoyage de données et détection des doublons"/>Nettoyage données &amp; doublons</label>
 </div>
-<div class="form-grid mt-20"><div><label>Volume mensuel</label><input name="ai_monthly_volume" placeholder="ex. 400 demandes / mois" type="text"/></div><div><label>Outils actuels</label><input name="ai_current_tools" placeholder="CRM, ERP, Excel, comptabilité, email..." type="text"/></div><div><label>Où le travail commence-t-il ?</label><input name="ai_work_start" placeholder="Boîte email, formulaire, WhatsApp, centre d’appel..." type="text"/></div><div><label>Qui vérifie ou valide ?</label><input name="ai_reviewers" placeholder="Agent, superviseur, finance, opérations..." type="text"/></div></div>
-<label>Travail répétitif et pertes de temps</label><textarea name="ai_repetitive_work" placeholder="Qu’est-ce qui est copié, vérifié, routé ou retardé ?"></textarea>
+<div class="form-grid mt-20"><div><label>Volume mensuel</label><input name="ai_monthly_volume" placeholder="ex. 400 / mois" type="text"/></div><div><label>Outils actuels</label><input name="ai_current_tools" placeholder="CRM, Excel…" type="text"/></div><div><label>Où le travail commence-t-il ?</label><input name="ai_work_start" placeholder="Email, formulaire, WhatsApp…" type="text"/></div><div><label>Qui vérifie ou valide ?</label><input name="ai_reviewers" placeholder="ex. Superviseur" type="text"/></div></div>
+<label>Travail répétitif et pertes de temps</label><textarea name="ai_repetitive_work" placeholder="Qu’est-ce qui est lent ou manuel ?"></textarea>
 </fieldset>
 <fieldset class="intake-panel contact-fieldset" data-brief="Logiciel / systèmes" data-intake-panel="software">
 <legend>Logiciel / systèmes</legend>
@@ -105,8 +105,8 @@
 <label class="choice-chip"><input data-lane="software" type="checkbox" value="Sécurité, rôles utilisateurs et permissions"/>Rôles &amp; permissions</label>
 <label class="choice-chip"><input data-lane="software" type="checkbox" value="Modernisation d’un ancien processus ou système"/>Modernisation existant</label>
 </div>
-<div class="form-grid mt-20"><div><label>Utilisateurs principaux</label><input name="software_main_users" placeholder="Clients, staff, responsables, partenaires..." type="text"/></div><div><label>Systèmes existants</label><input name="software_existing_systems" placeholder="Site, CRM, ERP, base, Excel..." type="text"/></div><div><label>Fonction indispensable</label><input name="software_must_have_feature" placeholder="La chose qu’il doit très bien faire" type="text"/></div><div><label>Délai cible</label><input name="software_target_timeline" placeholder="Urgent, 30 jours, ce trimestre..." type="text"/></div></div>
-<label>Rôle du logiciel</label><textarea name="software_required_outcomes" placeholder="Actions, utilisateurs, droits, flux, rapports, intégrations…"></textarea>
+<div class="form-grid mt-20"><div><label>Utilisateurs principaux</label><input name="software_main_users" placeholder="Équipe, clients…" type="text"/></div><div><label>Systèmes existants</label><input name="software_existing_systems" placeholder="CRM, ERP…" type="text"/></div><div><label>Fonction indispensable</label><input name="software_must_have_feature" placeholder="Point critique" type="text"/></div><div><label>Délai cible</label><input name="software_target_timeline" placeholder="ex. Ce trimestre" type="text"/></div></div>
+<label>Rôle du logiciel</label><textarea name="software_required_outcomes" placeholder="Actions, intégrations…"></textarea>
 </fieldset>
 <fieldset class="intake-panel contact-fieldset" data-brief="Formation / adoption" data-intake-panel="training">
 <legend>Formation / adoption</legend>
@@ -121,8 +121,8 @@
 <label class="choice-chip"><input data-lane="training" type="checkbox" value="Vente ou expérience client"/>Vente / expérience client</label>
 <label class="choice-chip"><input data-lane="training" type="checkbox" value="Programme train-the-trainer"/>Former les formateurs</label>
 </div>
-<div class="form-grid mt-20"><div><label>Qui doit être formé ?</label><input name="training_audience" placeholder="Nouveaux employés, responsables, agents..." type="text"/></div><div><label>Nombre de personnes</label><input name="training_people_count" placeholder="ex. 15 employés, 4 responsables" type="text"/></div><div><label>Format préféré</label><select name="training_preferred_format"><option>Atelier en direct</option><option>Sessions en ligne</option><option>Programme hybride</option><option>Académie d’entreprise</option><option>Assistant IA interne</option></select></div><div><label>Supports existants</label><input name="training_existing_materials" placeholder="Modes opératoires, manuels, vidéos, documents..." type="text"/></div></div>
-<label>Résultat attendu après formation</label><textarea name="training_target_capabilities" placeholder="Comportements, compétences ou décisions visées."></textarea>
+<div class="form-grid mt-20"><div><label>Qui doit être formé ?</label><input name="training_audience" placeholder="Recrues, managers…" type="text"/></div><div><label>Nombre de personnes</label><input name="training_people_count" placeholder="ex. ~20" type="text"/></div><div><label>Format préféré</label><select name="training_preferred_format"><option>Atelier en direct</option><option>Sessions en ligne</option><option>Programme hybride</option><option>Académie d’entreprise</option><option>Assistant IA interne</option></select></div><div><label>Supports existants</label><input name="training_existing_materials" placeholder="Procédures, vidéos…" type="text"/></div></div>
+<label>Résultat attendu après formation</label><textarea name="training_target_capabilities" placeholder="Résultats visés"></textarea>
 </fieldset>
 <fieldset class="intake-panel contact-fieldset" data-brief="Robotique / terrain" data-intake-panel="robotics">
 <legend>Robotique / automatisation terrain</legend>
@@ -137,8 +137,8 @@
 <label class="choice-chip"><input data-lane="robotics" type="checkbox" value="Vision par ordinateur ou inspection visuelle"/>Vision par ordinateur</label>
 <label class="choice-chip"><input data-lane="robotics" type="checkbox" value="Télémétrie équipements ou IoT"/>Télémétrie / IoT</label>
 </div>
-<div class="form-grid mt-20"><div><label>Environnement terrain</label><input name="robotics_field_environment" placeholder="Mine, ferme, entrepôt, route, site distant..." type="text"/></div><div><label>Que faut-il suivre ?</label><input name="robotics_monitoring_targets" placeholder="Actifs, terrain, stock, équipement, sécurité..." type="text"/></div><div><label>Contraintes</label><input name="robotics_constraints" placeholder="Connectivité, distance, météo, sécurité..." type="text"/></div><div><label>Matériel actuel</label><input name="robotics_current_hardware" placeholder="Drones, capteurs, caméras, rien encore..." type="text"/></div></div>
-<label>Décision à éclairer avec les données terrain</label><textarea name="robotics_management_decision" placeholder="Inspection, risque ou rapport manquant…"></textarea>
+<div class="form-grid mt-20"><div><label>Environnement terrain</label><input name="robotics_field_environment" placeholder="ex. Mine, entrepôt" type="text"/></div><div><label>Que faut-il suivre ?</label><input name="robotics_monitoring_targets" placeholder="Actifs, sécurité…" type="text"/></div><div><label>Contraintes</label><input name="robotics_constraints" placeholder="Réseau, météo…" type="text"/></div><div><label>Matériel actuel</label><input name="robotics_current_hardware" placeholder="Drones, capteurs…" type="text"/></div></div>
+<label>Décision à éclairer avec les données terrain</label><textarea name="robotics_management_decision" placeholder="Inspection, risque, rapports…"></textarea>
 </fieldset>
 <fieldset class="intake-panel contact-fieldset" data-brief="Finance / conseil" data-intake-panel="finance">
 <legend>Finance / conseil</legend>
@@ -153,8 +153,8 @@
 <label class="choice-chip"><input data-lane="finance" type="checkbox" value="Revue de portefeuille d’investissement"/>Revue portefeuille</label>
 <label class="choice-chip"><input data-lane="finance" type="checkbox" value="Succession ou sortie du dirigeant"/>Succession / sortie dirigeant</label>
 </div>
-<div class="form-grid mt-20"><div><label>Objectif principal</label><input name="finance_main_objective" placeholder="Réduire les coûts, planifier le capital..." type="text"/></div><div><label>Comptes ou processus concernés</label><input name="finance_accounts_or_processes" placeholder="Comptes titres, contrats retraite, réserves, budget, flux de travail..." type="text"/></div><div><label>Horizon de décision</label><input name="finance_decision_timeframe" placeholder="Maintenant, ce trimestre, long terme..." type="text"/></div><div><label>Qui est impliqué ?</label><input name="finance_stakeholders" placeholder="Propriétaire, CFO, famille, conseil..." type="text"/></div></div>
-<label>Décision financière visée</label><textarea name="finance_decision_details" placeholder="Entreprise vs patrimoine personnel : séparez si besoin."></textarea><p class="field-note">Investissement / patrimoine : adéquation, licences, infos réglementaires — pas de résultat garanti.</p>
+<div class="form-grid mt-20"><div><label>Objectif principal</label><input name="finance_main_objective" placeholder="ex. Réduction coûts" type="text"/></div><div><label>Comptes ou processus concernés</label><input name="finance_accounts_or_processes" placeholder="Budget, comptes…" type="text"/></div><div><label>Horizon de décision</label><input name="finance_decision_timeframe" placeholder="Ce trimestre / long terme" type="text"/></div><div><label>Qui est impliqué ?</label><input name="finance_stakeholders" placeholder="CFO, dirigeant…" type="text"/></div></div>
+<label>Décision financière visée</label><textarea name="finance_decision_details" placeholder="Entreprise vs perso — précisez si les deux."></textarea><p class="field-note">Investissement / patrimoine : adéquation, licences, infos réglementaires — pas de résultat garanti.</p>
 </fieldset>
 <fieldset class="intake-panel contact-fieldset" data-brief="Général / partenariat" data-intake-panel="general">
 <legend>Général / partenariat</legend>
@@ -167,12 +167,12 @@
 <label class="choice-chip"><input data-lane="general" type="checkbox" value="Demande web ou métier"/>Demande web / métier</label>
 <label class="choice-chip"><input data-lane="general" type="checkbox" value="Pas encore sûr"/>Pas encore sûr</label>
 </div>
-<div class="form-grid mt-20"><div><label>Pays concernés</label><input name="general_countries_involved" placeholder="Où se trouve l’opportunité ou la clientèle ?" type="text"/></div><div><label>Prochaine étape souhaitée</label><select name="general_preferred_next_step"><option>Appel de découverte</option><option>Réponse par email</option><option>Discussion proposition</option><option>Discussion partenariat</option></select></div></div>
-<label>Objectif de l’échange</label><textarea name="general_conversation_goal" placeholder="Sujet, résultat attendu, parties prenantes."></textarea>
+<div class="form-grid mt-20"><div><label>Pays concernés</label><input name="general_countries_involved" placeholder="Marchés / lieux" type="text"/></div><div><label>Prochaine étape souhaitée</label><select name="general_preferred_next_step"><option>Appel de découverte</option><option>Réponse par email</option><option>Discussion proposition</option><option>Discussion partenariat</option></select></div></div>
+<label>Objectif de l’échange</label><textarea name="general_conversation_goal" placeholder="Sujet, objectif, participants"></textarea>
 </fieldset>
 </div>
 <div class="contact-form-tail">
-<label>Contexte complémentaire</label><textarea name="additional_context" placeholder="Liens, délais, budget, contraintes, exemples…"></textarea>
+<label>Contexte complémentaire</label><textarea name="additional_context" placeholder="Liens, délais, budget…"></textarea>
 <div class="attachment-box" data-file-upload>
   <label for="supporting_files_fr">Pièces jointes optionnelles</label>
   <div class="file-upload-control">
@@ -185,7 +185,6 @@
 <input type="hidden" data-request-scope="" name="request_scope"/>
 <div class="contact-submit-zone">
 <button class="btn btn-primary mt-24" type="submit">Envoyer le brief</button>
-<p class="contact-submit-reassurance">Réponse sous ~1 jour ouvré.</p>
 <p class="section-lede form-submit-note" data-form-note=""></p>
 </div>
 </div>
@@ -211,14 +210,13 @@
 <div class="brief-block"><small>Ce que ZAD peut évaluer</small><p data-brief-outcome>Premier échange : automatisation, logiciel, formation, terrain, finance ou feuille de route combinée.</p></div>
 </div>
 <div class="brief-card evidence-card-v14">
-<strong>Éléments utiles à préparer</strong>
+<strong>Pièces utiles pour le premier échange</strong>
 <ul data-brief-evidence-list>
-<li>Exemples du processus ou de la demande actuelle.</li>
-<li>Outils, fichiers, documents ou systèmes déjà utilisés.</li><li>Pièces jointes si utiles pour illustrer.</li>
-<li>Volume, équipes impliquées et points de blocage.</li>
+<li>Exemples anonymisés ou captures d’écran partageables.</li>
+<li>Noms d’outils ou liens — jamais de mots de passe.</li>
+<li>Pièces jointes du formulaire si un export aide.</li>
 </ul>
 </div>
-<div class="brief-card compact-contact-card"><strong>Contact direct</strong><p>info@zadglobal.org<br/>zadglobal.org</p><span>Réponse sous ~1 jour ouvré.</span></div>
 </div>
 </aside>
 </div>

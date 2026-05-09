@@ -71,6 +71,15 @@ window.addEventListener('orientationchange', syncMobileDeviceClass);
 /** Web3Forms: create a free access key at https://web3forms.com — safe to use in frontend JS. */
 const WEB3FORMS_ACCESS_KEY = '97e1d4b2-a4c8-4553-9583-3f6a01b3168b';
 
+/**
+ * Google Sheets + Drive (Apps Script Web App). Paste the full URL ending in /exec.
+ * If non-empty, submissions go here (with attachments). If empty, only Web3Forms is used.
+ */
+const GOOGLE_CONTACT_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxsQTLO1SvLbWux2YccLEPqiZ2RpJpet_JgtWwgNTl4lXt5DpFQ3CuF4U2N8F65QCq5/exec';
+
+/** Optional; must match Apps Script property FORM_SECRET (leave '' if you did not set one). */
+const GOOGLE_CONTACT_FORM_SECRET = '';
+
 const forms = document.querySelectorAll('form[data-static-form]');
 forms.forEach((form) => {
   form.addEventListener('submit', (event) => {
@@ -149,6 +158,36 @@ forms.forEach((form) => {
       }
     }
     return data;
+  }
+
+  function readFileStripDataUrl(file) {
+    return new Promise((resolve, reject) => {
+      const r = new FileReader();
+      r.onload = () => {
+        const s = String(r.result || '');
+        const comma = s.indexOf(',');
+        resolve(comma >= 0 ? s.slice(comma + 1) : s);
+      };
+      r.onerror = () => reject(new Error('file-read'));
+      r.readAsDataURL(file);
+    });
+  }
+
+  async function collectSupportingFilesAsAttachments(form) {
+    const input = form.querySelector('input[type="file"][name="supporting_files"]');
+    if (!input || !input.files || !input.files.length) return [];
+    const out = [];
+    for (let i = 0; i < input.files.length; i += 1) {
+      const file = input.files[i];
+      if (!file || !file.size) continue;
+      const data = await readFileStripDataUrl(file);
+      out.push({
+        filename: file.name || `attachment-${i + 1}`,
+        mimeType: file.type || 'application/octet-stream',
+        data
+      });
+    }
+    return out;
   }
 
   document.querySelectorAll('form.guided-intake-form').forEach((form) => {
@@ -309,12 +348,14 @@ forms.forEach((form) => {
 
       clearReachError();
 
+      const googleUrl =
+        typeof GOOGLE_CONTACT_SCRIPT_URL === 'string' ? GOOGLE_CONTACT_SCRIPT_URL.trim() : '';
       const accessKey = WEB3FORMS_ACCESS_KEY.trim();
-      if (!accessKey) {
+      if (!googleUrl && !accessKey) {
         if (note) {
           note.textContent = isFr
-            ? 'Clé Web3Forms manquante : WEB3FORMS_ACCESS_KEY dans script.js.'
-            : 'Form not configured yet: add your Web3Forms access key in script.js (WEB3FORMS_ACCESS_KEY).';
+            ? 'Formulaire non configuré : renseignez GOOGLE_CONTACT_SCRIPT_URL ou WEB3FORMS_ACCESS_KEY dans script.js.'
+            : 'Form not configured: set GOOGLE_CONTACT_SCRIPT_URL or WEB3FORMS_ACCESS_KEY in script.js.';
           note.classList.add('form-submit-note--error');
         }
         note?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -334,13 +375,13 @@ forms.forEach((form) => {
       }
 
       const firstName = (fields.first_name || '').trim();
-      const payload = {
+      const web3Payload = {
         access_key: accessKey,
         subject: isFr ? 'ZAD — Brief projet' : 'ZAD — New project brief (contact form)',
         from_name: firstName ? `${firstName} (ZAD contact)` : 'ZAD contact form',
         ...fields
       };
-      if (emailVal) payload.replyto = emailVal;
+      if (emailVal) web3Payload.replyto = emailVal;
 
       if (submitBtn) {
         submitBtn.disabled = true;
@@ -348,26 +389,81 @@ forms.forEach((form) => {
       }
 
       try {
-        const res = await fetch('https://api.web3forms.com/submit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        let data = {};
-        try {
-          data = await res.json();
-        } catch (_) {}
-
-        if (!res.ok || data.success === false) {
-          const msg = typeof data.message === 'string' ? data.message : '';
-          if (note) {
-            note.textContent = msg || (isFr
-              ? 'Échec d’envoi. Réessayez ou écrivez à info@zadglobal.org.'
-              : 'Something went wrong sending your request. Try again shortly or email info@zadglobal.org.');
-            note.classList.add('form-submit-note--error');
+        if (googleUrl) {
+          let attachments = [];
+          try {
+            attachments = await collectSupportingFilesAsAttachments(form);
+          } catch (_) {
+            if (note) {
+              note.textContent = isFr
+                ? 'Impossible de lire une pièce jointe. Réessayez ou réduisez la taille des fichiers.'
+                : 'Could not read an attachment. Try again or use smaller files.';
+              note.classList.add('form-submit-note--error');
+            }
+            note?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            return;
           }
-          note?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          return;
+
+          const googlePayload = {
+            request_scope: String(fields.request_scope || '').trim(),
+            meta: {
+              email: String(fields.email || emailVal || '').trim(),
+              first_name: String(fields.first_name || '').trim(),
+              organization: String(fields.organization || '').trim(),
+              whatsapp: String(fields.whatsapp || '').trim(),
+              country: String(fields.country || '').trim()
+            },
+            fields,
+            attachments
+          };
+          const gSecret =
+            typeof GOOGLE_CONTACT_FORM_SECRET === 'string' ? GOOGLE_CONTACT_FORM_SECRET.trim() : '';
+          if (gSecret) googlePayload.secret = gSecret;
+
+          const res = await fetch(googleUrl, {
+            method: 'POST',
+            redirect: 'follow',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8', Accept: 'application/json' },
+            body: JSON.stringify(googlePayload)
+          });
+          let data = {};
+          try {
+            data = await res.json();
+          } catch (_) {}
+
+          if (!res.ok || data.success === false) {
+            const errMsg = typeof data.error === 'string' ? data.error : '';
+            if (note) {
+              note.textContent = errMsg || (isFr
+                ? 'Échec d’envoi. Vérifiez le script Google ou écrivez à info@zadglobal.org.'
+                : 'Something went wrong sending your request. Check the Google script or email info@zadglobal.org.');
+              note.classList.add('form-submit-note--error');
+            }
+            note?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            return;
+          }
+        } else {
+          const res = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify(web3Payload)
+          });
+          let data = {};
+          try {
+            data = await res.json();
+          } catch (_) {}
+
+          if (!res.ok || data.success === false) {
+            const msg = typeof data.message === 'string' ? data.message : '';
+            if (note) {
+              note.textContent = msg || (isFr
+                ? 'Échec d’envoi. Réessayez ou écrivez à info@zadglobal.org.'
+                : 'Something went wrong sending your request. Try again shortly or email info@zadglobal.org.');
+              note.classList.add('form-submit-note--error');
+            }
+            note?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            return;
+          }
         }
 
         form.classList.add('is-contact-success-hidden');
@@ -616,28 +712,76 @@ wireTabs('[data-case-workspace]', 'data-case-tab', 'data-workspace-panel');
   };
   const evidence = {
     ai: {
-      en: ['Sample documents, emails, WhatsApp messages, or forms.', 'Current tools and handoffs: CRM, Excel, ERP, inbox, approvals.', 'Monthly volume, repeated questions, and where the work gets delayed.'],
-      fr: ['Documents, emails, WhatsApp ou formulaires.', 'Outils : CRM, Excel, ERP, validations…', 'Volume mensuel et points de blocage.']
+      en: [
+        'One redacted example of a real item (email, ticket, or form) — attach here or bring to the call.',
+        'A screenshot of the screen or folder where work piles up.',
+        'Note any rule that blocks automation (retention, consent, approvals).'
+      ],
+      fr: [
+        'Un exemple réel anonymisé (email, ticket, formulaire) — pièce jointe ou à montrer en appel.',
+        'Capture de l’écran ou du dossier où le travail s’accumule.',
+        'Règle interne qui bloque l’automatisation (conservation, consentement, validation).'
+      ]
     },
     software: {
-      en: ['Current systems, links, exports, screenshots, or workflow examples.', 'User roles, permissions, integrations, reports, and must-have actions.', 'Timeline, launch constraints, and what the current tools cannot do.'],
-      fr: ['Exports, captures, exemples de flux.', 'Rôles, permissions, intégrations, délais.', 'Ce que les outils actuels ne font pas.']
+      en: [
+        'Screenshot or short recording of the workflow you want to improve.',
+        'Names of systems only (no passwords) — a list or org chart is enough.',
+        'One export or mock-up of a report or screen that must stay available.'
+      ],
+      fr: [
+        'Capture ou courte démo du flux à améliorer.',
+        'Noms des systèmes seulement (pas de mots de passe) — liste ou schéma suffisent.',
+        'Export ou maquette d’un écran ou rapport à conserver.'
+      ]
     },
     training: {
-      en: ['Existing SOPs, manuals, videos, slides, or onboarding documents.', 'Roles to train, number of learners, common mistakes, and target behavior.', 'Whether training should be live, online, hybrid, or supported by an AI coach.'],
-      fr: ['Supports existants (modes opératoires, vidéos…)', 'Rôles, volume d’apprenants, erreurs fréquentes.', 'Format : présentiel, distanciel ou hybride.']
+      en: [
+        'Existing deck, SOP, or video — or say you are starting from scratch.',
+        'Rough learner count and whether sessions must be on-site.',
+        'One example of a mistake or question that repeats today.'
+      ],
+      fr: [
+        'Support existant (présentation, mode opératoire, vidéo) — ou « à créer ».',
+        'Ordre de grandeur du nombre d’apprenants et contrainte lieu / distanciel.',
+        'Exemple d’erreur ou de question qui revient souvent.'
+      ]
     },
     robotics: {
-      en: ['Site type, photos, inspection routines, safety constraints, and connectivity limits.', 'Existing hardware: drones, sensors, cameras, robots, vehicles, or none yet.', 'The field decision management needs to make from the data.'],
-      fr: ['Photos, routine d’inspection, contraintes terrain.', 'Matériel : drones, capteurs, caméras…', 'Décision terrain à mieux piloter.']
+      en: [
+        'Photo, map link, or short description of the environment (if shareable).',
+        'What hardware exists today — or clearly state “none yet”.',
+        'The one field decision leadership needs clearer data for.'
+      ],
+      fr: [
+        'Photo, lien carte ou courte description du site (si partageable).',
+        'Matériel en place — ou indiquer clairement « rien pour l’instant ».',
+        'La décision terrain que la direction veut mieux éclairer.'
+      ]
     },
     finance: {
-      en: ['Clarify whether this is company operational finance or personal wealth coordination.', 'Budgets, account types, cost centers, staff allocation, or planning timeline.', 'Decision makers involved and any compliance or suitability constraints.'],
-      fr: ['Préciser entreprise ou patrimoine personnel.', 'Budgets, comptes concernés, calendrier.', 'Décideurs et contraintes réglementaires.']
+      en: [
+        'State in writing if this thread is company books, personal wealth, or both.',
+        'High-level context only here — no full account numbers.',
+        'Who must be on the first call (CFO, owner, advisor) and any hard deadlines.'
+      ],
+      fr: [
+        'Préciser par écrit : entreprise, patrimoine personnel, ou les deux.',
+        'Contexte général seulement — pas de numéros de compte complets.',
+        'Qui doit être sur le premier appel et échéances fixes éventuelles.'
+      ]
     },
     general: {
-      en: ['Countries involved, stakeholders, partner expectations, and desired outcome.', 'Any existing documents, supplier context, quality requirements, or deadlines.', 'What would make the first conversation useful.'],
-      fr: ['Pays, parties prenantes, résultat attendu.', 'Documents existants, délais, exigences qualité.', 'Ce qui rendrait le premier contact utile.']
+      en: [
+        'A short paragraph on the outcome you want from the first conversation.',
+        'Who should join the call, if you already know.',
+        'Any NDA, procurement, or security step before details can be shared.'
+      ],
+      fr: [
+        'Quelques lignes sur le résultat attendu du premier échange.',
+        'Qui devrait participer à l’appel, si c’est déjà défini.',
+        'NDA, achats ou contraintes sécurité avant partage de détails.'
+      ]
     }
   };
   function isFr() { return (document.documentElement.lang || '').toLowerCase().startsWith('fr'); }
