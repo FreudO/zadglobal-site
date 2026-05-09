@@ -80,14 +80,14 @@
 <legend>IA &amp; automatisation</legend>
 <p class="field-note">Cochez les flux utiles — cumulables avec les autres onglets.</p>
 <div class="multi-chip-grid multi-chip-grid-v14">
-<label class="choice-chip"><input name="intake_selection" data-lane="ai" type="checkbox" value="Réception documentaire et extraction de données"/>Réception documentaire &amp; extraction</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="ai" type="checkbox" value="Emails, WhatsApp et relance client"/>Email / WhatsApp / relance</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="ai" type="checkbox" value="Validations, routage et attribution des tâches"/>Validations &amp; routage</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="ai" type="checkbox" value="Assistant IA interne ou recherche documentaire"/>Assistant IA interne</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="ai" type="checkbox" value="Rapports et tableaux de bord"/>Rapports &amp; tableaux de bord</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="ai" type="checkbox" value="Automatisation du support client"/>Support client automatisé</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="ai" type="checkbox" value="Traitement factures, commandes ou dossiers"/>Factures / commandes / dossiers</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="ai" type="checkbox" value="Nettoyage de données et détection des doublons"/>Nettoyage données &amp; doublons</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="ai" type="checkbox" value="ai_doc_intake"/>Réception documentaire</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="ai" type="checkbox" value="ai_client_followup"/>Relance client</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="ai" type="checkbox" value="ai_workflow_routing"/>Routage des flux</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="ai" type="checkbox" value="ai_internal_assistant"/>Assistant IA interne</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="ai" type="checkbox" value="ai_reporting"/>Rapports</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="ai" type="checkbox" value="ai_support_automation"/>Automatisation support</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="ai" type="checkbox" value="ai_billing_claims"/>Facturation &amp; dossiers</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="ai" type="checkbox" value="ai_data_quality"/>Qualité des données</label>
 </div>
 <div class="form-grid mt-20"><div><label>Volume mensuel</label><input name="ai_monthly_volume" placeholder="ex. 400 / mois" type="text"/></div><div><label>Outils actuels</label><input name="ai_current_tools" placeholder="CRM, Excel…" type="text"/></div><div><label>Où le travail commence-t-il ?</label><input name="ai_work_start" placeholder="Email, formulaire, WhatsApp…" type="text"/></div><div><label>Qui vérifie ou valide ?</label><input name="ai_reviewers" placeholder="ex. Superviseur" type="text"/></div></div>
 <label>Travail répétitif et pertes de temps</label><textarea name="ai_repetitive_work" placeholder="Qu’est-ce qui est lent ou manuel ?"></textarea>
@@ -96,14 +96,14 @@
 <legend>Logiciel / systèmes</legend>
 <p class="field-note">À créer, moderniser ou connecter.</p>
 <div class="multi-chip-grid multi-chip-grid-v14">
-<label class="choice-chip"><input name="intake_selection" data-lane="software" type="checkbox" value="Site web ou page d’atterrissage"/>Site web / page d’atterrissage</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="software" type="checkbox" value="Portail client ou espace membre"/>Portail client</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="software" type="checkbox" value="Plateforme interne ou back-office"/>Plateforme interne</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="software" type="checkbox" value="Application mobile"/>Application mobile</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="software" type="checkbox" value="Base de données, tableau de bord ou rapports"/>Base de données / tableau de bord</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="software" type="checkbox" value="Intégration entre systèmes existants"/>Intégration systèmes</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="software" type="checkbox" value="Sécurité, rôles utilisateurs et permissions"/>Rôles &amp; permissions</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="software" type="checkbox" value="Modernisation d’un ancien processus ou système"/>Modernisation existant</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="software" type="checkbox" value="sw_website"/>Site web</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="software" type="checkbox" value="sw_portal"/>Portail client</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="software" type="checkbox" value="sw_internal_app"/>Application interne</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="software" type="checkbox" value="sw_mobile"/>Application mobile</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="software" type="checkbox" value="sw_data_bi"/>Données &amp; BI</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="software" type="checkbox" value="sw_integrations"/>Intégrations</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="software" type="checkbox" value="sw_access_control"/>Contrôle d’accès</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="software" type="checkbox" value="sw_modernization"/>Modernisation</label>
 </div>
 <div class="form-grid mt-20"><div><label>Utilisateurs principaux</label><input name="software_main_users" placeholder="Équipe, clients…" type="text"/></div><div><label>Systèmes existants</label><input name="software_existing_systems" placeholder="CRM, ERP…" type="text"/></div><div><label>Fonction indispensable</label><input name="software_must_have_feature" placeholder="Point critique" type="text"/></div><div><label>Délai cible</label><input name="software_target_timeline" placeholder="ex. Ce trimestre" type="text"/></div></div>
 <label>Rôle du logiciel</label><textarea name="software_required_outcomes" placeholder="Actions, intégrations…"></textarea>
@@ -112,30 +112,30 @@
 <legend>Formation / adoption</legend>
 <p class="field-note">Publics et formats — cumulable avec IA ou logiciel.</p>
 <div class="multi-chip-grid multi-chip-grid-v14">
-<label class="choice-chip"><input name="intake_selection" data-lane="training" type="checkbox" value="Intégration des nouveaux employés"/>Intégration nouveaux employés</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="training" type="checkbox" value="Culture IA et prompting"/>Culture IA &amp; prompting</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="training" type="checkbox" value="Procédures par rôle"/>Procédures par rôle</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="training" type="checkbox" value="Assistant IA interne ou assistant documentaire"/>Assistant IA interne</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="training" type="checkbox" value="Formation leadership ou management"/>Leadership / management</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="training" type="checkbox" value="Sensibilisation sécurité"/>Sensibilisation sécurité</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="training" type="checkbox" value="Vente ou expérience client"/>Vente / expérience client</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="training" type="checkbox" value="Programme train-the-trainer"/>Former les formateurs</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="training" type="checkbox" value="tr_onboarding"/>Intégration</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="training" type="checkbox" value="tr_ai_literacy"/>Culture IA</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="training" type="checkbox" value="tr_role_playbooks"/>Procédures par rôle</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="training" type="checkbox" value="tr_ai_coach"/>Coach IA</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="training" type="checkbox" value="tr_leadership"/>Formation leadership</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="training" type="checkbox" value="tr_security"/>Sensibilisation sécurité</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="training" type="checkbox" value="tr_sales_cx"/>Vente &amp; expérience client</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="training" type="checkbox" value="tr_train_trainer"/>Former les formateurs</label>
 </div>
-<div class="form-grid mt-20"><div><label>Qui doit être formé ?</label><input name="training_audience" placeholder="Recrues, managers…" type="text"/></div><div><label>Nombre de personnes</label><input name="training_people_count" placeholder="ex. ~20" type="text"/></div><div><label>Format préféré</label><select name="training_preferred_format"><option>Atelier en direct</option><option>Sessions en ligne</option><option>Programme hybride</option><option>Académie d’entreprise</option><option>Assistant IA interne</option></select></div><div><label>Supports existants</label><input name="training_existing_materials" placeholder="Procédures, vidéos…" type="text"/></div></div>
+<div class="form-grid mt-20"><div><label>Qui doit être formé ?</label><input name="training_audience" placeholder="Recrues, managers…" type="text"/></div><div><label>Nombre de personnes</label><input name="training_people_count" placeholder="ex. ~20" type="text"/></div><div><label>Format préféré</label><select name="training_preferred_format"><option value="fmt_live_workshop">Atelier en direct</option><option value="fmt_online">Sessions en ligne</option><option value="fmt_hybrid">Programme hybride</option><option value="fmt_academy">Académie d’entreprise</option><option value="fmt_ai_assistant_track">Assistant IA interne (parcours)</option></select></div><div><label>Supports existants</label><input name="training_existing_materials" placeholder="Procédures, vidéos…" type="text"/></div></div>
 <label>Résultat attendu après formation</label><textarea name="training_target_capabilities" placeholder="Résultats visés"></textarea>
 </fieldset>
 <fieldset class="intake-panel contact-fieldset" data-brief="Robotique / terrain" data-intake-panel="robotics">
 <legend>Robotique / automatisation terrain</legend>
 <p class="field-note">Terrain, capteurs, robotique ou éducation.</p>
 <div class="multi-chip-grid multi-chip-grid-v14">
-<label class="choice-chip"><input name="intake_selection" data-lane="robotics" type="checkbox" value="Mines, carrières ou sites distants"/>Mines / sites distants</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="robotics" type="checkbox" value="Agriculture ou suivi de terrain"/>Agriculture / terrain</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="robotics" type="checkbox" value="Sécurité ou inspection"/>Sécurité / inspection</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="robotics" type="checkbox" value="Entrepôt ou logistique"/>Entrepôt / logistique</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="robotics" type="checkbox" value="Drones, capteurs ou caméras"/>Drones / capteurs</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="robotics" type="checkbox" value="Laboratoire de formation ou robotique éducative"/>Laboratoire / éducation</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="robotics" type="checkbox" value="Vision par ordinateur ou inspection visuelle"/>Vision par ordinateur</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="robotics" type="checkbox" value="Télémétrie équipements ou IoT"/>Télémétrie / IoT</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="robotics" type="checkbox" value="ro_mining_remote"/>Mines &amp; sites</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="robotics" type="checkbox" value="ro_ag_field"/>Agriculture &amp; terrain</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="robotics" type="checkbox" value="ro_safety_inspect"/>Inspections sécurité</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="robotics" type="checkbox" value="ro_warehouse"/>Entrepôt &amp; logistique</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="robotics" type="checkbox" value="ro_sensors"/>Capteurs &amp; drones</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="robotics" type="checkbox" value="ro_training_lab"/>Labo formation</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="robotics" type="checkbox" value="ro_vision"/>Vision par ordinateur</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="robotics" type="checkbox" value="ro_telemetry"/>Télémétrie</label>
 </div>
 <div class="form-grid mt-20"><div><label>Environnement terrain</label><input name="robotics_field_environment" placeholder="ex. Mine, entrepôt" type="text"/></div><div><label>Que faut-il suivre ?</label><input name="robotics_monitoring_targets" placeholder="Actifs, sécurité…" type="text"/></div><div><label>Contraintes</label><input name="robotics_constraints" placeholder="Réseau, météo…" type="text"/></div><div><label>Matériel actuel</label><input name="robotics_current_hardware" placeholder="Drones, capteurs…" type="text"/></div></div>
 <label>Décision à éclairer avec les données terrain</label><textarea name="robotics_management_decision" placeholder="Inspection, risque, rapports…"></textarea>
@@ -144,14 +144,14 @@
 <legend>Finance / conseil</legend>
 <p class="field-note">Finance entreprise et patrimoine personnel : précisez le bon volet.</p>
 <div class="multi-chip-grid multi-chip-grid-v14">
-<label class="choice-chip"><input name="intake_selection" data-lane="finance" type="checkbox" value="Finance opérationnelle d’entreprise"/>Finance opérationnelle entreprise</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="finance" type="checkbox" value="Analyse des coûts et des effectifs"/>Coûts / effectifs</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="finance" type="checkbox" value="Planification du capital ou accès partenaires"/>Capital / partenaires</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="finance" type="checkbox" value="Coordination patrimoniale personnelle"/>Patrimoine personnel</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="finance" type="checkbox" value="Stratégie retraite"/>Stratégie retraite</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="finance" type="checkbox" value="Liquidités, épargne réglementée (selon pays) ou revue de comptes"/>Liquidités / épargne réglementée</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="finance" type="checkbox" value="Revue de portefeuille d’investissement"/>Revue portefeuille</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="finance" type="checkbox" value="Succession ou sortie du dirigeant"/>Succession / sortie dirigeant</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="finance" type="checkbox" value="fi_company_finance"/>Finance entreprise</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="finance" type="checkbox" value="fi_costs_staff"/>Coûts &amp; effectifs</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="finance" type="checkbox" value="fi_capital"/>Planification capital</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="finance" type="checkbox" value="fi_personal_wealth"/>Patrimoine personnel</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="finance" type="checkbox" value="fi_retirement"/>Préparation retraite</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="finance" type="checkbox" value="fi_account_review"/>Revue des comptes</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="finance" type="checkbox" value="fi_portfolio"/>Revue portefeuille</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="finance" type="checkbox" value="fi_succession"/>Transmission</label>
 </div>
 <div class="form-grid mt-20"><div><label>Objectif principal</label><input name="finance_main_objective" placeholder="ex. Réduction coûts" type="text"/></div><div><label>Comptes ou processus concernés</label><input name="finance_accounts_or_processes" placeholder="Budget, comptes…" type="text"/></div><div><label>Horizon de décision</label><input name="finance_decision_timeframe" placeholder="Ce trimestre / long terme" type="text"/></div><div><label>Qui est impliqué ?</label><input name="finance_stakeholders" placeholder="CFO, dirigeant…" type="text"/></div></div>
 <label>Décision financière visée</label><textarea name="finance_decision_details" placeholder="Entreprise vs perso — précisez si les deux."></textarea><p class="field-note">Investissement / patrimoine : adéquation, licences, infos réglementaires — pas de résultat garanti.</p>
@@ -160,14 +160,14 @@
 <legend>Général / partenariat</legend>
 <p class="field-note">Si la demande ne tient pas dans un seul domaine.</p>
 <div class="multi-chip-grid multi-chip-grid-v14">
-<label class="choice-chip"><input name="intake_selection" data-lane="general" type="checkbox" value="Partenariat"/>Partenariat</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="general" type="checkbox" value="Approvisionnement ou logistique"/>Approvisionnement / logistique</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="general" type="checkbox" value="Assurance qualité"/>Assurance qualité</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="general" type="checkbox" value="Conseil général"/>Conseil général</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="general" type="checkbox" value="Demande web ou métier"/>Demande web / métier</label>
-<label class="choice-chip"><input name="intake_selection" data-lane="general" type="checkbox" value="Pas encore sûr"/>Pas encore sûr</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="general" type="checkbox" value="gen_partnership"/>Partenariat</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="general" type="checkbox" value="gen_sourcing"/>Approvisionnement</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="general" type="checkbox" value="gen_quality"/>Assurance qualité</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="general" type="checkbox" value="gen_consulting"/>Conseil</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="general" type="checkbox" value="gen_inquiry"/>Demande générale</label>
+<label class="choice-chip"><input name="intake_selection" data-lane="general" type="checkbox" value="gen_unsure"/>Pas encore sûr</label>
 </div>
-<div class="form-grid mt-20"><div><label>Pays concernés</label><input name="general_countries_involved" placeholder="Marchés / lieux" type="text"/></div><div><label>Prochaine étape souhaitée</label><select name="general_preferred_next_step"><option>Appel de découverte</option><option>Réponse par email</option><option>Discussion proposition</option><option>Discussion partenariat</option></select></div></div>
+<div class="form-grid mt-20"><div><label>Pays concernés</label><input name="general_countries_involved" placeholder="Marchés / lieux" type="text"/></div><div><label>Prochaine étape souhaitée</label><select name="general_preferred_next_step"><option value="next_discovery">Appel de découverte</option><option value="next_email">Réponse par email</option><option value="next_proposal">Discussion proposition</option><option value="next_partnership">Discussion partenariat</option></select></div></div>
 <label>Objectif de l’échange</label><textarea name="general_conversation_goal" placeholder="Sujet, objectif, participants"></textarea>
 </fieldset>
 </div>

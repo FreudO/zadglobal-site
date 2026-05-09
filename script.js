@@ -87,6 +87,134 @@ const GOOGLE_CONTACT_ATTACHMENTS_MAX_TOTAL_BYTES = 8 * 1024 * 1024;
 const GOOGLE_CONTACT_FIELDS_JSON_MAX_CHARS = 48000;
 
 /**
+ * Intake checkboxes and select values use stable slugs (Option A). Labels are locale-specific.
+ * Sheet column "Intake selections" stores slugs; Brief expands to the visitor's language.
+ */
+const CONTACT_VALUE_LABELS = {
+  en: {
+    ai_doc_intake: 'Document intake',
+    ai_client_followup: 'Client follow-up',
+    ai_workflow_routing: 'Workflow routing',
+    ai_internal_assistant: 'Internal AI assistant',
+    ai_reporting: 'Reporting',
+    ai_support_automation: 'Support automation',
+    ai_billing_claims: 'Billing & claims',
+    ai_data_quality: 'Data quality',
+    sw_website: 'Website',
+    sw_portal: 'Customer portal',
+    sw_internal_app: 'Internal app',
+    sw_mobile: 'Mobile app',
+    sw_data_bi: 'Data & BI tools',
+    sw_integrations: 'Integrations',
+    sw_access_control: 'Access control',
+    sw_modernization: 'Legacy upgrade',
+    tr_onboarding: 'Onboarding',
+    tr_ai_literacy: 'AI literacy',
+    tr_role_playbooks: 'Role playbooks',
+    tr_ai_coach: 'AI coach',
+    tr_leadership: 'Leadership training',
+    tr_security: 'Security awareness',
+    tr_sales_cx: 'Sales & CX training',
+    tr_train_trainer: 'Train-the-trainer',
+    ro_mining_remote: 'Mining & remote sites',
+    ro_ag_field: 'Agriculture & field',
+    ro_safety_inspect: 'Safety inspections',
+    ro_warehouse: 'Warehouse & logistics',
+    ro_sensors: 'Sensors & drones',
+    ro_training_lab: 'Training lab',
+    ro_vision: 'Computer vision',
+    ro_telemetry: 'Equipment telemetry',
+    fi_company_finance: 'Company finance',
+    fi_costs_staff: 'Costs & staffing',
+    fi_capital: 'Capital planning',
+    fi_personal_wealth: 'Personal wealth',
+    fi_retirement: 'Retirement planning',
+    fi_account_review: 'Account review',
+    fi_portfolio: 'Portfolio review',
+    fi_succession: 'Succession planning',
+    gen_partnership: 'Partnership',
+    gen_sourcing: 'Sourcing & logistics',
+    gen_quality: 'Quality assurance',
+    gen_consulting: 'Consulting',
+    gen_inquiry: 'General inquiry',
+    gen_unsure: 'Not sure yet',
+    fmt_live_workshop: 'Live workshop',
+    fmt_online: 'Online sessions',
+    fmt_hybrid: 'Hybrid program',
+    fmt_academy: 'Corporate academy',
+    fmt_ai_assistant_track: 'Internal AI assistant (program)',
+    next_discovery: 'Discovery call',
+    next_email: 'Email response',
+    next_proposal: 'Proposal conversation',
+    next_partnership: 'Partnership discussion'
+  },
+  fr: {
+    ai_doc_intake: 'Réception documentaire',
+    ai_client_followup: 'Relance client',
+    ai_workflow_routing: 'Routage des flux',
+    ai_internal_assistant: 'Assistant IA interne',
+    ai_reporting: 'Rapports',
+    ai_support_automation: 'Automatisation support',
+    ai_billing_claims: 'Facturation & dossiers',
+    ai_data_quality: 'Qualité des données',
+    sw_website: 'Site web',
+    sw_portal: 'Portail client',
+    sw_internal_app: 'Application interne',
+    sw_mobile: 'Application mobile',
+    sw_data_bi: 'Données & BI',
+    sw_integrations: 'Intégrations',
+    sw_access_control: "Contrôle d'accès",
+    sw_modernization: 'Modernisation',
+    tr_onboarding: 'Intégration',
+    tr_ai_literacy: 'Culture IA',
+    tr_role_playbooks: 'Procédures par rôle',
+    tr_ai_coach: 'Coach IA',
+    tr_leadership: 'Formation leadership',
+    tr_security: 'Sensibilisation sécurité',
+    tr_sales_cx: 'Vente & expérience client',
+    tr_train_trainer: 'Former les formateurs',
+    ro_mining_remote: 'Mines & sites',
+    ro_ag_field: 'Agriculture & terrain',
+    ro_safety_inspect: 'Inspections sécurité',
+    ro_warehouse: 'Entrepôt & logistique',
+    ro_sensors: 'Capteurs & drones',
+    ro_training_lab: 'Labo formation',
+    ro_vision: 'Vision par ordinateur',
+    ro_telemetry: 'Télémétrie',
+    fi_company_finance: 'Finance entreprise',
+    fi_costs_staff: 'Coûts & effectifs',
+    fi_capital: 'Planification capital',
+    fi_personal_wealth: 'Patrimoine personnel',
+    fi_retirement: 'Préparation retraite',
+    fi_account_review: 'Revue des comptes',
+    fi_portfolio: 'Revue portefeuille',
+    fi_succession: 'Transmission',
+    gen_partnership: 'Partenariat',
+    gen_sourcing: 'Approvisionnement',
+    gen_quality: 'Assurance qualité',
+    gen_consulting: 'Conseil',
+    gen_inquiry: 'Demande générale',
+    gen_unsure: 'Pas encore sûr',
+    fmt_live_workshop: 'Atelier en direct',
+    fmt_online: 'Sessions en ligne',
+    fmt_hybrid: 'Programme hybride',
+    fmt_academy: 'Académie d’entreprise',
+    fmt_ai_assistant_track: 'Assistant IA interne (parcours)',
+    next_discovery: 'Appel de découverte',
+    next_email: 'Réponse par email',
+    next_proposal: 'Discussion proposition',
+    next_partnership: 'Discussion partenariat'
+  }
+};
+
+function contactLabelForSlug(slug, isFr) {
+  const s = String(slug || '').trim();
+  if (!s) return '';
+  const map = CONTACT_VALUE_LABELS[isFr ? 'fr' : 'en'];
+  return map[s] || s;
+}
+
+/**
  * Human-readable brief for Google Sheet column (avoids parsing JSON for day-to-day review).
  * Pairs with Apps Script: append `body.readable_summary` in a "Brief" column.
  */
@@ -198,8 +326,12 @@ function buildGoogleContactReadableSummary(fields, isFr) {
   const line = (key) => {
     const label = lb[key];
     if (!label) return '';
-    const v = String(fields[key] == null ? '' : fields[key]).trim();
-    if (!v) return '';
+    const raw = String(fields[key] == null ? '' : fields[key]).trim();
+    if (!raw) return '';
+    const v =
+      key === 'training_preferred_format' || key === 'general_preferred_next_step'
+        ? contactLabelForSlug(raw, isFr)
+        : raw;
     return `${label}: ${v}`;
   };
 
@@ -214,7 +346,9 @@ function buildGoogleContactReadableSummary(fields, isFr) {
     if (!v) return '';
     const items = v.split(/\n+/).map((s) => s.trim()).filter(Boolean);
     if (!items.length) return '';
-    return `${title}\n${items.map((s) => `  • ${s}`).join('\n')}`;
+    const mapped =
+      key === 'intake_selection' ? items.map((s) => contactLabelForSlug(s, isFr)) : items;
+    return `${title}\n${mapped.map((s) => `  • ${s}`).join('\n')}`;
   };
 
   const contactKeys = [
@@ -1062,13 +1196,16 @@ wireTabs('[data-case-workspace]', 'data-case-tab', 'data-workspace-panel');
   function isFr() { return (document.documentElement.lang || '').toLowerCase().startsWith('fr'); }
   function language() { return isFr() ? 'fr' : 'en'; }
   function getSelections(wrap) {
+    const lang = language();
     const selections = {};
     wrap.querySelectorAll('.choice-chip input[type="checkbox"]').forEach((input) => {
       if (!input.checked) return;
       const panel = input.closest('[data-intake-panel]');
       const lane = input.dataset.lane || panel?.getAttribute('data-intake-panel') || 'general';
       if (!selections[lane]) selections[lane] = [];
-      selections[lane].push(input.value || input.parentElement.textContent.trim());
+      const slug = (input.value || '').trim();
+      const mapped = slug ? CONTACT_VALUE_LABELS[lang]?.[slug] : '';
+      selections[lane].push(mapped || input.parentElement.textContent.trim());
     });
     return selections;
   }

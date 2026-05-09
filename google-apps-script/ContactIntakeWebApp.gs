@@ -2,10 +2,15 @@
  * ZAD contact form → Google Sheet (wide table) + Drive attachments.
  *
  * Setup:
- * 1. Create/bind this script to your target Spreadsheet (Extensions → Apps Script).
- * 2. Script properties: UPLOAD_FOLDER_ID (required), FORM_SECRET (optional).
- * 3. Deploy → Web app → Execute as: Me, Who has access: Anyone.
- * 4. POST URL (ends in /exec) → GOOGLE_CONTACT_SCRIPT_URL in site script.js
+ * 1. Prefer binding: open the target Sheet → Extensions → Apps Script, paste this
+ *    entire file (all functions). If you already have authorizeSpreadsheetAccess or
+ *    other one-off setup functions, keep them; do NOT paste only doPost — helpers
+ *    like getSubmissionSheet_ / rowFromPayload_ are required.
+ * 2. Standalone project: set Script property SPREADSHEET_ID to the Sheet’s ID
+ *    (from the URL). Otherwise getActiveSpreadsheet() is used (bound scripts only).
+ * 3. Script properties: UPLOAD_FOLDER_ID (required), FORM_SECRET (optional).
+ * 4. Deploy → Web app → Execute as: Me, Who has access: Anyone. New version after edits.
+ * 5. POST URL (ends in /exec) → GOOGLE_CONTACT_SCRIPT_URL in site script.js
  *
  * Data is written to a tab named "Submissions" (created if missing) so you do not
  * collide with an older narrow table on Sheet1.
@@ -69,8 +74,22 @@ function ensureHeaders_(sheet) {
   }
 }
 
-function getSubmissionSheet_() {
+function getTargetSpreadsheet_() {
+  var id = PropertiesService.getScriptProperties().getProperty('SPREADSHEET_ID');
+  if (id) {
+    return SpreadsheetApp.openById(id);
+  }
   var ss = SpreadsheetApp.getActiveSpreadsheet();
+  if (!ss) {
+    throw new Error(
+      'No spreadsheet: bind this project to a Sheet (Extensions → Apps Script) or set SPREADSHEET_ID in Script properties'
+    );
+  }
+  return ss;
+}
+
+function getSubmissionSheet_() {
+  var ss = getTargetSpreadsheet_();
   var sh = ss.getSheetByName(SUBMISSION_SHEET_NAME);
   if (!sh) {
     sh = ss.insertSheet(SUBMISSION_SHEET_NAME);
@@ -84,6 +103,11 @@ function cell_(v) {
   var s = String(v);
   if (s.length > 49000) return s.substring(0, 49000) + '…[truncated]';
   return s;
+}
+
+function submittedCell_(d) {
+  if (!(d instanceof Date)) d = new Date();
+  return Utilities.formatDate(d, Session.getScriptTimeZone(), "yyyy-MM-dd HH:mm:ss");
 }
 
 function rowFromPayload_(body, fileUrls, submitted) {
@@ -106,7 +130,7 @@ function rowFromPayload_(body, fileUrls, submitted) {
   }
 
   return [
-    submitted,
+    submittedCell_(submitted),
     cell_(email),
     cell_(first),
     cell_(org),
@@ -171,6 +195,14 @@ function doPost(e) {
 
     var folder = DriveApp.getFolderById(folderId);
     var sheet = getSubmissionSheet_();
+    var now = new Date();
+
+    // Append the row before uploads so a sheet error cannot leave “files only, no row”.
+    // File URLs column is filled after uploads.
+    var row = rowFromPayload_(body, [], now);
+    sheet.appendRow(row);
+    var rowNum = sheet.getLastRow();
+    var fileCol = HEADERS.length;
 
     var fileUrls = [];
     var attachments = body.attachments || [];
@@ -183,8 +215,9 @@ function doPost(e) {
       fileUrls.push(file.getUrl());
     }
 
-    var row = rowFromPayload_(body, fileUrls, new Date());
-    sheet.appendRow(row);
+    if (fileUrls.length) {
+      sheet.getRange(rowNum, fileCol).setValue(fileUrls.join('\n'));
+    }
 
     return jsonOut({ success: true });
   } catch (err) {
