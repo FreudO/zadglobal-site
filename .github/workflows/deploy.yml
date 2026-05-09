@@ -19,5 +19,10 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
+          port: 21
+          # Default ~30s is often too short from GitHub runners; control socket timeouts are usually here first.
+          timeout: 300000
+          security: loose
+          log-level: standard
           local-dir: ./
           server-dir: /public_html/
