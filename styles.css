@@ -2036,6 +2036,8 @@ body.is-mobile-device .contact-workspace-v14 .intake-studio.contact-success-stat
 }
 .intake-helper-row span {
   flex: 0 0 auto;
+  width: fit-content;
+  max-width: 100%;
   background: var(--blue);
   color: #fff;
   border-radius: 999px;
@@ -2157,7 +2159,12 @@ body.is-mobile-device .contact-workspace-v14 .intake-studio.contact-success-stat
   .contact-workspace-v14 .multi-chip-grid-v14 {
     grid-template-columns: 1fr;
   }
-  .intake-helper-row { display: grid; }
+  /* Was display:grid, which stretched the “Cumul / Cumulative” pill to full width (solid blue bar). */
+  .intake-helper-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 /* v15 — richer tabbed cases page */
@@ -3844,6 +3851,7 @@ body.is-mobile-device .contact-workspace-v14 .intake-studio.contact-success-stat
   }
 
   .contact-workspace-v14 .intake-helper-row {
+    display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
