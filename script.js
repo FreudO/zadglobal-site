@@ -80,6 +80,12 @@ const GOOGLE_CONTACT_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxsQT
 /** Optional; must match Apps Script property FORM_SECRET (leave '' if you did not set one). */
 const GOOGLE_CONTACT_FORM_SECRET = '';
 
+/** Limits for Google Apps Script (payload size, Sheet cell ~50k chars for JSON column). */
+const GOOGLE_CONTACT_ATTACHMENT_MAX_COUNT = 10;
+const GOOGLE_CONTACT_ATTACHMENT_MAX_PER_FILE_BYTES = 5 * 1024 * 1024;
+const GOOGLE_CONTACT_ATTACHMENTS_MAX_TOTAL_BYTES = 8 * 1024 * 1024;
+const GOOGLE_CONTACT_FIELDS_JSON_MAX_CHARS = 48000;
+
 const forms = document.querySelectorAll('form[data-static-form]');
 forms.forEach((form) => {
   form.addEventListener('submit', (event) => {
@@ -188,6 +194,62 @@ forms.forEach((form) => {
       });
     }
     return out;
+  }
+
+  function validateGoogleContactUploads(form, isFr) {
+    const input = form.querySelector('input[type="file"][name="supporting_files"]');
+    if (!input || !input.files || input.files.length === 0) return { ok: true };
+    const { length } = input.files;
+    if (length > GOOGLE_CONTACT_ATTACHMENT_MAX_COUNT) {
+      return {
+        ok: false,
+        message: isFr
+          ? `Limite : ${GOOGLE_CONTACT_ATTACHMENT_MAX_COUNT} fichiers maximum. Retirez des fichiers et réessayez.`
+          : `You can attach up to ${GOOGLE_CONTACT_ATTACHMENT_MAX_COUNT} files. Remove some and try again.`
+      };
+    }
+    let total = 0;
+    for (let i = 0; i < length; i += 1) {
+      const f = input.files[i];
+      if (f.size > GOOGLE_CONTACT_ATTACHMENT_MAX_PER_FILE_BYTES) {
+        const mb = Math.round(GOOGLE_CONTACT_ATTACHMENT_MAX_PER_FILE_BYTES / (1024 * 1024));
+        const name = f.name || `file ${i + 1}`;
+        return {
+          ok: false,
+          message: isFr
+            ? `« ${name} » dépasse ${mb} Mo par fichier. Réduisez la taille ou divisez le document.`
+            : `"${name}" exceeds ${mb} MB per file. Use a smaller file or split the document.`
+        };
+      }
+      total += f.size;
+    }
+    if (total > GOOGLE_CONTACT_ATTACHMENTS_MAX_TOTAL_BYTES) {
+      const maxMb = Math.round(GOOGLE_CONTACT_ATTACHMENTS_MAX_TOTAL_BYTES / (1024 * 1024));
+      const totalMb = (total / (1024 * 1024)).toFixed(1);
+      return {
+        ok: false,
+        message: isFr
+          ? `Total des pièces jointes (~${totalMb} Mo) dépasse ${maxMb} Mo. Compressez ou envoyez moins de fichiers.`
+          : `Attachments (~${totalMb} MB total) exceed ${maxMb} MB. Compress files or attach fewer.`
+      };
+    }
+    return { ok: true };
+  }
+
+  function validateGoogleContactFieldsJson(fields, isFr) {
+    let json;
+    try {
+      json = JSON.stringify(fields);
+    } catch (_) {
+      return { ok: false, message: isFr ? 'Données invalides.' : 'Invalid form data.' };
+    }
+    if (json.length <= GOOGLE_CONTACT_FIELDS_JSON_MAX_CHARS) return { ok: true };
+    return {
+      ok: false,
+      message: isFr
+        ? `Le texte du formulaire est trop long (limite ~${GOOGLE_CONTACT_FIELDS_JSON_MAX_CHARS} caractères). Raccourcissez les zones de texte.`
+        : `Form text is too long (about ${GOOGLE_CONTACT_FIELDS_JSON_MAX_CHARS} character limit). Shorten your answers in the text areas.`
+    };
   }
 
   document.querySelectorAll('form.guided-intake-form').forEach((form) => {
@@ -382,6 +444,27 @@ forms.forEach((form) => {
         ...fields
       };
       if (emailVal) web3Payload.replyto = emailVal;
+
+      if (googleUrl) {
+        const uploadCheck = validateGoogleContactUploads(form, isFr);
+        if (!uploadCheck.ok) {
+          if (note) {
+            note.textContent = uploadCheck.message;
+            note.classList.add('form-submit-note--error');
+          }
+          note?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          return;
+        }
+        const jsonCheck = validateGoogleContactFieldsJson(fields, isFr);
+        if (!jsonCheck.ok) {
+          if (note) {
+            note.textContent = jsonCheck.message;
+            note.classList.add('form-submit-note--error');
+          }
+          note?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          return;
+        }
+      }
 
       if (submitBtn) {
         submitBtn.disabled = true;
