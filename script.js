@@ -653,6 +653,13 @@ wireTabs('[data-case-workspace]', 'data-case-tab', 'data-workspace-panel');
     });
     return selections;
   }
+  function syncChoiceChipState(wrap) {
+    wrap.querySelectorAll('.choice-chip input[type="checkbox"]').forEach((input) => {
+      const chip = input.closest('.choice-chip');
+      if (!chip) return;
+      chip.classList.toggle('is-checked', Boolean(input.checked));
+    });
+  }
   function totalSelected(selections) {
     return Object.values(selections).reduce((sum, items) => sum + items.length, 0);
   }
@@ -676,6 +683,7 @@ wireTabs('[data-case-workspace]', 'data-case-tab', 'data-workspace-panel');
     const lang = language();
     const selections = getSelections(wrap);
     const count = totalSelected(selections);
+    syncChoiceChipState(wrap);
     updateCounts(wrap, selections);
     updateHiddenScope(wrap, selections);
 
@@ -730,6 +738,7 @@ wireTabs('[data-case-workspace]', 'data-case-tab', 'data-workspace-panel');
     wrap.querySelectorAll('[data-intake-target]').forEach((button) => button.addEventListener('click', () => setTimeout(refresh, 0)));
     wrap.querySelectorAll('.choice-chip input, input, textarea, select').forEach((input) => input.addEventListener('input', refresh));
     wrap.querySelectorAll('.choice-chip input, select').forEach((input) => input.addEventListener('change', refresh));
+    syncChoiceChipState(wrap);
     refresh();
   });
 })();
