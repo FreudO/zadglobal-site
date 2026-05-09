@@ -86,6 +86,197 @@ const GOOGLE_CONTACT_ATTACHMENT_MAX_PER_FILE_BYTES = 5 * 1024 * 1024;
 const GOOGLE_CONTACT_ATTACHMENTS_MAX_TOTAL_BYTES = 8 * 1024 * 1024;
 const GOOGLE_CONTACT_FIELDS_JSON_MAX_CHARS = 48000;
 
+/**
+ * Human-readable brief for Google Sheet column (avoids parsing JSON for day-to-day review).
+ * Pairs with Apps Script: append `body.readable_summary` in a "Brief" column.
+ */
+function buildGoogleContactReadableSummary(fields, isFr) {
+  const H = isFr
+    ? {
+        contact: 'CONTACT',
+        selections: 'Sélections (cases à cocher)',
+        scope: 'Périmètre combiné (aperçu)',
+        ai: 'IA & automatisation',
+        software: 'Logiciel',
+        training: 'Formation',
+        robotics: 'Robotique / terrain',
+        finance: 'Finance',
+        general: 'Général',
+        extra: 'Contexte complémentaire'
+      }
+    : {
+        contact: 'CONTACT',
+        selections: 'Selections (checkboxes)',
+        scope: 'Combined scope (preview)',
+        ai: 'AI & automation',
+        software: 'Software',
+        training: 'Training',
+        robotics: 'Robotics / field',
+        finance: 'Finance',
+        general: 'General',
+        extra: 'Additional context'
+      };
+
+  const lb = isFr
+    ? {
+        first_name: 'Prénom',
+        organization: 'Organisation',
+        email: 'E-mail',
+        whatsapp: 'WhatsApp',
+        country: 'Pays / région',
+        business_type: "Type d'activité",
+        sites_teams: 'Sites / équipes',
+        ai_monthly_volume: 'Volume mensuel',
+        ai_current_tools: 'Outils actuels',
+        ai_work_start: 'Où commence le travail',
+        ai_reviewers: 'Qui valide',
+        ai_repetitive_work: 'Travail répétitif',
+        software_main_users: 'Utilisateurs principaux',
+        software_existing_systems: 'Systèmes existants',
+        software_must_have_feature: 'Fonction indispensable',
+        software_target_timeline: 'Délai cible',
+        software_required_outcomes: 'Rôle du logiciel',
+        training_audience: 'Public formation',
+        training_people_count: 'Nombre de personnes',
+        training_preferred_format: 'Format préféré',
+        training_existing_materials: 'Supports existants',
+        training_target_capabilities: 'Résultat attendu',
+        robotics_field_environment: 'Environnement terrain',
+        robotics_monitoring_targets: 'Suivi',
+        robotics_constraints: 'Contraintes',
+        robotics_current_hardware: 'Matériel actuel',
+        robotics_management_decision: 'Décision terrain',
+        finance_main_objective: 'Objectif finance',
+        finance_accounts_or_processes: 'Comptes / processus',
+        finance_decision_timeframe: 'Horizon décision',
+        finance_stakeholders: 'Parties prenantes',
+        finance_decision_details: 'Décision visée',
+        general_countries_involved: 'Pays concernés',
+        general_preferred_next_step: 'Prochaine étape',
+        general_conversation_goal: 'Objectif échange',
+        additional_context: 'Contexte'
+      }
+    : {
+        first_name: 'First name',
+        organization: 'Organization',
+        email: 'Email',
+        whatsapp: 'WhatsApp',
+        country: 'Country / region',
+        business_type: 'Business type',
+        sites_teams: 'Sites / teams',
+        ai_monthly_volume: 'Monthly volume',
+        ai_current_tools: 'Current tools',
+        ai_work_start: 'Where work starts',
+        ai_reviewers: 'Who reviews',
+        ai_repetitive_work: 'Repetitive work',
+        software_main_users: 'Main users',
+        software_existing_systems: 'Existing systems',
+        software_must_have_feature: 'Must-have feature',
+        software_target_timeline: 'Target timeline',
+        software_required_outcomes: 'Software outcomes',
+        training_audience: 'Training audience',
+        training_people_count: 'Number of people',
+        training_preferred_format: 'Preferred format',
+        training_existing_materials: 'Existing materials',
+        training_target_capabilities: 'Target capabilities',
+        robotics_field_environment: 'Field environment',
+        robotics_monitoring_targets: 'Monitoring targets',
+        robotics_constraints: 'Constraints',
+        robotics_current_hardware: 'Current hardware',
+        robotics_management_decision: 'Management decision',
+        finance_main_objective: 'Finance objective',
+        finance_accounts_or_processes: 'Accounts / processes',
+        finance_decision_timeframe: 'Decision timeframe',
+        finance_stakeholders: 'Stakeholders',
+        finance_decision_details: 'Decision details',
+        general_countries_involved: 'Countries involved',
+        general_preferred_next_step: 'Preferred next step',
+        general_conversation_goal: 'Conversation goal',
+        additional_context: 'Additional context'
+      };
+
+  const line = (key) => {
+    const label = lb[key];
+    if (!label) return '';
+    const v = String(fields[key] == null ? '' : fields[key]).trim();
+    if (!v) return '';
+    return `${label}: ${v}`;
+  };
+
+  const block = (title, keys) => {
+    const lines = keys.map((k) => line(k)).filter(Boolean);
+    if (!lines.length) return '';
+    return `${title}\n${lines.map((s) => `  ${s}`).join('\n')}`;
+  };
+
+  const bullets = (title, key) => {
+    const v = String(fields[key] == null ? '' : fields[key]).trim();
+    if (!v) return '';
+    const items = v.split(/\n+/).map((s) => s.trim()).filter(Boolean);
+    if (!items.length) return '';
+    return `${title}\n${items.map((s) => `  • ${s}`).join('\n')}`;
+  };
+
+  const contactKeys = [
+    'first_name',
+    'organization',
+    'email',
+    'whatsapp',
+    'country',
+    'business_type',
+    'sites_teams'
+  ];
+
+  const parts = [
+    block(H.contact, contactKeys),
+    bullets(H.selections, 'intake_selection'),
+    fields.request_scope ? `${H.scope}\n  ${String(fields.request_scope).trim()}` : '',
+    block(H.ai, [
+      'ai_monthly_volume',
+      'ai_current_tools',
+      'ai_work_start',
+      'ai_reviewers',
+      'ai_repetitive_work'
+    ]),
+    block(H.software, [
+      'software_main_users',
+      'software_existing_systems',
+      'software_must_have_feature',
+      'software_target_timeline',
+      'software_required_outcomes'
+    ]),
+    block(H.training, [
+      'training_audience',
+      'training_people_count',
+      'training_preferred_format',
+      'training_existing_materials',
+      'training_target_capabilities'
+    ]),
+    block(H.robotics, [
+      'robotics_field_environment',
+      'robotics_monitoring_targets',
+      'robotics_constraints',
+      'robotics_current_hardware',
+      'robotics_management_decision'
+    ]),
+    block(H.finance, [
+      'finance_main_objective',
+      'finance_accounts_or_processes',
+      'finance_decision_timeframe',
+      'finance_stakeholders',
+      'finance_decision_details'
+    ]),
+    block(H.general, [
+      'general_countries_involved',
+      'general_preferred_next_step',
+      'general_conversation_goal'
+    ]),
+    line('additional_context') ? `${H.extra}\n  ${line('additional_context')}` : ''
+  ].filter(Boolean);
+
+  return parts.join('\n\n');
+}
+
 const forms = document.querySelectorAll('form[data-static-form]');
 forms.forEach((form) => {
   form.addEventListener('submit', (event) => {
@@ -489,6 +680,7 @@ forms.forEach((form) => {
 
           const googlePayload = {
             request_scope: String(fields.request_scope || '').trim(),
+            readable_summary: buildGoogleContactReadableSummary(fields, isFr),
             meta: {
               email: String(fields.email || emailVal || '').trim(),
               first_name: String(fields.first_name || '').trim(),
