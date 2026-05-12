@@ -912,7 +912,7 @@ section { padding: 90px 0; }
 
 
 /* V5 homepage refinement */
-.hero-v5 .v5-hero-inner { grid-template-columns: 1fr .92fr; min-height: 720px; }
+.hero-v5 .v5-hero-inner { grid-template-columns: 1fr .92fr; min-height: 720px; align-items: start; }
 .hero-v5 .hero-copy > h1:first-child { margin-top: 0; margin-bottom: 14px; }
 .hero-v5 .hero-copy > .lede { margin: 0; }
 .hero-v5 h1 { font-size: clamp(3.25rem, 7.8vw, 6.6rem); max-width: 780px; }
@@ -3612,6 +3612,10 @@ body.is-mobile-device .contact-workspace-v14 .intake-studio.contact-success-stat
 
 /* v23: dedicated mobile version for Solutions map sections */
 @media (max-width: 760px) {
+  .hero-v5 .v5-hero-inner {
+    min-height: auto;
+  }
+
   .hero-v5 .hero-copy {
     max-width: 100%;
   }
