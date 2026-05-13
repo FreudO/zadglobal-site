@@ -1574,6 +1574,13 @@ section.contact-intake-section[data-reveal].visible {
 .guided-intake-form.is-contact-success-hidden {
   display: none !important;
 }
+/* Required * is wrapped in <abbr title="…"> for a short tooltip; browsers still draw abbr’s default
+   dotted underline, which sits right under * and reads like stray dots. The star is enough visually. */
+.guided-intake-form label abbr[title] {
+  text-decoration: none;
+  border-bottom: none;
+  cursor: help;
+}
 .contact-intake-success {
   display: none;
   border-radius: 34px;
@@ -1660,6 +1667,7 @@ body.is-mobile-device .contact-workspace-v14 .intake-studio.contact-success-stat
   padding: 13px 14px;
   font: inherit;
   font-size: 0.97rem;
+  line-height: 1.45;
   color: var(--ink);
   background: linear-gradient(180deg, #eef5ff 0%, #f8fbff 100%);
   outline: none;
@@ -1671,16 +1679,38 @@ body.is-mobile-device .contact-workspace-v14 .intake-studio.contact-success-stat
   min-width: 0;
   border: 1px solid rgba(11, 91, 211, 0.22);
   border-radius: 14px;
-  padding: 13px 14px;
-  padding-right: 36px;
+  padding: 13px 40px 13px 14px;
   font: inherit;
   font-size: 0.97rem;
+  line-height: 1.45;
   color: var(--ink);
   outline: none;
-  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #f8fbff;
+  /* Match text inputs: ice gradient + site chevron (avoids native OS styling clashes). */
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23063f95' stroke-width='1.65' stroke-linecap='round' stroke-linejoin='round' d='M4 6.25L8 10.25L12 6.25'/%3E%3C/svg%3E"),
+    linear-gradient(180deg, #eef5ff 0%, #f8fbff 100%);
+  background-position: right 12px center, 0 0;
+  background-size: 16px 16px, 100% 100%;
+  background-repeat: no-repeat, no-repeat;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, color 0.18s ease;
+}
+.contact-workspace-v14 select::-ms-expand {
+  display: none;
+}
+.contact-workspace-v14 select:invalid {
+  color: #8b97ab;
+}
+.contact-workspace-v14 select:valid {
+  color: var(--ink);
 }
 .contact-workspace-v14 input::placeholder,
-.contact-workspace-v14 textarea::placeholder {
+.contact-workspace-v14 textarea::placeholder,
+.contact-workspace-v14 .contact-country-combobox-field::placeholder {
   color: #8b97ab;
   opacity: 1;
 }
@@ -1694,39 +1724,148 @@ body.is-mobile-device .contact-workspace-v14 .intake-studio.contact-success-stat
   box-shadow: 0 0 0 3px rgba(11, 91, 211, 0.12);
   background: #fff;
 }
+.contact-workspace-v14 .contact-country-combobox-field:focus-visible {
+  border-color: rgba(11, 91, 211, 0.45);
+  box-shadow: 0 0 0 3px rgba(11, 91, 211, 0.12);
+  background: #fff;
+}
 .contact-workspace-v14 select:focus-visible {
   border-color: rgba(11, 91, 211, 0.45);
   box-shadow: 0 0 0 3px rgba(11, 91, 211, 0.12);
-  background-color: #fff;
-  background-image:
-    linear-gradient(45deg, transparent 50%, var(--blue) 50%),
-    linear-gradient(135deg, var(--blue) 50%, transparent 50%);
-  background-position:
-    calc(100% - 18px) calc(50% - 3px),
-    calc(100% - 13px) calc(50% - 3px);
-  background-size: 5px 5px, 5px 5px;
-  background-repeat: no-repeat;
-}
-.contact-workspace-v14 select {
-  cursor: pointer;
-  appearance: none;
-  -webkit-appearance: none;
-  background-color: #f8fbff;
-  background-image:
-    linear-gradient(45deg, transparent 50%, var(--blue) 50%),
-    linear-gradient(135deg, var(--blue) 50%, transparent 50%),
-    linear-gradient(180deg, #eef5ff 0%, #f8fbff 100%);
-  background-position:
-    calc(100% - 18px) calc(50% - 3px),
-    calc(100% - 13px) calc(50% - 3px),
-    0 0;
-  background-size: 5px 5px, 5px 5px, 100% 100%;
-  background-repeat: no-repeat;
-}
-.contact-workspace-v14 select:focus,
-.contact-workspace-v14 select:focus-visible,
-.contact-workspace-v14 select:active {
   color: var(--ink);
+  background-color: #fff;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23063f95' stroke-width='1.65' stroke-linecap='round' stroke-linejoin='round' d='M4 6.25L8 10.25L12 6.25'/%3E%3C/svg%3E");
+  background-position: right 12px center;
+  background-size: 16px 16px;
+  background-repeat: no-repeat;
+}
+/* Searchable country combobox (top row): panel matches intake cards; field matches text inputs. */
+.contact-workspace-v14 .contact-country-combobox {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+.contact-workspace-v14 .contact-country-combobox-inner {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+.contact-workspace-v14 .contact-country-combobox-inner--open .contact-country-combobox-field {
+  border-color: rgba(11, 91, 211, 0.38);
+  box-shadow: 0 0 0 3px rgba(11, 91, 211, 0.1);
+  background: #fff;
+}
+.contact-workspace-v14 .contact-country-combobox-field {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  border: 1px solid rgba(11, 91, 211, 0.22);
+  border-radius: 14px;
+  padding: 13px 14px;
+  padding-right: 44px;
+  font: inherit;
+  font-size: 0.97rem;
+  line-height: 1.45;
+  color: var(--ink);
+  background: linear-gradient(180deg, #eef5ff 0%, #f8fbff 100%);
+  outline: none;
+  color-scheme: light;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+.contact-workspace-v14 .contact-country-combobox-toggle {
+  position: absolute;
+  right: 3px;
+  top: 50%;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 11px;
+  background: transparent;
+  color: var(--blue);
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+.contact-workspace-v14 .contact-country-combobox-toggle:hover {
+  background: rgba(11, 91, 211, 0.09);
+}
+.contact-workspace-v14 .contact-country-combobox-toggle:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(11, 91, 211, 0.35);
+}
+.contact-workspace-v14 .contact-country-combobox-toggle svg {
+  display: block;
+  transition: transform 0.2s ease;
+}
+.contact-workspace-v14 .contact-country-combobox-inner--open .contact-country-combobox-toggle svg {
+  transform: rotate(180deg);
+}
+.contact-workspace-v14 .contact-country-combobox-field.contact-country-combobox-field--error {
+  border-color: rgba(180, 35, 24, 0.55);
+  box-shadow: 0 0 0 3px rgba(180, 35, 24, 0.12);
+}
+.contact-workspace-v14 .contact-country-combobox-panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 6px);
+  z-index: 60;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  max-height: min(52vh, 320px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-radius: 16px;
+  border: 1px solid rgba(11, 91, 211, 0.18);
+  background: #fff;
+  box-shadow:
+    0 14px 40px rgba(6, 16, 31, 0.1),
+    0 6px 20px rgba(6, 63, 149, 0.08);
+  -webkit-overflow-scrolling: touch;
+}
+.contact-workspace-v14 .contact-country-combobox-panel li {
+  margin: 0;
+  padding: 0;
+}
+.contact-workspace-v14 .contact-country-combobox-option {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 0;
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin: 0;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 650;
+  color: var(--ink);
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.14s ease, color 0.14s ease;
+}
+.contact-workspace-v14 .contact-country-combobox-option:hover,
+.contact-workspace-v14 .contact-country-combobox-option:focus-visible {
+  background: linear-gradient(135deg, rgba(11, 91, 211, 0.08), rgba(122, 174, 252, 0.12));
+  color: var(--blue);
+  outline: none;
+}
+.contact-workspace-v14 .contact-country-combobox-option.is-highlighted {
+  background: linear-gradient(135deg, rgba(11, 91, 211, 0.1), rgba(122, 174, 252, 0.16));
+  color: var(--blue);
+}
+.contact-workspace-v14 .contact-country-combobox-empty {
+  padding: 12px 10px;
+  font-size: 0.9rem;
+  font-weight: 650;
+  color: #5c6d85;
+  text-align: center;
 }
 .contact-workspace-v14 select option {
   color: var(--ink);
@@ -2097,6 +2236,16 @@ body.is-mobile-device .contact-workspace-v14 .intake-studio.contact-success-stat
   min-width: 0;
 }
 .contact-basics-v14 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+/* Top requestor row: keep the fourth field from sitting in a single narrow column that lines up with the lane tabs below. */
+.contact-workspace-v14 .form-grid.contact-requestor-top.contact-basics-v14 {
+  margin-bottom: 22px;
+}
+@media (min-width: 901px) {
+  .contact-workspace-v14 .form-grid.contact-requestor-top.contact-basics-v14 > div:last-child {
+    grid-column: 1 / -1;
+    min-width: 0;
+  }
+}
 /* Avoid 4 skinny columns when the detail pane is narrow (split rail + panel). */
 .contact-workspace-v14 .multi-chip-grid-v14 {
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));

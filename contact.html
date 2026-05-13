@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;650;700;800;900&amp;display=swap" rel="stylesheet"/>
-<link href="styles.css?v=20260509" rel="stylesheet"/>
+<link href="styles.css?v=20260518" rel="stylesheet"/>
 </head>
 <body><header class="site-header">
 <div class="container navbar">
@@ -50,6 +50,13 @@
 </ol>
 </nav>
 <p class="contact-mobile-active-lane" data-contact-active-lane="" role="status"></p>
+</div>
+<div class="contact-guided-step-scope">
+<div class="form-grid contact-requestor-top contact-basics-v14">
+<div><label for="contact_first_en">First name <abbr title="required">*</abbr></label><input id="contact_first_en" name="first_name" type="text" maxlength="80" autocomplete="given-name" required=""/></div>
+<div><label for="contact_last_en">Last name <abbr title="required">*</abbr></label><input id="contact_last_en" name="last_name" type="text" maxlength="80" autocomplete="family-name" required=""/></div>
+<div><label for="contact_country_combo_en">Country <abbr title="required">*</abbr></label><div class="contact-country-combobox" data-zad-country-combobox=""><input type="hidden" name="country" value="" data-zad-country-hidden=""/><div class="contact-country-combobox-inner"><input id="contact_country_combo_en" class="contact-country-combobox-field" type="text" autocomplete="off" spellcheck="false" autocapitalize="off" aria-autocomplete="list" aria-controls="contact_country_list_en" aria-expanded="false" role="combobox" maxlength="120"/><ul id="contact_country_list_en" class="contact-country-combobox-panel" role="listbox" hidden=""></ul></div></div></div>
+<div><label for="contact_affiliated_en">Affiliated business <abbr title="required">*</abbr></label><input id="contact_affiliated_en" name="affiliated_business" placeholder="Company or entity you represent" type="text" maxlength="200" autocomplete="organization" required=""/></div>
 </div>
 <button class="mobile-advanced-toggle-btn" data-mobile-advanced-toggle="" data-label-open="Add detailed scope (optional)" data-label-close="Hide detailed scope" type="button" aria-expanded="false">Add detailed scope (optional)</button>
 <div class="intake-lanes-workspace mobile-advanced-section">
@@ -165,16 +172,14 @@
 </div>
 </div>
 </div>
+</div>
 <div class="form-grid contact-basics contact-basics-v14">
 <p id="contact-reach-hint-en" class="field-note contact-reach-hint">Provide at least one: email or WhatsApp (country code + number).</p>
-<div><label for="contact_first_en">First name</label><input id="contact_first_en" name="first_name" type="text" maxlength="80" autocomplete="given-name"/></div>
-<div><label for="contact_org_en">Organization</label><input id="contact_org_en" name="organization" type="text" maxlength="120" autocomplete="organization"/></div>
 <div><label for="contact_email_en">Email</label><input id="contact_email_en" name="email" placeholder="name@company.com" type="email" maxlength="254" autocomplete="email" autocapitalize="none" autocorrect="off" spellcheck="false" aria-describedby="contact-reach-hint-en"/></div>
 <div class="contact-whatsapp-row">
 <div><label for="contact_whatsapp_cc_en">Country code</label><input id="contact_whatsapp_cc_en" name="whatsapp_country_code" type="text" inputmode="tel" autocomplete="tel-country-code" placeholder="+250" maxlength="8" spellcheck="false" autocapitalize="none" autocorrect="off" aria-describedby="contact-reach-hint-en"/></div>
 <div><label for="contact_whatsapp_local_en">WhatsApp number</label><input id="contact_whatsapp_local_en" name="whatsapp_local" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="788123456" maxlength="15" aria-describedby="contact-reach-hint-en"/></div>
 </div>
-<div><label for="contact_country_en">Country / region</label><input id="contact_country_en" name="country" placeholder="e.g. Rwanda" type="text" maxlength="120"/></div>
 <div><label for="contact_business_en">Business type</label><input id="contact_business_en" name="business_type" placeholder="e.g. Insurance" type="text" maxlength="120"/></div>
 <div class="contact-basics-full-row"><label for="contact_sites_en">Sites / teams involved</label><input id="contact_sites_en" name="sites_teams" placeholder="e.g. 3 sites · 40 staff" type="text"/></div>
 </div>
@@ -250,4 +255,4 @@
 <div class="footer-bottom"><span>© 2026 ZAD Global. All rights reserved.</span><span>Global · Integrated · Accountable</span></div>
 </div>
 </footer>
-<script src="script.js?v=20260509"></script></body></html>
+<script src="script.js?v=20260518"></script></body></html>

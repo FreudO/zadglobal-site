@@ -248,10 +248,11 @@ function buildGoogleContactReadableSummary(fields, isFr) {
   const lb = isFr
     ? {
         first_name: 'Prénom',
-        organization: 'Organisation',
+        last_name: 'Nom',
         email: 'E-mail',
         whatsapp: 'WhatsApp',
-        country: 'Pays / région',
+        country: 'Pays',
+        affiliated_business: 'Entreprise affiliée',
         business_type: "Type d'activité",
         sites_teams: 'Sites / équipes',
         ai_monthly_volume: 'Volume mensuel',
@@ -286,10 +287,11 @@ function buildGoogleContactReadableSummary(fields, isFr) {
       }
     : {
         first_name: 'First name',
-        organization: 'Organization',
+        last_name: 'Last name',
         email: 'Email',
         whatsapp: 'WhatsApp',
-        country: 'Country / region',
+        country: 'Country',
+        affiliated_business: 'Affiliated business',
         business_type: 'Business type',
         sites_teams: 'Sites / teams',
         ai_monthly_volume: 'Monthly volume',
@@ -353,10 +355,11 @@ function buildGoogleContactReadableSummary(fields, isFr) {
 
   const contactKeys = [
     'first_name',
-    'organization',
+    'last_name',
     'email',
     'whatsapp',
     'country',
+    'affiliated_business',
     'business_type',
     'sites_teams'
   ];
@@ -577,6 +580,301 @@ forms.forEach((form) => {
     };
   }
 
+  /** Region codes that are not "pick a country" choices in our intake. */
+  const ZAD_COUNTRY_SELECT_EXCLUDE = new Set([
+    'AC',
+    'CP',
+    'DG',
+    'EA',
+    'EU',
+    'IC',
+    'QO',
+    'TA',
+    'UN',
+    'XA',
+    'XB',
+    'ZZ'
+  ]);
+
+  function zadCollectIso3166Alpha2Codes() {
+    let raw = [];
+    try {
+      if (typeof Intl !== 'undefined' && typeof Intl.supportedValuesOf === 'function') {
+        raw = Intl.supportedValuesOf('region');
+      }
+    } catch (_) {
+      raw = [];
+    }
+    if (!raw.length) {
+      raw =
+        'AD AE AF AG AI AL AM AO AQ AR AS AT AU AW AX AZ BA BB BD BE BF BG BH BI BJ BL BM BN BO BQ BR BS BT BV BW BY BZ CA CC CD CF CG CH CI CK CL CM CN CO CR CU CV CW CX CY CZ DE DJ DK DM DO DZ EC EE EG EH ER ES ET FI FJ FK FM FO FR GA GB GD GE GF GG GH GI GL GM GN GP GQ GR GS GT GU GW GY HK HM HN HR HT HU ID IE IL IM IN IO IQ IR IS IT JE JM JO JP KE KG KH KI KM KN KP KR KW KY KZ LA LB LC LI LK LR LS LT LU LV LY MA MC MD ME MF MG MH MK ML MM MN MO MP MQ MR MS MT MU MV MW MX MY MZ NA NC NE NF NG NI NL NO NP NR NU NZ OM PA PE PF PG PH PK PL PM PN PR PS PT PW PY QA RE RO RS RU RW SA SB SC SD SE SG SH SI SJ SK SL SM SN SO SR SS ST SV SX SY SZ TC TD TF TG TH TJ TK TL TM TN TO TR TT TV TW TZ UA UG UM US UY UZ VA VC VE VG VI VN VU WF WS XK YE YT ZA ZM ZW'.split(
+          /\s+/
+        );
+    }
+    const out = [];
+    for (let i = 0; i < raw.length; i++) {
+      const rawStr = String(raw[i] || '').trim();
+      const c = rawStr.toUpperCase();
+      if (!/^[A-Z]{2}$/.test(c)) continue;
+      if (ZAD_COUNTRY_SELECT_EXCLUDE.has(c)) continue;
+      out.push(c);
+    }
+    return [...new Set(out)].sort();
+  }
+
+  function zadNormalizeCountrySearch(s) {
+    const t = String(s || '')
+      .toLowerCase()
+      .trim();
+    try {
+      return t.normalize('NFD').replace(/\p{M}/gu, '');
+    } catch (_) {
+      return t.replace(/[\u0300-\u036f]/g, '');
+    }
+  }
+
+  function zadCloseCountryCombobox(root) {
+    if (!root) return;
+    const panel = root.querySelector('.contact-country-combobox-panel');
+    const field = root.querySelector('.contact-country-combobox-field');
+    const inner = root.querySelector('.contact-country-combobox-inner');
+    const toggle = root.querySelector('.contact-country-combobox-toggle');
+    root.classList.remove('is-country-open');
+    inner?.classList.remove('contact-country-combobox-inner--open');
+    if (panel) panel.hidden = true;
+    if (field) field.setAttribute('aria-expanded', 'false');
+    if (toggle) toggle.setAttribute('aria-expanded', 'false');
+  }
+
+  function initZadCountryCombobox() {
+    if (!initZadCountryCombobox.docBound) {
+      initZadCountryCombobox.docBound = true;
+      document.addEventListener(
+        'pointerdown',
+        (e) => {
+          document.querySelectorAll('[data-zad-country-combobox].is-country-open').forEach((root) => {
+            if (!root.contains(e.target)) zadCloseCountryCombobox(root);
+          });
+        },
+        true
+      );
+    }
+
+    document.querySelectorAll('[data-zad-country-combobox]').forEach((root) => {
+      if (root.getAttribute('data-zad-country-ready') === '1') return;
+      const hidden = root.querySelector('[data-zad-country-hidden]');
+      const field = root.querySelector('.contact-country-combobox-field');
+      const panel = root.querySelector('.contact-country-combobox-panel');
+      const inner = root.querySelector('.contact-country-combobox-inner');
+      if (!hidden || !field || !panel || !inner) return;
+
+      const isFr = (document.documentElement.lang || '').toLowerCase().startsWith('fr');
+      const locale = isFr ? 'fr' : 'en';
+      const placeholder = isFr ? 'Choisir un pays…' : 'Choose a country…';
+      const emptyMsg = isFr ? 'Aucun pays ne correspond.' : 'No country matches your search.';
+      field.setAttribute('placeholder', placeholder);
+
+      const codes = zadCollectIso3166Alpha2Codes();
+      if (!codes.length || typeof Intl === 'undefined' || typeof Intl.DisplayNames !== 'function') {
+        field.placeholder = isFr ? 'Pays (liste indisponible)' : 'Country (list unavailable)';
+        field.disabled = true;
+        root.setAttribute('data-zad-country-ready', '1');
+        return;
+      }
+      let dn;
+      try {
+        dn = new Intl.DisplayNames([locale], { type: 'region' });
+      } catch (_) {
+        field.disabled = true;
+        root.setAttribute('data-zad-country-ready', '1');
+        return;
+      }
+
+      const rows = [];
+      for (let i = 0; i < codes.length; i++) {
+        const code = codes[i];
+        let label;
+        try {
+          label = dn.of(code);
+        } catch (_) {
+          continue;
+        }
+        if (!label) continue;
+        rows.push({ code, label });
+      }
+      rows.sort((a, b) => a.label.localeCompare(b.label, locale, { sensitivity: 'base' }));
+
+      const emptyLi = document.createElement('li');
+      emptyLi.className = 'contact-country-combobox-empty';
+      emptyLi.hidden = true;
+      emptyLi.textContent = emptyMsg;
+
+      const toggle = document.createElement('button');
+      toggle.type = 'button';
+      toggle.className = 'contact-country-combobox-toggle';
+      if (panel.id) toggle.setAttribute('aria-controls', panel.id);
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute(
+        'aria-label',
+        isFr ? 'Ouvrir ou fermer la liste des pays' : 'Open or close the country list'
+      );
+      toggle.innerHTML =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" d="M4 6.25L8 10.25L12 6.25"/></svg>';
+      inner.insertBefore(toggle, panel);
+
+      panel.textContent = '';
+      for (let j = 0; j < rows.length; j++) {
+        const { label } = rows[j];
+        const li = document.createElement('li');
+        li.setAttribute('role', 'none');
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'contact-country-combobox-option';
+        btn.setAttribute('role', 'option');
+        btn.dataset.value = label;
+        btn.textContent = label;
+        btn.addEventListener('mousedown', (ev) => {
+          ev.preventDefault();
+        });
+        btn.addEventListener('click', () => {
+          applySelection(label);
+        });
+        li.appendChild(btn);
+        panel.appendChild(li);
+      }
+      panel.appendChild(emptyLi);
+
+      let activeIdx = -1;
+      const optionButtons = () =>
+        [...panel.querySelectorAll('.contact-country-combobox-option')].filter(
+          (b) => b.closest('li') && !b.closest('li').hidden
+        );
+
+      function clearHighlight() {
+        panel.querySelectorAll('.contact-country-combobox-option.is-highlighted').forEach((b) => {
+          b.classList.remove('is-highlighted');
+        });
+        activeIdx = -1;
+      }
+
+      function setHighlight(i) {
+        const opts = optionButtons();
+        clearHighlight();
+        if (i < 0 || i >= opts.length) return;
+        activeIdx = i;
+        opts[i].classList.add('is-highlighted');
+        opts[i].scrollIntoView({ block: 'nearest' });
+      }
+
+      function filterList(q) {
+        const n = zadNormalizeCountrySearch(q);
+        let visible = 0;
+        for (let k = 0; k < panel.children.length; k++) {
+          const node = panel.children[k];
+          if (node.classList.contains('contact-country-combobox-empty')) continue;
+          const btn = node.querySelector('.contact-country-combobox-option');
+          if (!btn) continue;
+          const lab = btn.dataset.value || '';
+          const match = !n || zadNormalizeCountrySearch(lab).includes(n);
+          node.hidden = !match;
+          if (match) visible += 1;
+        }
+        emptyLi.hidden = visible > 0;
+        clearHighlight();
+        return visible;
+      }
+
+      function setOpen(open) {
+        if (open) {
+          root.classList.add('is-country-open');
+          inner.classList.add('contact-country-combobox-inner--open');
+          panel.hidden = false;
+          field.setAttribute('aria-expanded', 'true');
+          toggle.setAttribute('aria-expanded', 'true');
+        } else {
+          zadCloseCountryCombobox(root);
+        }
+      }
+
+      toggle.addEventListener('click', (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        const isOpen = root.classList.contains('is-country-open') && !panel.hidden;
+        if (isOpen) {
+          zadCloseCountryCombobox(root);
+        } else {
+          filterList(field.value);
+          setOpen(true);
+          field.focus({ preventScroll: true });
+        }
+      });
+      toggle.addEventListener('mousedown', (ev) => {
+        ev.stopPropagation();
+      });
+      function applySelection(label) {
+        hidden.value = label;
+        field.value = label;
+        field.classList.remove('contact-country-combobox-field--error');
+        setOpen(false);
+        clearHighlight();
+      }
+
+      field.addEventListener('focus', () => {
+        filterList(field.value);
+        setOpen(true);
+      });
+
+      field.addEventListener('input', () => {
+        if (hidden.value && field.value !== hidden.value) hidden.value = '';
+        filterList(field.value);
+        setOpen(true);
+      });
+
+      field.addEventListener('keydown', (ev) => {
+        if (ev.key === 'Escape') {
+          ev.preventDefault();
+          setOpen(false);
+          return;
+        }
+        if (ev.key === 'ArrowDown') {
+          ev.preventDefault();
+          if (panel.hidden) {
+            filterList(field.value);
+            setOpen(true);
+          }
+          const optsDown = optionButtons();
+          if (!optsDown.length) return;
+          const next = activeIdx < 0 ? 0 : Math.min(activeIdx + 1, optsDown.length - 1);
+          setHighlight(next);
+          return;
+        }
+        if (ev.key === 'ArrowUp') {
+          ev.preventDefault();
+          if (panel.hidden) {
+            filterList(field.value);
+            setOpen(true);
+          }
+          const optsUp = optionButtons();
+          if (!optsUp.length) return;
+          const prev = activeIdx < 0 ? optsUp.length - 1 : Math.max(activeIdx - 1, 0);
+          setHighlight(prev);
+          return;
+        }
+        if (ev.key === 'Enter') {
+          const hi = panel.querySelector('.contact-country-combobox-option.is-highlighted');
+          if (hi && !panel.hidden) {
+            ev.preventDefault();
+            applySelection(hi.dataset.value || hi.textContent || '');
+          }
+        }
+      });
+
+      root.setAttribute('data-zad-country-ready', '1');
+    });
+  }
+
+  initZadCountryCombobox();
+
   document.querySelectorAll('form.guided-intake-form').forEach((form) => {
     const note = form.querySelector('[data-form-note]');
     const emailInput = form.querySelector('input[name="email"]');
@@ -590,6 +888,7 @@ forms.forEach((form) => {
 
     const clearReachError = () => {
       if (reachHint) reachHint.classList.remove('contact-reach-hint--alert');
+      form.querySelector('.contact-country-combobox-field')?.classList.remove('contact-country-combobox-field--error');
       if (!note) return;
       note.textContent = '';
       delete note.dataset.contactReachError;
@@ -615,6 +914,8 @@ forms.forEach((form) => {
       if (!el) return;
       el.addEventListener('input', clearReachError);
     });
+    const countryComboField = form.querySelector('[data-zad-country-combobox] .contact-country-combobox-field');
+    if (countryComboField) countryComboField.addEventListener('input', clearReachError);
 
     if (whatsLocalInput) {
       whatsLocalInput.addEventListener('input', () => {
@@ -638,9 +939,64 @@ forms.forEach((form) => {
       });
     }
 
+    form.querySelectorAll('input[name="intake_selection"]').forEach((el) => {
+      el.addEventListener('change', clearReachError);
+    });
+
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
       const isFr = (document.documentElement.lang || '').toLowerCase().startsWith('fr');
+
+      const intakeChecked = form.querySelectorAll('input[name="intake_selection"]:checked').length;
+      if (!intakeChecked) {
+        if (note) {
+          note.textContent = isFr
+            ? 'Cochez au moins un besoin dans les onglets (IA, logiciel, formation, robotique, finance ou général).'
+            : 'Please select at least one need in the tabs (AI, software, training, robotics, finance, or general).';
+          note.classList.add('form-submit-note--error');
+        }
+        const scopeEl = form.querySelector('.contact-guided-step-scope');
+        (scopeEl || form.querySelector('.intake-lanes-workspace'))?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+        return;
+      }
+
+      const countryWrap = form.querySelector('[data-zad-country-combobox]');
+      const countryHidden = countryWrap?.querySelector('[data-zad-country-hidden]');
+      const countryField = countryWrap?.querySelector('.contact-country-combobox-field');
+      let countryVal = String(countryHidden?.value || '').trim();
+      if (!countryVal && countryField) {
+        const typed = countryField.value.trim();
+        if (typed && countryWrap) {
+          const btns = countryWrap.querySelectorAll('.contact-country-combobox-option');
+          for (let bi = 0; bi < btns.length; bi++) {
+            const b = btns[bi];
+            if ((b.getAttribute('data-value') || '') === typed) {
+              countryHidden.value = typed;
+              countryVal = typed;
+              break;
+            }
+          }
+        }
+      }
+      if (!countryVal) {
+        if (note) {
+          note.textContent = isFr
+            ? 'Choisissez votre pays dans la liste (vous pouvez taper pour filtrer).'
+            : 'Please choose your country from the list (you can type to search).';
+          note.classList.add('form-submit-note--error');
+        }
+        countryField?.classList.add('contact-country-combobox-field--error');
+        (form.querySelector('.contact-guided-step-scope') || form.querySelector('.intake-lanes-workspace'))?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+        countryField?.focus();
+        return;
+      }
+
       const emailVal = (emailInput?.value || '').trim();
       const ccRaw = (whatsCcInput?.value || '').trim();
       const localDigits = contactDigitsOnly(whatsLocalInput?.value || '');
@@ -769,10 +1125,12 @@ forms.forEach((form) => {
       }
 
       const firstName = (fields.first_name || '').trim();
+      const lastName = (fields.last_name || '').trim();
+      const displayName = [firstName, lastName].filter(Boolean).join(' ');
       const web3Payload = {
         access_key: accessKey,
         subject: isFr ? 'ZAD — Brief projet' : 'ZAD — New project brief (contact form)',
-        from_name: firstName ? `${firstName} (ZAD contact)` : 'ZAD contact form',
+        from_name: displayName ? `${displayName} (ZAD contact)` : 'ZAD contact form',
         ...fields
       };
       if (emailVal) web3Payload.replyto = emailVal;
@@ -825,9 +1183,10 @@ forms.forEach((form) => {
             meta: {
               email: String(fields.email || emailVal || '').trim(),
               first_name: String(fields.first_name || '').trim(),
-              organization: String(fields.organization || '').trim(),
+              last_name: String(fields.last_name || '').trim(),
               whatsapp: String(fields.whatsapp || '').trim(),
-              country: String(fields.country || '').trim()
+              country: String(fields.country || '').trim(),
+              affiliated_business: String(fields.affiliated_business || '').trim()
             },
             fields,
             attachments
@@ -1596,7 +1955,13 @@ window.addEventListener('hashchange', applyContactIntakeHash);
     }
 
     const stepTargets = [
-      { idx: 0, el: form.querySelector('.intake-lanes-workspace') || form.querySelector('.intake-choice-grid') },
+      {
+        idx: 0,
+        el:
+          form.querySelector('.contact-guided-step-scope') ||
+          form.querySelector('.intake-lanes-workspace') ||
+          form.querySelector('.intake-choice-grid')
+      },
       { idx: 1, el: form.querySelector('.intake-panels') },
       { idx: 2, el: form.querySelector('.contact-basics') },
       { idx: 3, el: form.querySelector('.contact-form-tail') }

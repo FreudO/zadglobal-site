@@ -22,7 +22,7 @@ var HEADERS = [
   'Submitted',
   'Email',
   'First name',
-  'Organization',
+  'Affiliated business',
   'WhatsApp',
   'Country',
   'Business type',
@@ -115,7 +115,7 @@ function rowFromPayload_(body, fileUrls, submitted) {
   var m = body.meta || {};
   var email = m.email || f.email || '';
   var first = m.first_name || f.first_name || '';
-  var org = m.organization || f.organization || '';
+  var org = m.affiliated_business || f.affiliated_business || m.organization || f.organization || '';
   var wa = m.whatsapp || f.whatsapp || '';
   var country = m.country || f.country || '';
 
