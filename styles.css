@@ -1945,9 +1945,10 @@ body.is-mobile-device .contact-workspace-v14 .intake-studio.contact-success-stat
 }
 .intake-tabs-v14 button {
   min-height: 76px;
+  min-width: 0;
   text-align: left;
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   grid-template-areas: "title count" "desc count";
   align-items: center;
   gap: 2px 12px;
@@ -1990,12 +1991,16 @@ body.is-mobile-device .contact-workspace-v14 .intake-studio.contact-success-stat
 }
 .intake-tabs-v14 button span {
   grid-area: title;
+  min-width: 0;
+  overflow-wrap: break-word;
   font-weight: 950;
   letter-spacing: -0.02em;
   line-height: 1.05;
 }
 .intake-tabs-v14 button small {
   grid-area: desc;
+  min-width: 0;
+  overflow-wrap: break-word;
   color: rgba(6,16,31,.56);
   font-size: .72rem;
   line-height: 1.25;
@@ -2008,6 +2013,8 @@ body.is-mobile-device .contact-workspace-v14 .intake-studio.contact-success-stat
   place-items: center;
   width: 28px;
   height: 28px;
+  min-width: 28px;
+  justify-self: end;
   border-radius: 999px;
   background: rgba(11,91,211,.10);
   color: var(--blue);
