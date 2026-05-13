@@ -3539,10 +3539,29 @@ body.is-mobile-device .contact-workspace-v14 .intake-studio.contact-success-stat
     border-radius: 0;
   }
 
+  .about-page .company-principles-section .principles-head {
+    position: relative;
+    z-index: 2;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+
+  .about-page .company-principles-section .principles-head strong {
+    max-width: 100%;
+    text-align: left;
+  }
+
   .about-page .company-principles-section .principle-core {
-    width: 136px;
-    height: 136px;
-    margin-bottom: 16px;
+    width: 158px;
+    height: 158px;
+    max-width: min(158px, 76vw);
+    max-height: min(158px, 76vw);
+    margin: 0 auto 18px;
+    padding: 12px 14px;
+    box-sizing: border-box;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
   }
 
   .about-page .company-principles-section .principle-core span {
@@ -3550,7 +3569,12 @@ body.is-mobile-device .contact-workspace-v14 .intake-studio.contact-success-stat
   }
 
   .about-page .company-principles-section .principle-core small {
-    font-size: 0.78rem;
+    font-size: 0.72rem;
+    line-height: 1.25;
+    margin-top: 6px;
+    max-width: 11.5em;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .about-page .stats-card {
