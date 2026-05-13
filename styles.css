@@ -3439,61 +3439,13 @@ body.is-mobile-device .contact-workspace-v14 .intake-studio.contact-success-stat
   }
 }
 
-/* Company / About — sticky section jumps, denser stats/partners, snap testimonials */
-.company-mobile-nav {
-  display: none;
-}
-
+/* Company / About — in-page anchors clear sticky header; denser stats/partners, snap testimonials */
 @media (max-width: 720px) {
   .about-page #company-overview,
   .about-page #company-numbers,
   .about-page #company-partners,
   .about-page #company-trust {
     scroll-margin-top: calc(84px + env(safe-area-inset-top, 0px));
-  }
-
-  .about-page .company-mobile-nav {
-    display: block;
-    position: sticky;
-    top: calc(78px + env(safe-area-inset-top, 0px));
-    z-index: 34;
-    margin: 0;
-    padding: 0;
-    background: rgba(255, 255, 255, 0.94);
-    border-bottom: 1px solid var(--line);
-    box-shadow: 0 10px 28px rgba(6, 16, 31, 0.06);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-  }
-
-  .about-page .company-mobile-nav-inner {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 8px;
-    padding-top: 10px;
-    padding-bottom: 12px;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior-x: contain;
-    scrollbar-width: thin;
-  }
-
-  .about-page .company-mobile-nav-inner a {
-    flex: 0 0 auto;
-    padding: 8px 14px;
-    border-radius: 999px;
-    border: 1px solid rgba(6, 63, 149, 0.18);
-    background: #fff;
-    font-size: 0.78rem;
-    font-weight: 850;
-    color: var(--ink);
-    white-space: nowrap;
-    letter-spacing: -0.01em;
-  }
-
-  .about-page .company-mobile-nav-inner a:active {
-    background: #eef5ff;
-    border-color: rgba(11, 91, 211, 0.35);
   }
 
   .about-page .page-hero {
