@@ -3524,7 +3524,19 @@ body.is-mobile-device .contact-workspace-v14 .intake-studio.contact-success-stat
   }
 
   .about-page .company-principles-section .principles-panel {
-    padding: 22px 18px;
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    border-radius: 0;
+    padding-top: 22px;
+    padding-bottom: 22px;
+    padding-left: max(18px, env(safe-area-inset-left, 0px));
+    padding-right: max(18px, env(safe-area-inset-right, 0px));
+  }
+
+  .about-page .company-principles-section .principles-panel::before {
+    border-radius: 0;
   }
 
   .about-page .company-principles-section .principle-core {
